@@ -59,7 +59,7 @@
         </dependency>
         <dependency>
             <groupId>com.codenvy.platform-api-gwt-client</groupId>
-            <artifactId>codenvy-api-gwt-client-commons</artifactId>
+            <artifactId>codenvy-gwt-client-commons</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
