@@ -17,15 +17,19 @@
  */
 package com.codenvy.api.project.gwt.client;
 
-import com.codenvy.ide.rest.AsyncRequestCallback;
 import com.codenvy.api.project.shared.dto.ImportSourceDescriptor;
-import com.codenvy.api.project.shared.dto.ProjectTemplateDescriptor;
+import com.codenvy.api.project.shared.dto.ProjectDescriptor;
+import com.codenvy.ide.rest.AsyncRequestCallback;
 import com.google.gwt.http.client.RequestException;
 
-/**
- * @author Vitaly Parfonov
- */
+/** @author Vitaly Parfonov */
 public interface ProjectClientService {
 
-    public void importProject(String projectName, ImportSourceDescriptor importSourceDescriptor, AsyncRequestCallback<String> callback) throws RequestException;
+    public void getProjects(AsyncRequestCallback<String> callback) throws RequestException;
+
+    public void updateProject(String projectName, ProjectDescriptor descriptor, AsyncRequestCallback<String> callback)
+            throws RequestException;
+
+    public void importProject(String projectName, ImportSourceDescriptor importSourceDescriptor, AsyncRequestCallback<String> callback)
+            throws RequestException;
 }
