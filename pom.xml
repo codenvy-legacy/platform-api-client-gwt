@@ -61,5 +61,6 @@
         <org.easytesting.fest-assert.version>1.4</org.easytesting.fest-assert.version>
         <org.slf4j.version>1.7.5</org.slf4j.version>
         <reflections.version>0.9.9-RC1</reflections.version>
+        <version.enforcer.plugin>1.2</version.enforcer.plugin>
     </properties>
 </project>
