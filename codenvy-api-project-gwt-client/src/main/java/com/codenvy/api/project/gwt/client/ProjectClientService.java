@@ -25,11 +25,37 @@ import com.google.gwt.http.client.RequestException;
 /** @author Vitaly Parfonov */
 public interface ProjectClientService {
 
+    /**
+     * Get all projects.
+     *
+     * @param callback
+     * @throws RequestException
+     */
     public void getProjects(AsyncRequestCallback<String> callback) throws RequestException;
 
+    /**
+     * Update project.
+     *
+     * @param projectName
+     *         name of the project to update
+     * @param descriptor
+     *         descriptor of the project
+     * @param callback
+     * @throws RequestException
+     */
     public void updateProject(String projectName, ProjectDescriptor descriptor, AsyncRequestCallback<String> callback)
             throws RequestException;
 
+    /**
+     * Import sources into project.
+     *
+     * @param projectName
+     *         name of the project to import sources
+     * @param importSourceDescriptor
+     *         {@link ImportSourceDescriptor}
+     * @param callback
+     * @throws RequestException
+     */
     public void importProject(String projectName, ImportSourceDescriptor importSourceDescriptor, AsyncRequestCallback<String> callback)
             throws RequestException;
 }

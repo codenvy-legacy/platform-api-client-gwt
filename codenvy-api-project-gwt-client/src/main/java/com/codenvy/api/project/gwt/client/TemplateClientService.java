@@ -17,13 +17,27 @@
  */
 package com.codenvy.api.project.gwt.client;
 
-import com.codenvy.ide.rest.AsyncRequestCallback;
-import com.codenvy.api.project.shared.dto.ProjectTemplateDescriptor;
 import com.codenvy.api.project.shared.dto.ProjectTypeDescriptor;
+import com.codenvy.ide.rest.AsyncRequestCallback;
 import com.google.gwt.http.client.RequestException;
 
 /** @author Artem Zatsarynnyy */
 public interface TemplateClientService {
+    /**
+     * Get registered templates for the specified {@link ProjectTypeDescriptor}.
+     *
+     * @param projectTypeDescriptor
+     * @param callback
+     * @throws RequestException
+     */
     public void getTemplates(ProjectTypeDescriptor projectTypeDescriptor, AsyncRequestCallback<String> callback) throws RequestException;
+
+    /**
+     * Get all registered templates.
+     *
+     * @param callback
+     * @throws RequestException
+     */
+    public void getAllTemplates(AsyncRequestCallback<String> callback) throws RequestException;
 
 }
