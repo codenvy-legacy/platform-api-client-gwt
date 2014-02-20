@@ -214,20 +214,16 @@ public final class DomUtils {
      * when target container can not be scrolled anymore.
      */
     public static void preventExcessiveScrollingPropagation(final Element container) {
+        // The MOUSEWHEEL does not exist on FF, so in FF the common browser behavior won't be canceled and the parent container will be scrolled.
         container.addEventListener(Event.MOUSEWHEEL, new EventListener() {
             @Override
             public void handleEvent(Event evt) {
                 int deltaY = DOM.eventGetMouseWheelVelocityY((com.google.gwt.user.client.Event)evt);
                 int scrollTop = container.getScrollTop();
-                if (deltaY < 0) {
-                    if (scrollTop == 0) {
-                        evt.preventDefault();
-                    }
-                } else {
-                    int scrollBottom = scrollTop + (int)container.getBoundingClientRect().getHeight();
-                    if (scrollBottom == container.getScrollHeight()) {
-                        evt.preventDefault();
-                    }
+                if (deltaY < 0 && scrollTop == 0) {
+                    evt.preventDefault();
+                } else if (deltaY > 0 && scrollTop == (container.getScrollHeight() - container.getClientHeight())) {
+                    evt.preventDefault();
                 }
                 evt.stopPropagation();
             }
