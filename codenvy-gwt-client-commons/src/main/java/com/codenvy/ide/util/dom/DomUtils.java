@@ -219,15 +219,10 @@ public final class DomUtils {
             public void handleEvent(Event evt) {
                 int deltaY = DOM.eventGetMouseWheelVelocityY((com.google.gwt.user.client.Event)evt);
                 int scrollTop = container.getScrollTop();
-                if (deltaY < 0) {
-                    if (scrollTop == 0) {
-                        evt.preventDefault();
-                    }
-                } else {
-                    int scrollBottom = scrollTop + (int)container.getBoundingClientRect().getHeight();
-                    if (scrollBottom == container.getScrollHeight()) {
-                        evt.preventDefault();
-                    }
+                if (deltaY < 0 && scrollTop == 0) {
+                    evt.preventDefault();
+                } else if (deltaY > 0 && scrollTop == (container.getScrollHeight() - container.getClientHeight())) {
+                    evt.preventDefault();
                 }
                 evt.stopPropagation();
             }
