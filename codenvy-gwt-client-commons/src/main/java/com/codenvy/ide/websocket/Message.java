@@ -21,17 +21,14 @@ import com.codenvy.ide.collections.Jso;
 import com.codenvy.ide.collections.js.JsoArray;
 import com.codenvy.ide.websocket.rest.Pair;
 
-/**
- * @author <a href="mailto:azatsarynnyy@exoplatfrom.com">Artem Zatsarynnyy</a>
- * @version $Id: Message.java Dec 4, 2012 3:07:48 PM azatsarynnyy $
- */
+/** @author <a href="mailto:azatsarynnyy@exoplatfrom.com">Artem Zatsarynnyy</a> */
 public class Message extends Jso {
+
+    protected Message() {
+    }
 
     public static Message create() {
         return Jso.create().cast();
-    }
-
-    protected Message() {
     }
 
     /**

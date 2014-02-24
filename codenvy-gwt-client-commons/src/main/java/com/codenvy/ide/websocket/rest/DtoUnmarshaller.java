@@ -17,25 +17,42 @@
  */
 package com.codenvy.ide.websocket.rest;
 
+import com.codenvy.ide.dto.DtoFactory;
 import com.codenvy.ide.websocket.Message;
+import com.google.gwt.json.client.JSONParser;
 
 /**
- * String unmarshaller for websocket messages.
+ * DTO unmarshaller for websocket messages.
  *
  * @author Artem Zatsarynnyy
  */
-public class StringUnmarshallerWS implements Unmarshallable<String> {
-    protected String builder;
+public class DtoUnmarshaller<T> implements Unmarshallable<T> {
+    protected T          payload;
+    private   Class<?>   dtoInterface;
+    private   DtoFactory dtoFactory;
 
-    /** {@inheritDoc} */
-    @Override
-    public void unmarshal(Message message) {
-        builder = message.getBody();
+    public DtoUnmarshaller(Class<?> dtoInterface, DtoFactory dtoFactory) {
+        this.dtoInterface = dtoInterface;
+        this.dtoFactory = dtoFactory;
     }
 
     /** {@inheritDoc} */
     @Override
-    public String getPayload() {
-        return builder;
+    public void unmarshal(Message message) {
+        if (isJsonArray(message)) {
+            payload = (T)dtoFactory.createListDtoFromJson(message.getBody(), dtoInterface);
+        } else {
+            payload = (T)dtoFactory.createDtoFromJson(message.getBody(), dtoInterface);
+        }
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public T getPayload() {
+        return payload;
+    }
+
+    private boolean isJsonArray(Message message) {
+        return JSONParser.parseStrict(message.getBody()).isArray() != null;
     }
 }

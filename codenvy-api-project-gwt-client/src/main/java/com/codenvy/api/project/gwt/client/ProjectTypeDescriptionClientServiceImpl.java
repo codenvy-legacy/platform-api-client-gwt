@@ -17,11 +17,11 @@
  */
 package com.codenvy.api.project.gwt.client;
 
-import com.codenvy.ide.rest.AsyncRequest;
+import com.codenvy.api.project.shared.dto.ProjectTypeDescriptor;
+import com.codenvy.ide.collections.Array;
 import com.codenvy.ide.rest.AsyncRequestCallback;
+import com.codenvy.ide.rest.AsyncRequestFactory;
 import com.codenvy.ide.ui.loader.Loader;
-import com.google.gwt.http.client.RequestBuilder;
-import com.google.gwt.http.client.RequestException;
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
 
@@ -34,20 +34,23 @@ import static com.codenvy.ide.rest.HTTPHeader.ACCEPT;
  * @author Artem Zatsarynnyy
  */
 public class ProjectTypeDescriptionClientServiceImpl implements ProjectTypeDescriptionClientService {
-    private static String GET_DESCRIPTIONS;
-    private final  String restContext;
-    private        Loader loader;
+    private static String              GET_DESCRIPTIONS;
+    private final  String              restContext;
+    private final  AsyncRequestFactory asyncRequestFactory;
+    private        Loader              loader;
 
     @Inject
-    protected ProjectTypeDescriptionClientServiceImpl(@Named("restContext") String restContext, Loader loader) {
+    protected ProjectTypeDescriptionClientServiceImpl(@Named("restContext") String restContext, Loader loader,
+                                                      AsyncRequestFactory asyncRequestFactory) {
         this.restContext = restContext;
         this.loader = loader;
+        this.asyncRequestFactory = asyncRequestFactory;
         GET_DESCRIPTIONS = "/project-description/descriptions";
     }
 
     @Override
-    public void getProjectTypes(AsyncRequestCallback<String> callback) throws RequestException {
+    public void getProjectTypes(AsyncRequestCallback<Array<ProjectTypeDescriptor>> callback) {
         final String requestUrl = restContext + GET_DESCRIPTIONS;
-        AsyncRequest.build(RequestBuilder.GET, requestUrl).header(ACCEPT, APPLICATION_JSON).loader(loader).send(callback);
+        asyncRequestFactory.createGetRequest(requestUrl).header(ACCEPT, APPLICATION_JSON).loader(loader).send(callback);
     }
 }

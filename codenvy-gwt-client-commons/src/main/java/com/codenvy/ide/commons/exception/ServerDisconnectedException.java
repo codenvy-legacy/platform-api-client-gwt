@@ -18,6 +18,8 @@
 package com.codenvy.ide.commons.exception;
 
 import com.codenvy.ide.rest.AsyncRequest;
+import com.codenvy.ide.rest.AsyncRequest;
+import com.codenvy.ide.rest.AsyncRequest;
 
 /** @author <a href="mailto:gavrikvetal@gmail.com">Vitaliy Gulyy</a> */
 

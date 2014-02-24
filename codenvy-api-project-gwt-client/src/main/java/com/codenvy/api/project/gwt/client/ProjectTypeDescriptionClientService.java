@@ -17,8 +17,9 @@
  */
 package com.codenvy.api.project.gwt.client;
 
+import com.codenvy.api.project.shared.dto.ProjectTypeDescriptor;
+import com.codenvy.ide.collections.Array;
 import com.codenvy.ide.rest.AsyncRequestCallback;
-import com.google.gwt.http.client.RequestException;
 
 /**
  * Client service to get information about registered project types.
@@ -30,8 +31,6 @@ public interface ProjectTypeDescriptionClientService {
      * Get information about all registered project types
      *
      * @param callback
-     * @throws com.google.gwt.http.client.RequestException
-     *
      */
-    public void getProjectTypes(AsyncRequestCallback<String> callback) throws RequestException;
+    public void getProjectTypes(AsyncRequestCallback<Array<ProjectTypeDescriptor>> callback);
 }
