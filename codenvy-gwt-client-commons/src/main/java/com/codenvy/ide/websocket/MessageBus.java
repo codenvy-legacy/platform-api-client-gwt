@@ -66,10 +66,8 @@ public interface MessageBus extends MessageReceivedHandler {
      * Return the ready state of the WebSocket connection.
      *
      * @return ready state of the WebSocket
-     * @throws WebSocketException
-     *         when WebSocket is not initialized
      */
-    ReadyState getReadyState() throws WebSocketException;
+    ReadyState getReadyState();
 
     /**
      * Send {@link Message} on Rest.

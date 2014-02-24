@@ -43,8 +43,7 @@ import com.google.inject.name.Named;
 /**
  * The implementation of {@link MessageBus}.
  *
- * @author <a href="mailto:azatsarynnyy@exoplatfrom.com">Artem Zatsarynnyy</a>
- * @version $Id: RESTMessageBus.java Dec 5, 2012 2:29:06 PM azatsarynnyy $
+ * @author Artem Zatsarynnyy
  */
 @Singleton
 public class MessageBusImpl implements MessageBus {
@@ -211,9 +210,9 @@ public class MessageBusImpl implements MessageBus {
 
     /** {@inheritDoc} */
     @Override
-    public ReadyState getReadyState() throws WebSocketException {
+    public ReadyState getReadyState() {
         if (ws == null) {
-            throw new WebSocketException("WebSocket is not opened.");
+            return ReadyState.CLOSED;
         }
 
         switch (ws.getReadyState()) {
@@ -326,11 +325,8 @@ public class MessageBusImpl implements MessageBus {
     @Override
     public void send(Message message, RequestCallback callback) throws WebSocketException {
         checkWebSocketConnectionState();
-
-        String textMessage = message.serialize();
-        String uuid = message.getStringField(MessageBuilder.UUID_FIELD);
-        internalSend(uuid, textMessage, callback);
-
+        final String uuid = message.getStringField(MessageBuilder.UUID_FIELD);
+        internalSend(uuid, message.serialize(), callback);
         if (callback != null) {
             callback.getLoader().show();
             if (callback.getStatusHandler() != null) {
