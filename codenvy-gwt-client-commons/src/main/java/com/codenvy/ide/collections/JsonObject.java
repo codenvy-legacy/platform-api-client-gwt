@@ -33,6 +33,8 @@ public interface JsonObject {
 
     int getIntField(String key);
 
+    double getDoubleField(String key);
+
     Array<String> getKeys();
 
     JsonObject getObjectField(String key);
