@@ -127,7 +127,7 @@ public class Jso extends JavaScriptObject implements JsonObject {
     }
 
     @Override
-    public double getDoubleField(String key) {
+    public final double getDoubleField(String key) {
         return getFieldCastedToNumber(key);
     }
 
