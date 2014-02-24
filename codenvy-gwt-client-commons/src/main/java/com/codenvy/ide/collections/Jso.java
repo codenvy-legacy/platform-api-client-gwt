@@ -126,6 +126,11 @@ public class Jso extends JavaScriptObject implements JsonObject {
         return getIntFieldImpl(key);
     }
 
+    @Override
+    public double getDoubleField(String key) {
+        return getFieldCastedToNumber(key);
+    }
+
     /**
      * Evaluates a given property to an integer number. The {@code undefined} and
      * {@code null} key values will be casted to zero.
