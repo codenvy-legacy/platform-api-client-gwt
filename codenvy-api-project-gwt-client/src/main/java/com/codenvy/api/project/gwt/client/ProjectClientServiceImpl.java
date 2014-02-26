@@ -158,7 +158,7 @@ public class ProjectClientServiceImpl implements ProjectClientService {
     }
 
     @Override
-    public void getFile(String path, AsyncRequestCallback<String> callback) {
+    public void getFileContent(String path, AsyncRequestCallback<String> callback) {
         final String requestUrl = FILE + path;
         loader.setMessage("Loading file content...");
         asyncRequestFactory.createGetRequest(requestUrl)
@@ -267,6 +267,16 @@ public class ProjectClientServiceImpl implements ProjectClientService {
     @Override
     public void search(String path, String name, String mediaType, String text, int maxItems, int skipCount,
                        AsyncRequestCallback<Array<ItemReference>> callback) {
-        // TODO
+        final String requestUrl = SEARCH + path +
+                                  "?name=" + name +
+                                  "&mediatype=" + mediaType +
+                                  "&text=" + text + "&maxItems=" +
+                                  maxItems + "&skipCount" + skipCount;
+
+        loader.setMessage("Searching items...");
+        asyncRequestFactory.createGetRequest(requestUrl)
+                           .header(ACCEPT, MimeType.APPLICATION_JSON)
+                           .loader(loader)
+                           .send(callback);
     }
 }

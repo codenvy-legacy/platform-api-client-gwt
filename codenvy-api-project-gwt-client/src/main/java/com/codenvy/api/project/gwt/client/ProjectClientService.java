@@ -86,20 +86,94 @@ public interface ProjectClientService {
      */
     public void updateProject(String path, ProjectDescriptor descriptor, AsyncRequestCallback<ProjectDescriptor> callback);
 
+    /**
+     * Create new file in the specified folder.
+     *
+     * @param parentPath
+     *         path to parent for new file
+     * @param name
+     *         file name
+     * @param content
+     *         file content
+     * @param contentType
+     *         media type of file content
+     * @param callback
+     */
     public void createFile(String parentPath, String name, String content, String contentType, AsyncRequestCallback<Void> callback);
 
-    public void getFile(String path, AsyncRequestCallback<String> callback);
+    /**
+     * Get file content.
+     *
+     * @param path
+     *         path to file
+     * @param callback
+     */
+    public void getFileContent(String path, AsyncRequestCallback<String> callback);
 
+    /**
+     * Update file content.
+     *
+     * @param path
+     *         path to file
+     * @param content
+     *         new content of file
+     * @param contentType
+     *         content media type
+     * @param callback
+     */
     public void updateFile(String path, String content, String contentType, AsyncRequestCallback<Void> callback);
 
+    /**
+     * Create new folder in the specified folder.
+     *
+     * @param path
+     *         path to parent for new folder
+     * @param callback
+     */
     public void createFolder(String path, AsyncRequestCallback<Void> callback);
 
+    /**
+     * Delete item.
+     *
+     * @param path
+     *         path to item to delete
+     * @param callback
+     */
     public void delete(String path, AsyncRequestCallback<Void> callback);
 
+    /**
+     * Copy an item to the specified target path.
+     *
+     * @param path
+     *         path to the item to copy
+     * @param newParentPath
+     *         path to the target item
+     * @param callback
+     */
     public void copy(String path, String newParentPath, AsyncRequestCallback<Void> callback);
 
+    /**
+     * Move an item to the specified target path.
+     *
+     * @param path
+     *         path to the item to move
+     * @param newParentPath
+     *         path to the target item
+     * @param callback
+     */
     public void move(String path, String newParentPath, AsyncRequestCallback<Void> callback);
 
+    /**
+     * Rename and/or set new media type for item.
+     *
+     * @param path
+     *         path to the item to rename
+     * @param newName
+     *         new name
+     * @param newMediaType
+     *         new media type
+     * @param callback
+     */
     public void rename(String path, String newName, String newMediaType, AsyncRequestCallback<Void> callback);
 
     /**
@@ -138,16 +212,33 @@ public interface ProjectClientService {
     public void getChildren(String path, AsyncRequestCallback<Array<ItemReference>> callback);
 
     /**
-     * Get project/folder tree.
+     * Get tree of items starts from the specified path.
      *
      * @param path
-     *         path to the project/folder to get its tree
+     *         path to get tree
      * @param depth
-     *         depth of tree to get
+     *         depth for discover children
      * @param callback
      */
     public void getTree(String path, int depth, AsyncRequestCallback<TreeElement> callback);
 
+    /**
+     * Search an item(s) by the specified criteria.
+     *
+     * @param path
+     *         path to start search
+     * @param name
+     *         name of file to search
+     * @param mediaType
+     *         media type of file to search
+     * @param text
+     *         text to search
+     * @param maxItems
+     *         max number of items in response
+     * @param skipCount
+     *         the skip items
+     * @param callback
+     */
     public void search(String path, String name, String mediaType, String text, int maxItems, int skipCount,
                        AsyncRequestCallback<Array<ItemReference>> callback);
 }

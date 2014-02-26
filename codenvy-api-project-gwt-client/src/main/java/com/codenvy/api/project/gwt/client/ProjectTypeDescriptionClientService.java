@@ -22,7 +22,7 @@ import com.codenvy.ide.collections.Array;
 import com.codenvy.ide.rest.AsyncRequestCallback;
 
 /**
- * Client service to get information about registered project types.
+ * Client service for Codenvy Project Description API.
  *
  * @author Artem Zatsarynnyy
  */
