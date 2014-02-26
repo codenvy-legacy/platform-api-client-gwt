@@ -383,6 +383,16 @@ public final class SignalKeyLogic {
         if (operatingSystem.indexOf("Win") != -1) {
             if (typeName.equalsIgnoreCase("keypress")) {
                 if (((keyCode == 46) && (keyIdentifier.equalsIgnoreCase("U+007F")))
+                    || ((keyCode == 123) && (keyIdentifier.equalsIgnoreCase("F12")))
+                    || ((keyCode == 124) && (keyIdentifier.equalsIgnoreCase("F13")))
+                    || ((keyCode == 125) && (keyIdentifier.equalsIgnoreCase("F14")))
+                    || ((keyCode == 91) && (keyIdentifier.equalsIgnoreCase("Win")))
+                    || ((keyCode == 44) && (keyIdentifier.equalsIgnoreCase("PrintScreen")))
+                    || ((keyCode == 45) && (keyIdentifier.equalsIgnoreCase("Insert")))
+                    || ((keyCode == 43) && (keyIdentifier.equalsIgnoreCase("Execute")))
+                    || ((keyCode == 41) && (keyIdentifier.equalsIgnoreCase("Select")))
+                    || ((keyCode == 40) && (keyIdentifier.equalsIgnoreCase("Down")))
+                    || ((keyCode == 47) && (keyIdentifier.equalsIgnoreCase("Help")))
                     || ((keyCode == 39) && (keyIdentifier.equalsIgnoreCase("Right")))
                     || ((keyCode == 34) && (keyIdentifier.equalsIgnoreCase("PageDown")))
                     || ((keyCode == 40) && (keyIdentifier.equalsIgnoreCase("Down")))
