@@ -35,6 +35,7 @@ import com.google.inject.name.Named;
 
 import static com.codenvy.ide.rest.HTTPHeader.ACCEPT;
 import static com.codenvy.ide.rest.HTTPHeader.CONTENT_TYPE;
+import static com.google.gwt.http.client.RequestBuilder.DELETE;
 import static com.google.gwt.http.client.RequestBuilder.PUT;
 
 /**
@@ -187,11 +188,11 @@ public class ProjectClientServiceImpl implements ProjectClientService {
 
     @Override
     public void delete(String path, AsyncRequestCallback<Void> callback) {
-//        final String requestUrl = DELETE + '/' + path;
-//        loader.setMessage("Deleting project...");
-//        asyncRequestFactory.createRequest(RequestBuilder.DELETE, requestUrl, null, false)
-//                           .loader(loader)
-//                           .send(callback);
+        final String requestUrl = PROJECT + '/' + path;
+        loader.setMessage("Deleting project...");
+        asyncRequestFactory.createRequest(DELETE, requestUrl, null, false)
+                           .loader(loader)
+                           .send(callback);
     }
 
     @Override
