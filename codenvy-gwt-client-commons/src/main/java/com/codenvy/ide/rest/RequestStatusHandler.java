@@ -21,8 +21,7 @@ package com.codenvy.ide.rest;
 /**
  * Callback interface, this interface needs to {@link AsyncRequest} can tell the application execution state async REST Service
  *
- * @author <a href="mailto:evidolob@exoplatform.com">Evgen Vidolob</a>
- * @version $Id:  Sep 16, 2011 evgen $
+ * @author Evgen Vidolob
  */
 public interface RequestStatusHandler {
 

@@ -30,7 +30,6 @@ import com.codenvy.ide.websocket.Message;
  *
  * @param <T>
  * @author <a href="mailto:azatsarynnyy@exoplatfrom.com">Artem Zatsarynnyy</a>
- * @version $Id: Unmarshallable.java Nov 9, 2012 10:25:33 AM azatsarynnyy $
  */
 public interface Unmarshallable<T> {
     /**

@@ -25,8 +25,7 @@ import com.google.gwt.http.client.RequestBuilder.Method;
 /**
  * Builder for constructing {@link Message}.
  *
- * @author <a href="mailto:azatsarynnyy@exoplatfrom.com">Artem Zatsarynnyy</a>
- * @version $Id: MessageBuilder.java Nov 9, 2012 4:14:46 PM azatsarynnyy $
+ * @author Artem Zatsarynnyy
  */
 public class MessageBuilder {
     public static final String UUID_FIELD = "uuid";

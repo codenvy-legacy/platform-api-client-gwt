@@ -22,7 +22,7 @@ package com.codenvy.ide.dto;
  *
  * @param <DTO>
  *         the type of DTO interface which implementation this provider provides
- * @author <a href="mailto:azatsarynnyy@codenvy.com">Artem Zatsarynnyy</a>
+ * @author Artem Zatsarynnyy
  */
 public interface DtoProvider<DTO> {
     /** Get type of interface which implementation this provider provides. */

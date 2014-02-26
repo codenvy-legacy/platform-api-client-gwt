@@ -18,73 +18,265 @@
 package com.codenvy.api.project.gwt.client;
 
 import com.codenvy.api.project.shared.dto.ImportSourceDescriptor;
+import com.codenvy.api.project.shared.dto.ItemReference;
 import com.codenvy.api.project.shared.dto.ProjectDescriptor;
+import com.codenvy.api.project.shared.dto.ProjectReference;
+import com.codenvy.api.project.shared.dto.TreeElement;
 import com.codenvy.ide.MimeType;
-import com.codenvy.ide.dto.DtoFactory;
-import com.codenvy.ide.rest.AsyncRequest;
+import com.codenvy.ide.collections.Array;
+import com.codenvy.ide.collections.StringMap;
 import com.codenvy.ide.rest.AsyncRequestCallback;
-import com.codenvy.ide.rest.HTTPHeader;
+import com.codenvy.ide.rest.AsyncRequestFactory;
 import com.codenvy.ide.ui.loader.Loader;
-import com.google.gwt.http.client.RequestBuilder;
-import com.google.gwt.http.client.RequestException;
+import com.google.gwt.json.client.JSONObject;
+import com.google.gwt.json.client.JSONString;
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
 
-/** @author Vitaly Parfonov */
+import static com.codenvy.ide.rest.HTTPHeader.ACCEPT;
+import static com.codenvy.ide.rest.HTTPHeader.CONTENT_TYPE;
+import static com.google.gwt.http.client.RequestBuilder.DELETE;
+import static com.google.gwt.http.client.RequestBuilder.PUT;
+
+/**
+ * Implementation of {@link ProjectClientService}.
+ *
+ * @author Vitaly Parfonov
+ * @author Artem Zatsarynnyy
+ */
 public class ProjectClientServiceImpl implements ProjectClientService {
-
-    private final String     IMPORT_PROJECT;
-    private final String     UPDATE_PROJECT;
-    private final String     LIST_PROJECTS;
-    private final Loader     loader;
-    private final DtoFactory dtoFactory;
-
+    private final String              PROJECT;
+    private final String              FILE;
+    private final String              FOLDER;
+    private final String              COPY;
+    private final String              MOVE;
+    private final String              RENAME;
+    private final String              IMPORT_PROJECT;
+    private final String              GENERATE_PROJECT;
+    private final String              GET_CHILDREN;
+    private final String              GET_TREE;
+    private final String              SEARCH;
+    private final Loader              loader;
+    private final AsyncRequestFactory asyncRequestFactory;
 
     @Inject
     protected ProjectClientServiceImpl(@Named("restContext") String restContext,
                                        @Named("workspaceId") String workspaceId,
-                                       DtoFactory dtoFactory,
-                                       Loader loader) {
-        this.dtoFactory = dtoFactory;
+                                       Loader loader,
+                                       AsyncRequestFactory asyncRequestFactory) {
         this.loader = loader;
+        this.asyncRequestFactory = asyncRequestFactory;
+        PROJECT = restContext + "/project/" + workspaceId;
+        FILE = restContext + "/project/" + workspaceId + "/file";
+        FOLDER = restContext + "/project/" + workspaceId + "/folder";
+        COPY = restContext + "/project/" + workspaceId + "/copy";
+        MOVE = restContext + "/project/" + workspaceId + "/move";
+        RENAME = restContext + "/project/" + workspaceId + "/rename";
         IMPORT_PROJECT = restContext + "/project/" + workspaceId + "/import";
-        UPDATE_PROJECT = restContext + "/project/" + workspaceId + "/update";
-        LIST_PROJECTS = restContext + "/project/" + workspaceId + "/list";
+        GENERATE_PROJECT = restContext + "/project/" + workspaceId + "/generate";
+        GET_CHILDREN = restContext + "/project/" + workspaceId + "/children";
+        GET_TREE = restContext + "/project/" + workspaceId + "/tree";
+        SEARCH = restContext + "/project/" + workspaceId + "/search";
+    }
+
+    private static String stringMapToJson(StringMap<String> map) {
+        String json = "";
+        if (map != null && !map.isEmpty()) {
+            final JSONObject jsonObject = new JSONObject();
+            map.iterate(new StringMap.IterationCallback<String>() {
+                @Override
+                public void onIteration(String key, String value) {
+                    jsonObject.put(key, new JSONString(value));
+                }
+            });
+            json = jsonObject.toString();
+        }
+        return json;
     }
 
     @Override
-    public void getProjects(AsyncRequestCallback<String> callback) throws RequestException {
-        final String requestUrl = LIST_PROJECTS;
+    public void getProjects(AsyncRequestCallback<Array<ProjectReference>> callback) {
+        final String requestUrl = PROJECT;
         loader.setMessage("Getting projects...");
-        AsyncRequest.build(RequestBuilder.GET, requestUrl)
-                    .header(HTTPHeader.ACCEPT, MimeType.APPLICATION_JSON)
-                    .loader(loader)
-                    .send(callback);
+        asyncRequestFactory.createGetRequest(requestUrl)
+                           .header(ACCEPT, MimeType.APPLICATION_JSON)
+                           .loader(loader)
+                           .send(callback);
     }
 
     @Override
-    public void updateProject(String projectName, ProjectDescriptor descriptor, AsyncRequestCallback<String> callback)
-            throws RequestException {
-        final String requestUrl = UPDATE_PROJECT + "?name=" + projectName;
+    public void getProject(String path, AsyncRequestCallback<ProjectDescriptor> callback) {
+        final String requestUrl = PROJECT + path;
+        loader.setMessage("Getting project...");
+        asyncRequestFactory.createGetRequest(requestUrl)
+                           .header(ACCEPT, MimeType.APPLICATION_JSON)
+                           .loader(loader)
+                           .send(callback);
+    }
 
+    @Override
+    public void createProject(String name, ProjectDescriptor descriptor, AsyncRequestCallback<ProjectDescriptor> callback) {
+        final String requestUrl = PROJECT + "?name=" + name;
+        loader.setMessage("Creating project...");
+        asyncRequestFactory.createPostRequest(requestUrl, descriptor)
+                           .header(ACCEPT, MimeType.APPLICATION_JSON)
+                           .loader(loader)
+                           .send(callback);
+    }
+
+    @Override
+    public void createModule(String parentProjectPath, String name, ProjectDescriptor descriptor,
+                             AsyncRequestCallback<ProjectDescriptor> callback) {
+        final String requestUrl = PROJECT + parentProjectPath + "?name=" + name;
+        loader.setMessage("Creating module...");
+        asyncRequestFactory.createPostRequest(requestUrl, descriptor)
+                           .header(ACCEPT, MimeType.APPLICATION_JSON)
+                           .loader(loader)
+                           .send(callback);
+    }
+
+    @Override
+    public void updateProject(String path, ProjectDescriptor descriptor, AsyncRequestCallback<ProjectDescriptor> callback) {
+        final String requestUrl = PROJECT + path;
         loader.setMessage("Updating project...");
-        AsyncRequest.build(RequestBuilder.POST, requestUrl)
-                    .header(HTTPHeader.CONTENT_TYPE, MimeType.APPLICATION_JSON)
-                    .header(HTTPHeader.ACCEPT, MimeType.APPLICATION_JSON)
-                    .loader(loader).data(dtoFactory.toJson(descriptor))
-                    .send(callback);
+        asyncRequestFactory.createRequest(PUT, requestUrl, descriptor, false)
+                           .header(CONTENT_TYPE, MimeType.APPLICATION_JSON)
+                           .header(ACCEPT, MimeType.APPLICATION_JSON)
+                           .loader(loader)
+                           .send(callback);
     }
 
     @Override
-    public void importProject(String projectName, ImportSourceDescriptor importSourceDescriptor, AsyncRequestCallback<String> callback)
-            throws RequestException {
-        final String requestUrl = IMPORT_PROJECT + "?projectName=" + projectName;
+    public void createFile(String parentPath, String name, String content, String contentType, AsyncRequestCallback<Void> callback) {
+        final String requestUrl = FILE + parentPath + "?name=" + name;
+        loader.setMessage("Creating file...");
+        asyncRequestFactory.createPostRequest(requestUrl, null)
+                           .header(CONTENT_TYPE, contentType)
+                           .data(content)
+                           .loader(loader)
+                           .send(callback);
+    }
 
-        loader.setMessage("Creating new project...");
-        AsyncRequest.build(RequestBuilder.POST, requestUrl)
-                    .header(HTTPHeader.CONTENT_TYPE, MimeType.APPLICATION_JSON)
-                    .header(HTTPHeader.ACCEPT, MimeType.APPLICATION_JSON)
-                    .loader(loader).data(dtoFactory.toJson(importSourceDescriptor))
-                    .send(callback);
+    @Override
+    public void getFileContent(String path, AsyncRequestCallback<String> callback) {
+        final String requestUrl = FILE + path;
+        loader.setMessage("Loading file content...");
+        asyncRequestFactory.createGetRequest(requestUrl)
+                           .loader(loader)
+                           .send(callback);
+    }
+
+    @Override
+    public void updateFile(String path, String content, String contentType, AsyncRequestCallback<Void> callback) {
+        final String requestUrl = FILE + path;
+        loader.setMessage("Updating file content...");
+        asyncRequestFactory.createRequest(PUT, requestUrl, null, false)
+                           .header(CONTENT_TYPE, contentType)
+                           .data(content)
+                           .loader(loader)
+                           .send(callback);
+    }
+
+    @Override
+    public void createFolder(String path, AsyncRequestCallback<Void> callback) {
+        final String requestUrl = FOLDER + path;
+        loader.setMessage("Creating folder...");
+        asyncRequestFactory.createPostRequest(requestUrl, null)
+                           .loader(loader)
+                           .send(callback);
+    }
+
+    @Override
+    public void delete(String path, AsyncRequestCallback<Void> callback) {
+        final String requestUrl = DELETE + path;
+        loader.setMessage("Deleting project...");
+        asyncRequestFactory.createRequest(DELETE, requestUrl, null, false)
+                           .loader(loader)
+                           .send(callback);
+    }
+
+    @Override
+    public void copy(String path, String newParentPath, AsyncRequestCallback<Void> callback) {
+        final String requestUrl = COPY + path + "?to=" + newParentPath;
+        loader.setMessage("Copying item...");
+        asyncRequestFactory.createPostRequest(requestUrl, null)
+                           .loader(loader)
+                           .send(callback);
+    }
+
+    @Override
+    public void move(String path, String newParentPath, AsyncRequestCallback<Void> callback) {
+        final String requestUrl = MOVE + path + "?to=" + newParentPath;
+        loader.setMessage("Moving item...");
+        asyncRequestFactory.createPostRequest(requestUrl, null)
+                           .loader(loader)
+                           .send(callback);
+    }
+
+    @Override
+    public void rename(String path, String newName, String newMediaType, AsyncRequestCallback<Void> callback) {
+        final String requestUrl = RENAME + path + "?name=" + newName + "&mediaType=" + newMediaType;
+        loader.setMessage("Renaming item...");
+        asyncRequestFactory.createPostRequest(requestUrl, null)
+                           .loader(loader)
+                           .send(callback);
+    }
+
+    @Override
+    public void importProject(String path, ImportSourceDescriptor importSourceDescriptor,
+                              AsyncRequestCallback<ProjectDescriptor> callback) {
+        final String requestUrl = IMPORT_PROJECT + path;
+        loader.setMessage("Importing sources into project...");
+        asyncRequestFactory.createPostRequest(requestUrl, importSourceDescriptor)
+                           .header(ACCEPT, MimeType.APPLICATION_JSON)
+                           .loader(loader)
+                           .send(callback);
+    }
+
+    @Override
+    public void generateProject(String path, String generatorName, StringMap<String> options,
+                                AsyncRequestCallback<ProjectDescriptor> callback) {
+        final String requestUrl = GENERATE_PROJECT + path + "?generator=" + generatorName;
+        loader.setMessage("Generating project...");
+        asyncRequestFactory.createPostRequest(requestUrl, stringMapToJson(options))
+                           .header(ACCEPT, MimeType.APPLICATION_JSON)
+                           .loader(loader)
+                           .send(callback);
+    }
+
+    @Override
+    public void getChildren(String path, AsyncRequestCallback<Array<ItemReference>> callback) {
+        final String requestUrl = GET_CHILDREN + path;
+        loader.setMessage("Getting children...");
+        asyncRequestFactory.createGetRequest(requestUrl)
+                           .header(ACCEPT, MimeType.APPLICATION_JSON)
+                           .loader(loader)
+                           .send(callback);
+    }
+
+    @Override
+    public void getTree(String path, int depth, AsyncRequestCallback<TreeElement> callback) {
+        final String requestUrl = GET_TREE + path + "?depth=" + depth;
+        loader.setMessage("Getting tree...");
+        asyncRequestFactory.createGetRequest(requestUrl)
+                           .header(ACCEPT, MimeType.APPLICATION_JSON)
+                           .loader(loader)
+                           .send(callback);
+    }
+
+    @Override
+    public void search(String path, String name, String mediaType, String text, int maxItems, int skipCount,
+                       AsyncRequestCallback<Array<ItemReference>> callback) {
+        final String requestUrl = SEARCH + path +
+                                  "?name=" + name +
+                                  "&mediatype=" + mediaType +
+                                  "&text=" + text + "&maxItems=" +
+                                  maxItems + "&skipCount" + skipCount;
+
+        loader.setMessage("Searching items...");
+        asyncRequestFactory.createGetRequest(requestUrl)
+                           .header(ACCEPT, MimeType.APPLICATION_JSON)
+                           .loader(loader)
+                           .send(callback);
     }
 }

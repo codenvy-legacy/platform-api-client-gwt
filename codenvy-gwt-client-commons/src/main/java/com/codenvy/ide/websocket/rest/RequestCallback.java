@@ -34,39 +34,33 @@ import com.google.gwt.http.client.Response;
 /**
  * Callback to receive a {@link Message}.
  *
- * @param <T>
- * @author <a href="mailto:azatsarynnyy@exoplatfrom.com">Artem Zatsarynnyy</a>
- * @version $Id: RequestCallback.java Nov 12, 2012 10:13:13 AM azatsarynnyy $
+ * @author Artem Zatsarynnyy
  */
 public abstract class RequestCallback<T> {
 
     // http code 207 is "Multi-Status"
     // IE misinterpreting HTTP status code 204 as 1223 (http://www.mail-archive.com/jquery-en@googlegroups.com/msg13093.html)
-    private static final int[] DEFAULT_SUCCESS_CODES = {Response.SC_OK, Response.SC_CREATED, Response.SC_NO_CONTENT,
-                                                        207, 1223};
-
-    /** Status codes of the successful responses. */
-    private int[] successCodes;
-
+    private static final int[] DEFAULT_SUCCESS_CODES = {Response.SC_OK, Response.SC_CREATED, Response.SC_NO_CONTENT, 207, 1223};
     /** Deserializer for the body of the {@link Message}. */
-    private final Unmarshallable<T> unmarshaller;
-
+    private final Unmarshallable<T>    unmarshaller;
+    /** Status codes of the successful responses. */
+    private       int[]                successCodes;
     /** An object deserialized from the response. */
-    private T payload;
-
+    private       T                    payload;
     /** Handler to show an execution state of operation. */
-    private RequestStatusHandler statusHandler;
-
+    private       RequestStatusHandler statusHandler;
     /** Loader to show while request is calling. */
-    private AsyncRequestLoader loader;
+    private       AsyncRequestLoader   loader;
 
     public RequestCallback() {
-        this(null);
+        this.successCodes = DEFAULT_SUCCESS_CODES;
+        this.loader = new EmptyLoader();
+        this.unmarshaller = null;
     }
 
     /**
      * Constructor retrieves unmarshaller with initialized (this is important!) object.
-     * When response comes then callback calls <code>Unmarshallable.unmarshal()</code>
+     * When response comes then callback calls {@link Unmarshallable#unmarshal(com.codenvy.ide.websocket.Message)}
      * which populates the object.
      *
      * @param unmarshaller
@@ -89,7 +83,7 @@ public abstract class RequestCallback<T> {
             loader.hide();
         }
 
-        String uuid = message.getStringField(MessageBuilder.UUID_FIELD);
+        final String uuid = message.getStringField(MessageBuilder.UUID_FIELD);
         if (message.getResponseCode() == HTTPStatus.UNAUTHORIZED) {
             UnauthorizedException exception = new UnauthorizedException(message);
             if (statusHandler != null) {

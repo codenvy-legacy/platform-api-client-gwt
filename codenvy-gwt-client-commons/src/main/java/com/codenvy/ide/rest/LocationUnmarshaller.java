@@ -22,10 +22,9 @@ import com.google.gwt.http.client.Response;
 
 /**
  * Unmarshaller for "Location" HTTP Header.
- * Uses in {@link AsyncRequest} for run REST Service Asynchronous
+ * Uses in {@link AsyncRequest} for run REST Service asynchronously.
  *
- * @author <a href="mailto:evidolob@exoplatform.com">Evgen Vidolob</a>
- * @version $Id:  Sep 16, 2011 evgen $
+ * @author Evgen Vidolob
  */
 public class LocationUnmarshaller implements Unmarshallable<String> {
     private String result;

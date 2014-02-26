@@ -25,41 +25,32 @@ import com.google.gwt.http.client.Request;
 import com.google.gwt.http.client.RequestCallback;
 import com.google.gwt.http.client.Response;
 
-
+/**
+ * Callback class for receiving the {@link Response}.
+ *
+ * @param <T>
+ *         the return type of the response the callback expects.
+ *         Use {@link Void} for methods returning {@code void}.
+ */
 public abstract class AsyncRequestCallback<T> implements RequestCallback {
 
-    // http code 207 is "Multi-Status"
-    //IE misinterpreting HTTP status code 204 as 1223 (http://www.mail-archive.com/jquery-en@googlegroups.com/msg13093.html)
+    // HTTP code 207 is "Multi-Status"
+    // IE misinterpreting HTTP status code 204 as 1223 (http://www.mail-archive.com/jquery-en@googlegroups.com/msg13093.html)
+    private static final int[] DEFAULT_SUCCESS_CODES = {Response.SC_OK, Response.SC_CREATED, Response.SC_NO_CONTENT, 207, 1223};
+    private final Unmarshallable<T>  unmarshaller;
+    private       int[]              successCodes;
+    private       AsyncRequestLoader loader;
+    private       T                  payload;
+    private       AsyncRequest       request;
 
-    private static final int[] DEFAULT_SUCCESS_CODES = {Response.SC_OK, Response.SC_CREATED, Response.SC_NO_CONTENT,
-                                                        207, 1223};
-
-    //   private static final int[] REDIRECT_CODES = {Response.SC_TEMPORARY_REDIRECT, Response.SC_MOVED_PERMANENTLY,
-    //      Response.SC_MOVED_TEMPORARILY, Response.SC_USE_PROXY};
-
-    private int[] successCodes;
-
-    private final Unmarshallable<T> unmarshaller;
-
-    private AsyncRequestLoader loader;
-
-    private T payload;
-
-    private AsyncRequest request;
-
-
-
-    /**
-     */
     public AsyncRequestCallback() {
         this(null);
     }
 
     /**
-     * Constructor retrieves unmarshaller with initialized (this is important!)
-     * object.
-     * When response comes callback calls Unmarshallable.unmarshal which populates
-     * the object.
+     * Constructor retrieves unmarshaller with initialized (this is important!) object.
+     * When response comes callback calls {@link Unmarshallable#unmarshal(com.google.gwt.http.client.Response)}
+     * which populates the object.
      *
      * @param unmarshaller
      */
@@ -86,6 +77,7 @@ public abstract class AsyncRequestCallback<T> implements RequestCallback {
     }
 
     /** @see com.google.gwt.http.client.RequestCallback#onError(com.google.gwt.http.client.Request, java.lang.Throwable) */
+    @Override
     public final void onError(Request request, Throwable exception) {
         if (loader != null) {
             loader.hide();
@@ -98,14 +90,13 @@ public abstract class AsyncRequestCallback<T> implements RequestCallback {
      * @see com.google.gwt.http.client.RequestCallback#onResponseReceived(com.google.gwt.http.client.Request,
      *      com.google.gwt.http.client.Response)
      */
+    @Override
     public final void onResponseReceived(Request request, Response response) {
         if (loader != null) {
             loader.hide();
         }
 
-      /*
-       * If there is no connection to the server then status equals 0 ( In Internet Explorer status is 12029 )
-       */
+        // If there is no connection to the server then status equals 0 ( In Internet Explorer status is 12029 )
         if (response.getStatusCode() == 0 || response.getStatusCode() == 12029) {
             onServerDisconnected();
             return;
@@ -137,27 +128,32 @@ public abstract class AsyncRequestCallback<T> implements RequestCallback {
             successCodes = DEFAULT_SUCCESS_CODES;
         }
 
-        if ("Authentication-required".equals(response.getHeader(HTTPHeader.JAXRS_BODY_PROVIDED)))
+        if ("Authentication-required".equals(response.getHeader(HTTPHeader.JAXRS_BODY_PROVIDED))) {
             return false;
+        }
 
-        for (int code : successCodes)
-            if (response.getStatusCode() == code)
+        for (int code : successCodes) {
+            if (response.getStatusCode() == code) {
                 return true;
+            }
+        }
         return false;
     }
 
     /**
-     * If response is successfully received and
-     * response status code is in set of success codes.
+     * If response is successfully received and response status code is in set of success codes.
      *
+     * @param result
+     *         the response returned from the request. Will be {@code null} if
+     *         {@code unmarshaller} wasn't set
      */
     protected abstract void onSuccess(T result);
 
     /**
-     * If error received from server.
+     * Called when an error received from the server or when request was failed.
      *
      * @param exception
-     *         caused failure
+     *         the exception thrown
      */
     protected abstract void onFailure(Throwable exception);
 
@@ -175,12 +171,11 @@ public abstract class AsyncRequestCallback<T> implements RequestCallback {
         onFailure(new UnauthorizedException(response, request));
     }
 
-    public void setRequest(AsyncRequest request) {
-        this.request = request;
-    }
-
     public AsyncRequest getRequest() {
         return request;
     }
 
+    public void setRequest(AsyncRequest request) {
+        this.request = request;
+    }
 }

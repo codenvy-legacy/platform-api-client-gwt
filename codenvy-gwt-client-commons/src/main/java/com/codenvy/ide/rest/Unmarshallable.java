@@ -21,31 +21,31 @@ package com.codenvy.ide.rest;
 import com.codenvy.ide.commons.exception.UnmarshallerException;
 import com.google.gwt.http.client.Response;
 
-
 /**
- * @version $Id: $
- *          <p/>
- *          deserializer for response's body.
- *          <p/>
- *          By the contract:
- *          getResult() should never return null (should be initialized in impl's constructor
- *          and return the same object (with different content) before and after unmarshal
+ * Deserializer for response's body.
+ * <p/>
+ * By the contract:
+ * getPayload() should never return null (should be initialized in impl's constructor
+ * and return the same object (with different content) before and after unmarshal().
+ *
+ * @param <T>
+ *         the return type of the unmarshalled object
  */
-
 public interface Unmarshallable<T> {
 
     /**
-     * prepares an object from the incoming string
+     * Prepares an object from the incoming {@link Response}.
      *
      * @param response
+     *         incoming response
      */
     void unmarshal(Response response) throws UnmarshallerException;
 
     /**
      * The content of the returned object normally differs before and
-     * after unmarshall() but by the contract it should never be null
+     * after unmarshall() but by the contract it should never be {@code null}.
      *
-     * @return the object deserialized from response
+     * @return the object deserialized from the response
      */
     T getPayload();
 

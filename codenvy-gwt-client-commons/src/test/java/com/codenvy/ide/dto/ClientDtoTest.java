@@ -42,7 +42,7 @@ import java.util.Map;
  * Tests that the interfaces specified in com.codenvy.ide.dto.definitions have
  * corresponding generated client implementations.
  *
- * @author <a href="mailto:azatsarynnyy@codenvy.com">Artem Zatsarynnyy</a>
+ * @author Artem Zatsarynnyy
  */
 @GwtModule("com.codenvy.ide.Commons")
 public class ClientDtoTest extends GwtTest {
