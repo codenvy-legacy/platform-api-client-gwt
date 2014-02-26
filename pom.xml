@@ -32,6 +32,8 @@
     <name>Codenvy Platform API :: Parent</name>
     <modules>
         <module>codenvy-gwt-client-commons</module>
+        <module>codenvy-api-core-gwt-client</module>
+        <module>codenvy-api-vfs-gwt-client</module>
         <module>codenvy-api-project-gwt-client</module>
     </modules>
     <scm>
