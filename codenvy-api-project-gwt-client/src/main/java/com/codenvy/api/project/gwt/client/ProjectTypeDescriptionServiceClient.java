@@ -22,11 +22,11 @@ import com.codenvy.ide.collections.Array;
 import com.codenvy.ide.rest.AsyncRequestCallback;
 
 /**
- * Client service for Codenvy Project Description API.
+ * Client for Project Type Description service.
  *
  * @author Artem Zatsarynnyy
  */
-public interface ProjectTypeDescriptionClientService {
+public interface ProjectTypeDescriptionServiceClient {
     /**
      * Get information about all registered project types
      *

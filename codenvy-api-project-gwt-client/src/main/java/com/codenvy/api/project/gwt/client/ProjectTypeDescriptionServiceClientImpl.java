@@ -29,18 +29,18 @@ import static com.codenvy.ide.MimeType.APPLICATION_JSON;
 import static com.codenvy.ide.rest.HTTPHeader.ACCEPT;
 
 /**
- * The implementation of {@link ProjectTypeDescriptionClientService}.
+ * The implementation of {@link ProjectTypeDescriptionServiceClient}.
  *
  * @author Artem Zatsarynnyy
  */
-public class ProjectTypeDescriptionClientServiceImpl implements ProjectTypeDescriptionClientService {
+public class ProjectTypeDescriptionServiceClientImpl implements ProjectTypeDescriptionServiceClient {
     private static String              GET_DESCRIPTIONS;
     private final  String              restContext;
     private final  AsyncRequestFactory asyncRequestFactory;
     private        Loader              loader;
 
     @Inject
-    protected ProjectTypeDescriptionClientServiceImpl(@Named("restContext") String restContext, Loader loader,
+    protected ProjectTypeDescriptionServiceClientImpl(@Named("restContext") String restContext, Loader loader,
                                                       AsyncRequestFactory asyncRequestFactory) {
         this.restContext = restContext;
         this.loader = loader;

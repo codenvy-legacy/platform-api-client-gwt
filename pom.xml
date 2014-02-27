@@ -29,7 +29,7 @@
     <artifactId>codenvy-platform-api-gwt-client-parent</artifactId>
     <version>0.1.1-SNAPSHOT</version>
     <packaging>pom</packaging>
-    <name>Codenvy Platform API :: Parent</name>
+    <name>Codenvy Platform API :: GWT Client :: Parent</name>
     <modules>
         <module>codenvy-gwt-client-commons</module>
         <module>codenvy-api-core-gwt-client</module>

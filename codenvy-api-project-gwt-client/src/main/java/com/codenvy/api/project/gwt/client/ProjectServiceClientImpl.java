@@ -39,12 +39,12 @@ import static com.google.gwt.http.client.RequestBuilder.DELETE;
 import static com.google.gwt.http.client.RequestBuilder.PUT;
 
 /**
- * Implementation of {@link ProjectClientService}.
+ * Implementation of {@link ProjectServiceClient}.
  *
  * @author Vitaly Parfonov
  * @author Artem Zatsarynnyy
  */
-public class ProjectClientServiceImpl implements ProjectClientService {
+public class ProjectServiceClientImpl implements ProjectServiceClient {
     private final String              PROJECT;
     private final String              FILE;
     private final String              FOLDER;
@@ -60,7 +60,7 @@ public class ProjectClientServiceImpl implements ProjectClientService {
     private final AsyncRequestFactory asyncRequestFactory;
 
     @Inject
-    protected ProjectClientServiceImpl(@Named("restContext") String restContext,
+    protected ProjectServiceClientImpl(@Named("restContext") String restContext,
                                        @Named("workspaceId") String workspaceId,
                                        Loader loader,
                                        AsyncRequestFactory asyncRequestFactory) {

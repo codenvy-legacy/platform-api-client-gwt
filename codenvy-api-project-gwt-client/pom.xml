@@ -27,7 +27,7 @@
     </parent>
     <artifactId>codenvy-api-project-gwt-client</artifactId>
     <packaging>jar</packaging>
-    <name>Codenvy API Project</name>
+    <name>Codenvy API :: Project :: GWT Client</name>
     <properties>
         <dto-generator-out-directory>${project.build.directory}/generated-sources/dto/</dto-generator-out-directory>
     </properties>

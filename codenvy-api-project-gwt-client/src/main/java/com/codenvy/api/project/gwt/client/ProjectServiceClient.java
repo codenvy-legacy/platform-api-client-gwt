@@ -27,12 +27,12 @@ import com.codenvy.ide.collections.StringMap;
 import com.codenvy.ide.rest.AsyncRequestCallback;
 
 /**
- * Client service for Codenvy Project API.
+ * Client for Project service.
  *
  * @author Vitaly Parfonov
  * @author Artem Zatsarynnyy
  */
-public interface ProjectClientService {
+public interface ProjectServiceClient {
 
     /**
      * Get all projects.
