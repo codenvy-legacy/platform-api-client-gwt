@@ -203,19 +203,19 @@ public interface ProjectServiceClient {
                                 AsyncRequestCallback<ProjectDescriptor> callback);
 
     /**
-     * Get project/folder children.
+     * Get children for the specified path.
      *
      * @param path
-     *         path to the project/folder to get its children
+     *         path to get its children
      * @param callback
      */
     public void getChildren(String path, AsyncRequestCallback<Array<ItemReference>> callback);
 
     /**
-     * Get tree of items starts from the specified path.
+     * Get folders tree starts from the specified path.
      *
      * @param path
-     *         path to get tree
+     *         path to get its folder tree
      * @param depth
      *         depth for discover children
      * @param callback
