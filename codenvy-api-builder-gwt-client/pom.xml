@@ -18,24 +18,29 @@
     from Codenvy S.A..
 
 -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <artifactId>codenvy-platform-api-gwt-client-parent</artifactId>
         <groupId>com.codenvy.platform-api-gwt-client</groupId>
         <version>0.1.1-SNAPSHOT</version>
     </parent>
-    <artifactId>codenvy-api-core-gwt-client</artifactId>
+    <artifactId>codenvy-api-builder-gwt-client</artifactId>
     <packaging>jar</packaging>
-    <name>Codenvy API :: Core :: GWT Client</name>
+    <name>Codenvy API :: Builder :: GWT Client</name>
     <properties>
         <dto-generator-out-directory>${project.build.directory}/generated-sources/dto/</dto-generator-out-directory>
     </properties>
     <dependencies>
         <dependency>
             <groupId>com.codenvy.platform-api</groupId>
-            <artifactId>codenvy-api-core</artifactId>
+            <artifactId>codenvy-api-builder</artifactId>
             <version>${codenvy.platform-api.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.codenvy.platform-api-gwt-client</groupId>
+            <artifactId>codenvy-api-core-gwt-client</artifactId>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>com.codenvy.platform-api-gwt-client</groupId>
@@ -74,21 +79,21 @@
                 <dependencies>
                     <dependency>
                         <groupId>com.codenvy.platform-api</groupId>
-                        <artifactId>codenvy-api-core</artifactId>
+                        <artifactId>codenvy-api-builder</artifactId>
                         <version>${codenvy.platform-api.version}</version>
                     </dependency>
                     <dependency>
-                        <groupId>com.google.gwt</groupId>
-                        <artifactId>gwt-user</artifactId>
-                        <version>${gwt.version}</version>
+                        <groupId>com.codenvy.platform-api-gwt-client</groupId>
+                        <artifactId>codenvy-api-core-gwt-client</artifactId>
+                        <version>${project.version}</version>
                     </dependency>
                 </dependencies>
                 <configuration>
                     <dtoPackages>
-                        <package>com.codenvy.api.core.rest.shared.dto</package>
+                        <package>com.codenvy.api.builder.dto</package>
                     </dtoPackages>
                     <outputDirectory>${dto-generator-out-directory}</outputDirectory>
-                    <genClassName>com.codenvy.api.core.client.dto.DtoClientImpls</genClassName>
+                    <genClassName>com.codenvy.api.builder.client.dto.DtoClientImpls</genClassName>
                     <impl>client</impl>
                 </configuration>
             </plugin>
