@@ -35,7 +35,7 @@
         <module>codenvy-api-builder-gwt-client</module>
         <module>codenvy-api-core-gwt-client</module>
         <module>codenvy-api-project-gwt-client</module>
-	<module>codenvy-api-user-gwt-client</module>
+        <module>codenvy-api-user-gwt-client</module>
         <module>codenvy-api-runner-gwt-client</module>
         <module>codenvy-api-vfs-gwt-client</module>
     </modules>
