@@ -38,6 +38,7 @@ public interface ProjectServiceClient {
      * Get all projects.
      *
      * @param callback
+     *         callback
      */
     public void getProjects(AsyncRequestCallback<Array<ProjectReference>> callback);
 
@@ -47,6 +48,7 @@ public interface ProjectServiceClient {
      * @param path
      *         path to the project to get
      * @param callback
+     *         callback
      */
     public void getProject(String path, AsyncRequestCallback<ProjectDescriptor> callback);
 
@@ -58,11 +60,22 @@ public interface ProjectServiceClient {
      * @param descriptor
      *         descriptor of the project to create
      * @param callback
+     *         callback
      */
     public void createProject(String name, ProjectDescriptor descriptor, AsyncRequestCallback<ProjectDescriptor> callback);
 
     /**
-     * Create module in project.
+     * Get sub-project.
+     *
+     * @param path
+     *         path to the parent project
+     * @param callback
+     *         callback
+     */
+    public void getModules(String path, AsyncRequestCallback<Array<ProjectDescriptor>> callback);
+
+    /**
+     * Create sub-project.
      *
      * @param parentProjectPath
      *         path to the parent project
@@ -71,6 +84,7 @@ public interface ProjectServiceClient {
      * @param descriptor
      *         descriptor of the project to create
      * @param callback
+     *         callback
      */
     public void createModule(String parentProjectPath, String name, ProjectDescriptor descriptor,
                              AsyncRequestCallback<ProjectDescriptor> callback);
@@ -83,6 +97,7 @@ public interface ProjectServiceClient {
      * @param descriptor
      *         descriptor of the project to update
      * @param callback
+     *         callback
      */
     public void updateProject(String path, ProjectDescriptor descriptor, AsyncRequestCallback<ProjectDescriptor> callback);
 
@@ -98,6 +113,7 @@ public interface ProjectServiceClient {
      * @param contentType
      *         media type of file content
      * @param callback
+     *         callback
      */
     public void createFile(String parentPath, String name, String content, String contentType, AsyncRequestCallback<Void> callback);
 
@@ -107,6 +123,7 @@ public interface ProjectServiceClient {
      * @param path
      *         path to file
      * @param callback
+     *         callback
      */
     public void getFileContent(String path, AsyncRequestCallback<String> callback);
 
@@ -120,6 +137,7 @@ public interface ProjectServiceClient {
      * @param contentType
      *         content media type
      * @param callback
+     *         callback
      */
     public void updateFile(String path, String content, String contentType, AsyncRequestCallback<Void> callback);
 
@@ -129,6 +147,7 @@ public interface ProjectServiceClient {
      * @param path
      *         path to parent for new folder
      * @param callback
+     *         callback
      */
     public void createFolder(String path, AsyncRequestCallback<Void> callback);
 
@@ -138,6 +157,7 @@ public interface ProjectServiceClient {
      * @param path
      *         path to item to delete
      * @param callback
+     *         callback
      */
     public void delete(String path, AsyncRequestCallback<Void> callback);
 
@@ -149,6 +169,7 @@ public interface ProjectServiceClient {
      * @param newParentPath
      *         path to the target item
      * @param callback
+     *         callback
      */
     public void copy(String path, String newParentPath, AsyncRequestCallback<Void> callback);
 
@@ -160,6 +181,7 @@ public interface ProjectServiceClient {
      * @param newParentPath
      *         path to the target item
      * @param callback
+     *         callback
      */
     public void move(String path, String newParentPath, AsyncRequestCallback<Void> callback);
 
@@ -173,6 +195,7 @@ public interface ProjectServiceClient {
      * @param newMediaType
      *         new media type
      * @param callback
+     *         callback
      */
     public void rename(String path, String newName, String newMediaType, AsyncRequestCallback<Void> callback);
 
@@ -184,6 +207,7 @@ public interface ProjectServiceClient {
      * @param importSourceDescriptor
      *         {@link ImportSourceDescriptor}
      * @param callback
+     *         callback
      */
     public void importProject(String path, ImportSourceDescriptor importSourceDescriptor,
                               AsyncRequestCallback<ProjectDescriptor> callback);
@@ -198,6 +222,7 @@ public interface ProjectServiceClient {
      * @param options
      *         additional options for project generator
      * @param callback
+     *         callback
      */
     public void generateProject(String path, String generatorName, StringMap<String> options,
                                 AsyncRequestCallback<ProjectDescriptor> callback);
@@ -208,6 +233,7 @@ public interface ProjectServiceClient {
      * @param path
      *         path to get its children
      * @param callback
+     *         callback
      */
     public void getChildren(String path, AsyncRequestCallback<Array<ItemReference>> callback);
 
@@ -219,6 +245,7 @@ public interface ProjectServiceClient {
      * @param depth
      *         depth for discover children
      * @param callback
+     *         callback
      */
     public void getTree(String path, int depth, AsyncRequestCallback<TreeElement> callback);
 
@@ -238,6 +265,7 @@ public interface ProjectServiceClient {
      * @param skipCount
      *         the skip items
      * @param callback
+     *         callback
      */
     public void search(String path, String name, String mediaType, String text, int maxItems, int skipCount,
                        AsyncRequestCallback<Array<ItemReference>> callback);

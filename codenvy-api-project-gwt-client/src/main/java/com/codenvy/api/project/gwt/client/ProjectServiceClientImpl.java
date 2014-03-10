@@ -46,6 +46,7 @@ import static com.google.gwt.http.client.RequestBuilder.PUT;
  */
 public class ProjectServiceClientImpl implements ProjectServiceClient {
     private final String              PROJECT;
+    private final String              MODULE;
     private final String              FILE;
     private final String              FOLDER;
     private final String              COPY;
@@ -67,6 +68,7 @@ public class ProjectServiceClientImpl implements ProjectServiceClient {
         this.loader = loader;
         this.asyncRequestFactory = asyncRequestFactory;
         PROJECT = restContext + "/project/" + workspaceId;
+        MODULE = restContext + "/project/" + workspaceId + "/module";
         FILE = restContext + "/project/" + workspaceId + "/file";
         FOLDER = restContext + "/project/" + workspaceId + "/folder";
         COPY = restContext + "/project/" + workspaceId + "/copy";
@@ -119,6 +121,16 @@ public class ProjectServiceClientImpl implements ProjectServiceClient {
         final String requestUrl = PROJECT + "?name=" + name;
         loader.setMessage("Creating project...");
         asyncRequestFactory.createPostRequest(requestUrl, descriptor)
+                           .header(ACCEPT, MimeType.APPLICATION_JSON)
+                           .loader(loader)
+                           .send(callback);
+    }
+
+    @Override
+    public void getModules(String path, AsyncRequestCallback<Array<ProjectDescriptor>> callback) {
+        final String requestUrl = MODULE + '/' + path;
+        loader.setMessage("Getting modules...");
+        asyncRequestFactory.createGetRequest(requestUrl)
                            .header(ACCEPT, MimeType.APPLICATION_JSON)
                            .loader(loader)
                            .send(callback);
