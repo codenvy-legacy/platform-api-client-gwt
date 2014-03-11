@@ -108,7 +108,7 @@ public class ProjectServiceClientImpl implements ProjectServiceClient {
 
     @Override
     public void getProject(String path, AsyncRequestCallback<ProjectDescriptor> callback) {
-        final String requestUrl = PROJECT + '/' + path;
+        final String requestUrl = PROJECT + path;
         loader.setMessage("Getting project...");
         asyncRequestFactory.createGetRequest(requestUrl)
                            .header(ACCEPT, MimeType.APPLICATION_JSON)
@@ -128,7 +128,7 @@ public class ProjectServiceClientImpl implements ProjectServiceClient {
 
     @Override
     public void getModules(String path, AsyncRequestCallback<Array<ProjectDescriptor>> callback) {
-        final String requestUrl = MODULE + '/' + path;
+        final String requestUrl = MODULE + path;
         loader.setMessage("Getting modules...");
         asyncRequestFactory.createGetRequest(requestUrl)
                            .header(ACCEPT, MimeType.APPLICATION_JSON)
@@ -139,7 +139,7 @@ public class ProjectServiceClientImpl implements ProjectServiceClient {
     @Override
     public void createModule(String parentProjectPath, String name, ProjectDescriptor descriptor,
                              AsyncRequestCallback<ProjectDescriptor> callback) {
-        final String requestUrl = PROJECT + '/' + parentProjectPath + "?name=" + name;
+        final String requestUrl = PROJECT + parentProjectPath + "?name=" + name;
         loader.setMessage("Creating module...");
         asyncRequestFactory.createPostRequest(requestUrl, descriptor)
                            .header(ACCEPT, MimeType.APPLICATION_JSON)
@@ -149,7 +149,7 @@ public class ProjectServiceClientImpl implements ProjectServiceClient {
 
     @Override
     public void updateProject(String path, ProjectDescriptor descriptor, AsyncRequestCallback<ProjectDescriptor> callback) {
-        final String requestUrl = PROJECT + '/' + path;
+        final String requestUrl = PROJECT + path;
         loader.setMessage("Updating project...");
         asyncRequestFactory.createRequest(PUT, requestUrl, descriptor, false)
                            .header(CONTENT_TYPE, MimeType.APPLICATION_JSON)
@@ -160,7 +160,7 @@ public class ProjectServiceClientImpl implements ProjectServiceClient {
 
     @Override
     public void createFile(String parentPath, String name, String content, String contentType, AsyncRequestCallback<Void> callback) {
-        final String requestUrl = FILE + '/' + parentPath + "?name=" + name;
+        final String requestUrl = FILE + parentPath + "?name=" + name;
         loader.setMessage("Creating file...");
         asyncRequestFactory.createPostRequest(requestUrl, null)
                            .header(CONTENT_TYPE, contentType)
@@ -171,7 +171,7 @@ public class ProjectServiceClientImpl implements ProjectServiceClient {
 
     @Override
     public void getFileContent(String path, AsyncRequestCallback<String> callback) {
-        final String requestUrl = FILE + '/' + path;
+        final String requestUrl = FILE + path;
         loader.setMessage("Loading file content...");
         asyncRequestFactory.createGetRequest(requestUrl)
                            .loader(loader)
@@ -180,7 +180,7 @@ public class ProjectServiceClientImpl implements ProjectServiceClient {
 
     @Override
     public void updateFile(String path, String content, String contentType, AsyncRequestCallback<Void> callback) {
-        final String requestUrl = FILE + '/' + path;
+        final String requestUrl = FILE + path;
         loader.setMessage("Updating file content...");
         asyncRequestFactory.createRequest(PUT, requestUrl, null, false)
                            .header(CONTENT_TYPE, contentType)
@@ -191,7 +191,7 @@ public class ProjectServiceClientImpl implements ProjectServiceClient {
 
     @Override
     public void createFolder(String path, AsyncRequestCallback<Void> callback) {
-        final String requestUrl = FOLDER + '/' + path;
+        final String requestUrl = FOLDER + path;
         loader.setMessage("Creating folder...");
         asyncRequestFactory.createPostRequest(requestUrl, null)
                            .loader(loader)
@@ -200,7 +200,7 @@ public class ProjectServiceClientImpl implements ProjectServiceClient {
 
     @Override
     public void delete(String path, AsyncRequestCallback<Void> callback) {
-        final String requestUrl = PROJECT + '/' + path;
+        final String requestUrl = PROJECT + path;
         loader.setMessage("Deleting project...");
         asyncRequestFactory.createRequest(DELETE, requestUrl, null, false)
                            .loader(loader)
@@ -209,7 +209,7 @@ public class ProjectServiceClientImpl implements ProjectServiceClient {
 
     @Override
     public void copy(String path, String newParentPath, AsyncRequestCallback<Void> callback) {
-        final String requestUrl = COPY + '/' + path + "?to=" + newParentPath;
+        final String requestUrl = COPY + path + "?to=" + newParentPath;
         loader.setMessage("Copying item...");
         asyncRequestFactory.createPostRequest(requestUrl, null)
                            .loader(loader)
@@ -218,7 +218,7 @@ public class ProjectServiceClientImpl implements ProjectServiceClient {
 
     @Override
     public void move(String path, String newParentPath, AsyncRequestCallback<Void> callback) {
-        final String requestUrl = MOVE + '/' + path + "?to=" + newParentPath;
+        final String requestUrl = MOVE + path + "?to=" + newParentPath;
         loader.setMessage("Moving item...");
         asyncRequestFactory.createPostRequest(requestUrl, null)
                            .loader(loader)
@@ -227,7 +227,7 @@ public class ProjectServiceClientImpl implements ProjectServiceClient {
 
     @Override
     public void rename(String path, String newName, String newMediaType, AsyncRequestCallback<Void> callback) {
-        final String requestUrl = RENAME + '/' + path + "?name=" + newName + "&mediaType=" + newMediaType;
+        final String requestUrl = RENAME + path + "?name=" + newName + "&mediaType=" + newMediaType;
         loader.setMessage("Renaming item...");
         asyncRequestFactory.createPostRequest(requestUrl, null)
                            .loader(loader)
@@ -237,7 +237,7 @@ public class ProjectServiceClientImpl implements ProjectServiceClient {
     @Override
     public void importProject(String path, ImportSourceDescriptor importSourceDescriptor,
                               AsyncRequestCallback<ProjectDescriptor> callback) {
-        final String requestUrl = IMPORT_PROJECT + '/' + path;
+        final String requestUrl = IMPORT_PROJECT + path;
         loader.setMessage("Importing sources into project...");
         asyncRequestFactory.createPostRequest(requestUrl, importSourceDescriptor)
                            .header(ACCEPT, MimeType.APPLICATION_JSON)
@@ -248,7 +248,7 @@ public class ProjectServiceClientImpl implements ProjectServiceClient {
     @Override
     public void generateProject(String path, String generatorName, StringMap<String> options,
                                 AsyncRequestCallback<ProjectDescriptor> callback) {
-        final String requestUrl = GENERATE_PROJECT + '/' + path + "?generator=" + generatorName;
+        final String requestUrl = GENERATE_PROJECT + path + "?generator=" + generatorName;
         loader.setMessage("Generating project...");
         asyncRequestFactory.createPostRequest(requestUrl, stringMapToJson(options))
                            .header(ACCEPT, MimeType.APPLICATION_JSON)
@@ -258,7 +258,7 @@ public class ProjectServiceClientImpl implements ProjectServiceClient {
 
     @Override
     public void getChildren(String path, AsyncRequestCallback<Array<ItemReference>> callback) {
-        final String requestUrl = GET_CHILDREN + '/' + path;
+        final String requestUrl = GET_CHILDREN + path;
         loader.setMessage("Getting children...");
         asyncRequestFactory.createGetRequest(requestUrl)
                            .header(ACCEPT, MimeType.APPLICATION_JSON)
