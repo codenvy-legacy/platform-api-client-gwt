@@ -93,6 +93,24 @@ public class DtoFactory {
         }
         throw new IllegalArgumentException("JsonSerializable instance required. ");
     }
+    
+    /** Serializes array of DTO objects to JSON format. */
+    public <T> String toJson(Array<T> array) {
+        StringBuilder sb = new StringBuilder("[");
+        for (int i = 0; i < array.size(); i++){
+            T dto = array.get(i);
+            if (dto instanceof JsonSerializable) {
+                if (i > 0){
+                    sb.append(", ");
+                }
+                sb.append(((JsonSerializable)dto).toJson());
+            } else {
+                throw new IllegalArgumentException("JsonSerializable instance required. ");
+            }
+        }
+        sb.append("]");
+        return sb.toString();
+    }
 
     /**
      * Registers DtoProvider for DTO interface.
