@@ -237,7 +237,7 @@ public class ProjectServiceClientImpl implements ProjectServiceClient {
     @Override
     public void importProject(String path, ImportSourceDescriptor importSourceDescriptor,
                               AsyncRequestCallback<ProjectDescriptor> callback) {
-        final String requestUrl = IMPORT_PROJECT + path;
+        final String requestUrl = IMPORT_PROJECT + '/' + path;
         loader.setMessage("Importing sources into project...");
         asyncRequestFactory.createPostRequest(requestUrl, importSourceDescriptor)
                            .header(ACCEPT, MimeType.APPLICATION_JSON)
@@ -248,7 +248,7 @@ public class ProjectServiceClientImpl implements ProjectServiceClient {
     @Override
     public void generateProject(String path, String generatorName, StringMap<String> options,
                                 AsyncRequestCallback<ProjectDescriptor> callback) {
-        final String requestUrl = GENERATE_PROJECT + path + "?generator=" + generatorName;
+        final String requestUrl = GENERATE_PROJECT + '/' + path + "?generator=" + generatorName;
         loader.setMessage("Generating project...");
         asyncRequestFactory.createPostRequest(requestUrl, stringMapToJson(options))
                            .header(ACCEPT, MimeType.APPLICATION_JSON)
@@ -268,7 +268,7 @@ public class ProjectServiceClientImpl implements ProjectServiceClient {
 
     @Override
     public void getTree(String path, int depth, AsyncRequestCallback<TreeElement> callback) {
-        final String requestUrl = GET_TREE + '/' + path + "?depth=" + depth;
+        final String requestUrl = GET_TREE + path + "?depth=" + depth;
         loader.setMessage("Getting tree...");
         asyncRequestFactory.createGetRequest(requestUrl)
                            .header(ACCEPT, MimeType.APPLICATION_JSON)
@@ -279,7 +279,7 @@ public class ProjectServiceClientImpl implements ProjectServiceClient {
     @Override
     public void search(String path, String name, String mediaType, String text, int maxItems, int skipCount,
                        AsyncRequestCallback<Array<ItemReference>> callback) {
-        final String requestUrl = SEARCH + '/' + path +
+        final String requestUrl = SEARCH + path +
                                   "?name=" + name +
                                   "&mediatype=" + mediaType +
                                   "&text=" + text + "&maxItems=" +
