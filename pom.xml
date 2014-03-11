@@ -60,8 +60,6 @@
         <javax.validation.version>1.0.0.GA</javax.validation.version>
         <junit.version>4.7</junit.version>
         <maven-model.version>3.0.5</maven-model.version>
-        <maven.releases.repo.url>https://maven.codenvycorp.com/content/repositories/codenvy-private-releases/</maven.releases.repo.url>
-        <maven.snapshots.repo.url>https://maven.codenvycorp.com/content/repositories/codenvy-private-snapshots/</maven.snapshots.repo.url>
         <mockito.version>1.9.5</mockito.version>
         <org.easytesting.fest-assert.version>1.4</org.easytesting.fest-assert.version>
         <org.slf4j.version>1.7.5</org.slf4j.version>
