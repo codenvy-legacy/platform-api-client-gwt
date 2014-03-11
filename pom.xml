@@ -54,9 +54,9 @@
         <gin.version>2.1.2</gin.version>
         <gson.version>2.1</gson.version>
         <guava.version>12.0.1</guava.version>
-        <gwt-test-utils.version>0.45</gwt-test-utils.version>
+        <gwt-test-utils.version>0.47</gwt-test-utils.version>
         <gwt.test.skip>true</gwt.test.skip>
-        <gwt.version>2.5.1</gwt.version>
+        <gwt.version>2.6.0</gwt.version>
         <javax.validation.version>1.0.0.GA</javax.validation.version>
         <junit.version>4.7</junit.version>
         <maven-model.version>3.0.5</maven-model.version>
