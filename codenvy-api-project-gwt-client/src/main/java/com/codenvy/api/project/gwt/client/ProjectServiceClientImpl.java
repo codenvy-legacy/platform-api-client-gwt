@@ -262,7 +262,6 @@ public class ProjectServiceClientImpl implements ProjectServiceClient {
         loader.setMessage("Getting children...");
         asyncRequestFactory.createGetRequest(requestUrl)
                            .header(ACCEPT, MimeType.APPLICATION_JSON)
-                           .loader(loader)
                            .send(callback);
     }
 
@@ -272,7 +271,6 @@ public class ProjectServiceClientImpl implements ProjectServiceClient {
         loader.setMessage("Getting tree...");
         asyncRequestFactory.createGetRequest(requestUrl)
                            .header(ACCEPT, MimeType.APPLICATION_JSON)
-                           .loader(loader)
                            .send(callback);
     }
 
