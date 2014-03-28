@@ -36,13 +36,10 @@ import com.google.inject.name.Named;
  */
 @Singleton
 public class BuilderServiceClientImpl implements BuilderServiceClient {
-    /** REST-service context. */
     private final String              baseUrl;
-    /** Loader to be displayed. */
     private final Loader              loader;
     private final AsyncRequestFactory asyncRequestFactory;
 
-    /** Create service. */
     @Inject
     public BuilderServiceClientImpl(@Named("restContext") String baseUrl,
                                     @Named("workspaceId") String workspaceId,

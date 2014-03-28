@@ -23,7 +23,7 @@ import com.codenvy.api.core.rest.shared.dto.Link;
 import com.codenvy.ide.rest.AsyncRequestCallback;
 
 /**
- * Client service for builder.
+ * Client for Builder service.
  *
  * @author Artem Zatsarynnyy
  */
