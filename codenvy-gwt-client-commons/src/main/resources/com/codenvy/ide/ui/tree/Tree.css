@@ -18,7 +18,7 @@
 
 /* Default annotated CSS for Tree.java */
 @def treeIndent 14px;
-@def itemHeight 18px;
+@def itemHeight 0px;
 
 .treeRoot {
     font-family: alternativeFontFamily;
@@ -46,7 +46,6 @@
 }
 
 .treeNodeBody {
-    height: itemHeight;
     min-width: 100%;
     display: inline-block;
     position: relative;
