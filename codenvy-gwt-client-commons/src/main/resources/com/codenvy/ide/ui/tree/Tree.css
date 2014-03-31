@@ -19,7 +19,6 @@
 /* Default annotated CSS for Tree.java */
 @def treeIndent 14px;
 @def itemHeight 18px;
-@def arrowImgOffset 0px;
 
 .treeRoot {
     font-family: alternativeFontFamily;
@@ -89,9 +88,9 @@
 
 .openedIcon, .closedIcon {
     position: relative;
-    background-position: arrowImgOffset arrowImgOffset;
-    height: itemHeight;
-    width: itemHeight;
+    background-position: 2px 0px;
+    height: 12px;
+    width: 12px;
 }
 
 /* We have no icon, just a spacer */
