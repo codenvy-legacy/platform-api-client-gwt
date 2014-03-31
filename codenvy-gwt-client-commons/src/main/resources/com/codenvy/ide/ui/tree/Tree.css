@@ -17,14 +17,14 @@
  */
 
  /* Default annotated CSS for Tree.java */
-    @def treeIndent 10px;
-    @def itemHeight 20px;
-    @def arrowImgOffset 5px;
+    @def treeIndent 14px;
+    @def iconHeight 12px;
+    @def itemHeight 0px;
 
     .treeRoot {
         font-family: alternativeFontFamily;
-        padding-left: 7px;
-        margin: 0;
+        padding-left: 2px;
+        margin: 8px 0;
         min-height: 100px;
         position: absolute;
         top: 0;
@@ -36,7 +36,6 @@
     .treeNode {
         list-style-type: none;
         display: block;
-        min-height: 21px;
     }
 
     .childrenContainer {
@@ -48,7 +47,6 @@
     }
 
     .treeNodeBody {
-        height: itemHeight;
         min-width: 100%;
         display: inline-block;
         position: relative;
@@ -90,9 +88,9 @@
 
     .openedIcon, .closedIcon {
         position: relative;
-        background-position: arrowImgOffset arrowImgOffset;
-        height: itemHeight;
-        width: itemHeight;
+        background-position: 2px 0px;
+        height: iconHeight;
+        width: iconHeight;
     }
 
         /* We have no icon, just a spacer */
