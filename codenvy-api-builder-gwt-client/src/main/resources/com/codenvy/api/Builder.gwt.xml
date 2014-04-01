@@ -22,5 +22,6 @@
 <module>
     <inherits name='com.google.gwt.user.User'/>
     <inherits name="com.google.gwt.json.JSON"/>
+    <inherits name="com.codenvy.ide.Commons"/>
     <source path='builder'/>
 </module>

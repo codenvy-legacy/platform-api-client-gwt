@@ -70,6 +70,9 @@
                 <directory>src/main/resources</directory>
             </resource>
             <resource>
+                <directory>src/main/java</directory>
+            </resource>
+            <resource>
                 <directory>${dto-generator-out-directory}</directory>
             </resource>
         </resources>
