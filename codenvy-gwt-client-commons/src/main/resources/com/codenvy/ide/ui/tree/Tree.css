@@ -19,7 +19,7 @@
 /* Default annotated CSS for Tree.java */
 @def treeIndent 14px;
 @def iconHeight 12px;
-@def itemHeight 0px;
+@def itemHeight 14px;
 
 .treeRoot {
     font-family: alternativeFontFamily;
