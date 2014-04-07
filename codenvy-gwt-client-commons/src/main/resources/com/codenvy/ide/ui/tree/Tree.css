@@ -38,6 +38,10 @@
     display: block;
 }
 
+.treeRoot > .treeNode > .treeNodeBody > .leafIcon {
+    display: none;
+}
+
 .childrenContainer {
     position: relative;
     padding-left: 0;
@@ -88,7 +92,7 @@
 
 .openedIcon, .closedIcon {
     position: relative;
-    background-position: 2px 0px;
+    background-position: 2px 1px;
     height: iconHeight;
     width: iconHeight;
 }
