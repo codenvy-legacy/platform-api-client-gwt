@@ -39,7 +39,6 @@
 }
 
 .treeRoot > .treeNode {
-    min-height: 20px;
     margin-top: 6px;
 }
 
