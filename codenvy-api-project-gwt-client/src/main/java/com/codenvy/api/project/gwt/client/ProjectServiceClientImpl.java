@@ -25,15 +25,18 @@ import com.codenvy.api.project.shared.dto.TreeElement;
 import com.codenvy.ide.MimeType;
 import com.codenvy.ide.collections.Array;
 import com.codenvy.ide.collections.StringMap;
+import com.codenvy.ide.rest.AsyncRequest;
 import com.codenvy.ide.rest.AsyncRequestCallback;
 import com.codenvy.ide.rest.AsyncRequestFactory;
 import com.codenvy.ide.ui.loader.Loader;
+import com.google.gwt.http.client.RequestBuilder;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONString;
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
 
 import static com.codenvy.ide.rest.HTTPHeader.ACCEPT;
+import static com.codenvy.ide.rest.HTTPHeader.CONTENTTYPE;
 import static com.codenvy.ide.rest.HTTPHeader.CONTENT_TYPE;
 import static com.google.gwt.http.client.RequestBuilder.DELETE;
 import static com.google.gwt.http.client.RequestBuilder.PUT;
@@ -250,10 +253,11 @@ public class ProjectServiceClientImpl implements ProjectServiceClient {
                                 AsyncRequestCallback<ProjectDescriptor> callback) {
         final String requestUrl = GENERATE_PROJECT + normalizePath(path) + "?generator=" + generatorName;
         loader.setMessage("Generating project...");
-        asyncRequestFactory.createPostRequest(requestUrl, stringMapToJson(options))
-                           .header(ACCEPT, MimeType.APPLICATION_JSON)
-                           .loader(loader)
-                           .send(callback);
+        //we need to send map, so don't use asyncRequestFactory
+        AsyncRequest.build(RequestBuilder.POST, requestUrl).header(ACCEPT, MimeType.APPLICATION_JSON).
+                    header(CONTENTTYPE, MimeType.APPLICATION_JSON).loader(loader)
+                    .data(stringMapToJson(options)).send(
+                callback);
     }
 
     @Override
