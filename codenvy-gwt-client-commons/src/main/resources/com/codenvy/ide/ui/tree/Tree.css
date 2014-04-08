@@ -19,7 +19,7 @@
 /* Default annotated CSS for Tree.java */
 @def treeIndent 14px;
 @def iconHeight 12px;
-@def itemHeight 0px;
+@def itemHeight 14px;
 
 .treeRoot {
     font-family: alternativeFontFamily;
@@ -36,6 +36,10 @@
 .treeNode {
     list-style-type: none;
     display: block;
+}
+
+.treeRoot > .treeNode > .treeNodeBody > .leafIcon {
+    display: none;
 }
 
 .childrenContainer {
@@ -88,7 +92,7 @@
 
 .openedIcon, .closedIcon {
     position: relative;
-    background-position: 2px 0px;
+    background-position: 2px 1px;
     height: iconHeight;
     width: iconHeight;
 }
