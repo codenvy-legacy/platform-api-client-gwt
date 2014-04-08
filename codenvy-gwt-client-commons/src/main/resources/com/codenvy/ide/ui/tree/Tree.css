@@ -23,8 +23,8 @@
 
 .treeRoot {
     font-family: alternativeFontFamily;
-    padding-left: 2px;
-    margin: 8px 0;
+    padding-left: 0px;
+    margin: 4px 4px;
     min-height: 100px;
     position: absolute;
     top: 0;
