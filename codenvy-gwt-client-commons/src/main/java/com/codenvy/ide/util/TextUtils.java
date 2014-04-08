@@ -17,6 +17,10 @@ package com.codenvy.ide.util;
 import com.google.gwt.regexp.shared.MatchResult;
 import com.google.gwt.regexp.shared.RegExp;
 
+import java.math.BigInteger;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+
 /**
  * Utility methods for text operations. This differs from {@link StringUtils} by
  * operating on a higher-level (for example, words and identifiers).
@@ -93,8 +97,8 @@ public class TextUtils {
      *         word (thus returning the position of the first letter of the word),
      *         false to return the position of the first whitespace before the word
      * @return the index according to {@code skipWhitespaceBeforeWord}, or if the
-     *         given {@code column} is beyond the string's length, this will
-     *         return the length plus one.
+     * given {@code column} is beyond the string's length, this will
+     * return the length plus one.
      */
     public static int findNextWord(String text, int column, boolean skipWhitespaceBeforeWord) {
         if (column + 1 >= text.length()) {
@@ -271,5 +275,30 @@ public class TextUtils {
                         : RegExpUtils.findMatchBeforeIndex(regexp, text, column);
         int fallback = forward ? text.length() : -1;
         return result == null ? fallback : result.getIndex();
+    }
+
+    /**
+     * Encode string in md5 hash
+     *
+     * @param text to encode
+     * @return md5 hash of string if exception return not changed text
+     */
+    public static String md5(String text) {
+       try {
+            MessageDigest m = MessageDigest.getInstance("MD5");
+            m.reset();
+            m.update(text.getBytes());
+
+            byte[] digest = m.digest();
+            BigInteger bigInt = new BigInteger(1, digest);
+            String hashText = bigInt.toString(16);
+            // Now we need to zero pad it if you actually want the full 32 chars.
+            while (hashText.length() < 32) {
+                hashText = "0" + hashText;
+            }
+            return hashText;
+        } catch (NoSuchAlgorithmException e) {
+            return text;
+        }
     }
 }

@@ -24,6 +24,7 @@ dialogBottomRightInner;
     .gwt-DialogBox {
         font-size: fontSize;
         font-family: mainFontFamily;
+        z-index: 10;
     }
 
     .gwt-DialogBox .dialogTop {
