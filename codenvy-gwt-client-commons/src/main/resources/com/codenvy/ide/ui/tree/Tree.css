@@ -39,7 +39,8 @@
 }
 
 .treeRoot > .treeNode {
-    margin-top: 6px;
+    min-height: 18px;
+    margin-top: 2px;
 }
 
 .treeRoot > .treeNode > .treeNodeBody > .leafIcon {
