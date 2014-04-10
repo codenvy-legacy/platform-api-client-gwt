@@ -35,7 +35,7 @@
 
 .listItem {
     padding: listItemTopPadding listItemRightPadding listItemBottomPadding listItemLeftPadding;
-    color: #333;
+    color: mainMenuFontColor;
     font-size: 13px;
     cursor: default;
     margin: 0;
@@ -60,7 +60,7 @@
 }
 
 .listItem[selected], .listItem:hover {
-    color: #222;
+    color: mainMenuFontColor;
 
     -moz-transition: background 0s;
     -webkit-transition: background 0s;
@@ -68,7 +68,7 @@
 }
 
 .listItem[selected] {
-    background-color: keyboardSelectionBackgroundColor;
+    background-color: selectionBackground;
 }
 
 .listItem:hover {

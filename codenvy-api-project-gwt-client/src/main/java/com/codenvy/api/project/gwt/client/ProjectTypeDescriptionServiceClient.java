@@ -31,6 +31,7 @@ public interface ProjectTypeDescriptionServiceClient {
      * Get information about all registered project types
      *
      * @param callback
+     *         the callback to use for the response
      */
     public void getProjectTypes(AsyncRequestCallback<Array<ProjectTypeDescriptor>> callback);
 }

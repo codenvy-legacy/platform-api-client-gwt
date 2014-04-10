@@ -16,104 +16,111 @@
  * from Codenvy S.A..
  */
 
- /* Default annotated CSS for Tree.java */
-    @def treeIndent 10px;
-    @def itemHeight 20px;
-    @def arrowImgOffset 5px;
+/* Default annotated CSS for Tree.java */
+@def treeIndent 14px;
+@def iconHeight 12px;
+@def itemHeight 14px;
 
-    .treeRoot {
-        font-family: alternativeFontFamily;
-        padding-left: 7px;
-        margin: 0;
-        min-height: 100px;
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-    }
+.treeRoot {
+    font-family: alternativeFontFamily;
+    padding-left: 0px;
+    margin: 2px 4px;
+    min-height: 100px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}
 
-    .treeNode {
-        list-style-type: none;
-        display: block;
-        min-height: 21px;
-    }
+.treeNode {
+    list-style-type: none;
+    display: block;
+}
 
-    .childrenContainer {
-        position: relative;
-        padding-left: 0;
-        margin-left: treeIndent;
-        margin-top: 0;
-        margin-bottom: 0;
-    }
+.treeRoot > .treeNode {
+    min-height: 18px;
+    margin-top: 2px;
+}
 
-    .treeNodeBody {
-        height: itemHeight;
-        min-width: 100%;
-        display: inline-block;
-        position: relative;
-        white-space: pre;
-        margin-top: 1px;
-    }
+.treeRoot > .treeNode > .treeNodeBody > .leafIcon {
+    display: none;
+}
 
-    /*.treeNodeBody:hover {*/
-        /*background-color: hoverBackground;*/
-    /*}*/
+.childrenContainer {
+    position: relative;
+    padding-left: 0;
+    margin-left: treeIndent;
+    margin-top: 0;
+    margin-bottom: 0;
+}
 
-    .expandControl {
-        display: inline-block;
-        vertical-align: middle;
-        /*
-          This is disabled for now due to chrome bug:
-          http://code.google.com/p/chromium/issues/detail?id=85438
+.treeNodeBody {
+    min-width: 100%;
+    display: inline-block;
+    position: relative;
+    white-space: pre;
+    margin-top: 1px;
+}
 
-        -moz-transition: -moz-transform 0.2s ease-out;
-        -webkit-transition: -webkit-transform 0.2s ease-out;
-        */
-    }
+/*.treeNodeBody:hover {*/
+/*background-color: hoverBackground;*/
+/*}*/
 
-    @sprite .openedIcon {
-        /* TODO: expandControl should have the image, but
-         * right now it looks like files have the expandControl rule also.
-         * I'm doing the least amount of change for the demo, so
-         * don't want to refactor anything. */
-        gwt-image: 'expansionIcon';
-        -moz-transform: rotate(90deg);
-        -webkit-transform: rotate(90deg);
-    }
+.expandControl {
+    display: inline-block;
+    vertical-align: middle;
+    /*
+      This is disabled for now due to chrome bug:
+      http://code.google.com/p/chromium/issues/detail?id=85438
 
-    @sprite .closedIcon {
-        gwt-image: 'expansionIcon';
-        -moz-transform: rotate(0);
-        -webkit-transform: rotate(0);
-    }
+    -moz-transition: -moz-transform 0.2s ease-out;
+    -webkit-transition: -webkit-transform 0.2s ease-out;
+    */
+}
 
-    .openedIcon, .closedIcon {
-        position: relative;
-        background-position: arrowImgOffset arrowImgOffset;
-        height: itemHeight;
-        width: itemHeight;
-    }
+@sprite .openedIcon {
+    /* TODO: expandControl should have the image, but
+     * right now it looks like files have the expandControl rule also.
+     * I'm doing the least amount of change for the demo, so
+     * don't want to refactor anything. */
+    gwt-image: 'expansionIcon';
+    -moz-transform: rotate(90deg);
+    -webkit-transform: rotate(90deg);
+}
 
-        /* We have no icon, just a spacer */
-    .leafIcon {
-        width: itemHeight;
-        height: itemHeight;
-    }
+@sprite .closedIcon {
+    gwt-image: 'expansionIcon';
+    -moz-transform: rotate(0);
+    -webkit-transform: rotate(0);
+}
 
-    .treeNodeLabel {
-    }
+.openedIcon, .closedIcon {
+    position: relative;
+    background-position: 2px 1px;
+    height: iconHeight;
+    width: iconHeight;
+}
 
-    .treeNode a:hover {
-        color: mainFontColor;
-    }
+/* We have no icon, just a spacer */
+.leafIcon {
+    width: itemHeight;
+    height: itemHeight;
+}
 
-    .active, .selected {
-        background-color: selectionBackground ! important;
-    }
+.treeNodeLabel {
+}
 
-    .isDropTarget {
-        background-color: #dfdfdf;
-        margin: -2px;
-        padding: 2px;
-    }
+.treeNode a:hover {
+    color: mainFontColor;
+}
+
+.active, .selected {
+    background-color: selectionBackground ! important;
+}
+
+.isDropTarget {
+    background-color: #dfdfdf;
+    margin: -2px;
+    padding: 2px;
+}
