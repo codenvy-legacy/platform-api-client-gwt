@@ -18,7 +18,7 @@
 
 package com.codenvy.ide.ui.tree;
 
-import elemental.html.Element;
+import elemental.dom.Element;
 import elemental.html.SpanElement;
 
 /**

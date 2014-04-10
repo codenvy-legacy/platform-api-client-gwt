@@ -18,7 +18,7 @@ import elemental.events.Event;
 import elemental.events.EventListener;
 import elemental.events.EventRemover;
 import elemental.events.MouseEvent;
-import elemental.html.Element;
+import elemental.dom.Element;
 
 import com.codenvy.ide.util.ListenerRegistrar.Remover;
 import com.google.gwt.user.client.Timer;

@@ -14,7 +14,7 @@
 
 package com.codenvy.ide.ui.menu;
 
-import elemental.html.Element;
+import elemental.dom.Element;
 
 /*
  * FIXME: this 'controller' is an 'AutoHideComponent', which is

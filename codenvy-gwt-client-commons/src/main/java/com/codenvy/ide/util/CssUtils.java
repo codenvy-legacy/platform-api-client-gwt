@@ -15,8 +15,9 @@
 package com.codenvy.ide.util;
 
 import elemental.css.CSSStyleDeclaration;
-import elemental.html.Element;
+import elemental.dom.Element;
 
+import com.codenvy.ide.util.dom.Elements;
 import com.google.gwt.dom.client.Style.Unit;
 
 /** Utility methods for dealing with CSS. */
@@ -40,14 +41,14 @@ public class CssUtils {
     }
 
     public static boolean containsClassName(Element element, String className) {
-        return element.hasClassName(className);
+        return Elements.hasClassName(className, element);
     }
 
     public static void setClassNameEnabled(Element element, String className, boolean enable) {
         if (enable) {
-            element.addClassName(className);
+            Elements.addClassName(className, element);
         } else {
-            element.removeClassName(className);
+            Elements.removeClassName(className, element);
         }
     }
 

@@ -14,12 +14,14 @@
 
 package com.codenvy.ide.util.dom;
 
+import elemental.dom.Element;
+import elemental.dom.Node;
 import elemental.events.Event;
 import elemental.events.EventListener;
 import elemental.events.MouseEvent;
 import elemental.html.ClientRect;
 import elemental.html.DivElement;
-import elemental.html.Element;
+import elemental.js.dom.JsElement;
 
 import com.codenvy.ide.util.browser.UserAgent;
 import com.google.gwt.user.client.DOM;
@@ -106,24 +108,24 @@ public final class DomUtils {
     }
 
     public static Element getNthChild(Element element, int index) {
-        Element child = element.getFirstChildElement();
+        Element child = getFirstChildElement(element);
         while (child != null && index > 0) {
             --index;
-            child = child.getNextSiblingElement();
+            child = getNextSiblingElement(element);
         }
         return child;
     }
 
     public static Element getNthChildWithClassName(Element element, int index, String className) {
-        Element child = element.getFirstChildElement();
+        Element child = getFirstChildElement(element);
         while (child != null) {
-            if (child.hasClassName(className)) {
+            if (Elements.hasClassName(className, child)) {
                 --index;
                 if (index < 0) {
                     break;
                 }
             }
-            child = child.getNextSiblingElement();
+            child = getNextSiblingElement(child);
         }
         return child;
     }
@@ -133,7 +135,7 @@ public final class DomUtils {
         int index = 0;
         while (element != null) {
             element = (Element)element.getPreviousSibling();
-            if (element != null && element.hasClassName(className)) {
+            if (element != null && Elements.hasClassName(className, element)) {
                 ++index;
             }
         }
@@ -250,6 +252,37 @@ public final class DomUtils {
     public static boolean isElementOrChildFocused(Element element) {
         Element active = element.getOwnerDocument().getActiveElement();
         return element.contains(active);
+    }
+
+    public static JsElement getFirstChildElement(Element element) {
+        elemental.dom.Node child = element.getFirstChild();
+        while ((child != null) && child.getNodeType() != Node.ELEMENT_NODE) {
+            child = child.getNextSibling();
+        }
+        return ((JsElement)child);
+    }
+
+    public static JsElement getNextSiblingElement(Element element) {
+        Node sib = element.getNextSibling();
+        while ((sib != null) && sib.getNodeType() != Node.ELEMENT_NODE) {
+            sib = sib.getNextSibling();
+        }
+        return ((JsElement)sib);
+    }
+
+    public static void removeFromParent(Element element) {
+        Element parent = getParentElement(element);
+        if (parent != null) {
+            parent.removeChild(element);
+        }
+    }
+
+    public static elemental.js.dom.JsElement getParentElement(Element element) {
+        Node parent = element.getParentNode();
+        if ((parent == null) || parent.getNodeType() != Node.ELEMENT_NODE) {
+            parent = null;
+        }
+        return (JsElement)parent;
     }
 
     private DomUtils() {

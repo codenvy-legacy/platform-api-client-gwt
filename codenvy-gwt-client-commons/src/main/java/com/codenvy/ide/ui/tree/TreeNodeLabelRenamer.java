@@ -14,7 +14,7 @@
 
 package com.codenvy.ide.ui.tree;
 
-import elemental.html.Element;
+import elemental.dom.Element;
 
 import com.codenvy.ide.ui.tree.TreeNodeMutator.Css;
 

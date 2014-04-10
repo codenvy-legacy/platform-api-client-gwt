@@ -13,7 +13,7 @@
 // limitations under the License.
 package com.codenvy.ide.ui.menu;
 
-import elemental.html.Element;
+import elemental.dom.Element;
 
 import com.codenvy.ide.mvp.CompositeView;
 import com.codenvy.ide.util.AnimationController;

@@ -16,7 +16,7 @@ package com.codenvy.ide.util;
 
 import elemental.css.CSSStyleDeclaration;
 import elemental.html.DivElement;
-import elemental.html.Element;
+import elemental.dom.Element;
 
 import com.codenvy.ide.util.dom.Elements;
 import com.google.gwt.resources.client.ImageResource;
