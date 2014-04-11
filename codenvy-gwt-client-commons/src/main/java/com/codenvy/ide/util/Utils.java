@@ -35,6 +35,15 @@ public class Utils {
         return $wnd.wsId;
     }-*/;
 
+    /**
+     * Gets project to open.
+     *
+     * @return the project to open
+     */
+    public static native String getProjectToOpen() /*-{
+        return $wnd.project;
+    }-*/;
+
     /** @return <code>true</code> if Codenvy launched in SDK runner and <code>false</code> otherwise */
     public static boolean isAppLaunchedInSDKRunner() {
         return Window.Location.getParameter("h") != null && Window.Location.getParameter("p") != null;
