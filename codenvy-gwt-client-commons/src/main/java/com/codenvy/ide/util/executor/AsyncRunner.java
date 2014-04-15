@@ -15,7 +15,7 @@
 package com.codenvy.ide.util.executor;
 
 import elemental.events.EventListener;
-import elemental.html.Document.Event;
+import elemental.dom.Document.Events;
 import elemental.js.events.JsEvent;
 
 import com.codenvy.ide.util.dom.Elements;
@@ -32,7 +32,7 @@ public abstract class AsyncRunner implements Runnable {
 
     private static final String EVENT_MESSAGE = "message";
 
-    private static class MessageEvent extends JsEvent implements Event {
+    private static class MessageEvent extends JsEvent implements Events {
         protected MessageEvent() {
         }
 

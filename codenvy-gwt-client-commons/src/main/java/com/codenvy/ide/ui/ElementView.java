@@ -14,8 +14,8 @@
 
 package com.codenvy.ide.ui;
 
-import elemental.html.Element;
-import elemental.js.html.JsElement;
+import elemental.dom.Element;
+import elemental.js.dom.JsElement;
 
 import com.codenvy.ide.mvp.UiComponent;
 import com.codenvy.ide.mvp.View;

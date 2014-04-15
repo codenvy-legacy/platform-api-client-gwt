@@ -16,8 +16,8 @@ package com.codenvy.ide.ui.list;
 
 import elemental.events.Event;
 import elemental.events.EventListener;
-import elemental.html.Element;
-import elemental.js.html.JsElement;
+import elemental.dom.Element;
+import elemental.js.dom.JsElement;
 
 import com.codenvy.ide.collections.Array;
 import com.codenvy.ide.collections.Collections;
@@ -141,7 +141,7 @@ public class SimpleList<M> extends UiComponent<SimpleList.View> implements IsWid
          */
         public static <M> ListItem<M> create(ListItemRenderer<M> factory, Css css, M data) {
             Element element = factory.createElement();
-            element.addClassName(css.listItem());
+            Elements.addClassName(css.listItem(), element);
 
             ListItem<M> item = ListItem.cast(element);
             item.setData(data);
@@ -357,8 +357,8 @@ public class SimpleList<M> extends UiComponent<SimpleList.View> implements IsWid
         this.itemHolder = itemHolder;
         this.container = container;
 
-        view.addClassName(css.listBase());
-        container.addClassName(css.listContainer());
+        Elements.addClassName(css.listBase(),view);
+        Elements.addClassName(css.listContainer(), container);
         attachEventHandlers();
     }
 

@@ -16,7 +16,7 @@ package com.codenvy.ide.ui.tree;
 
 import elemental.css.CSSStyleDeclaration;
 import elemental.html.DivElement;
-import elemental.html.Element;
+import elemental.dom.Element;
 import elemental.html.SpanElement;
 import elemental.js.html.JsLIElement;
 import elemental.js.html.JsUListElement;
@@ -24,6 +24,7 @@ import elemental.js.html.JsUListElement;
 import com.codenvy.ide.ui.tree.Tree.Css;
 import com.codenvy.ide.util.AnimationController;
 import com.codenvy.ide.util.CssUtils;
+import com.codenvy.ide.util.dom.DomUtils;
 import com.codenvy.ide.util.dom.Elements;
 
 /**
@@ -74,7 +75,7 @@ public class TreeNodeElement<D> extends JsLIElement {
         treeNodeBody.setAttribute("draggable", "true");
         DivElement expandControl = Elements.createDivElement();
         SpanElement nodeContents = nodeRenderer.renderNodeContents(data);
-        nodeContents.addClassName(css.treeNodeLabel());
+        Elements.addClassName(css.treeNodeLabel(), nodeContents);
 
         treeNodeBody.appendChild(expandControl);
         treeNodeBody.appendChild(nodeContents);
@@ -154,7 +155,7 @@ public class TreeNodeElement<D> extends JsLIElement {
     public final void makeLeafNode(Tree.Css css) {
         getExpandControl().setClassName(css.expandControl() + " " + css.leafIcon());
         if (hasChildrenContainer()) {
-            getChildrenContainer().removeFromParent();
+            DomUtils.removeFromParent(getChildrenContainer());
         }
     }
 
@@ -163,7 +164,7 @@ public class TreeNodeElement<D> extends JsLIElement {
      * the underlying node data.
      */
     public final void removeFromTree() {
-        removeFromParent();
+        DomUtils.removeFromParent(this);
     }
 
     /** Sets whether or not this node has the active node styling applied. */
@@ -277,7 +278,7 @@ public class TreeNodeElement<D> extends JsLIElement {
     }
 
     private Element getExpandControl() {
-        return getNodeBody().getChildren().item(0);
+        return (Element)getNodeBody().getChildren().item(0);
     }
 
     /**
@@ -285,7 +286,7 @@ public class TreeNodeElement<D> extends JsLIElement {
      *         node contents.
      */
     private Element getNodeBody() {
-        return getChildren().item(0);
+        return (Element)getChildren().item(0);
     }
 
     final Element getSelectionElement() {
