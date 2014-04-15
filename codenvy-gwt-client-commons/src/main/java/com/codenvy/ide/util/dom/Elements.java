@@ -113,13 +113,13 @@ public class Elements {
     }
 
     public static TableRowElement createTRElement(String... classNames) {
-        TableRowElement elem = getDocument().createTableRowElement();
+        TableRowElement elem = (TableRowElement)getDocument().createElement("tr");
         addClassesToElement(elem, classNames);
         return elem;
     }
 
     public static TableCellElement createTDElement(String... classNames) {
-        TableCellElement elem = getDocument().createTableCellElement();
+        TableCellElement elem = (TableCellElement)getDocument().createElement("td");
         addClassesToElement(elem, classNames);
         return elem;
     }
