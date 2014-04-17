@@ -8,7 +8,7 @@
     </parent>
     <artifactId>codenvy-api-analytics-gwt-client</artifactId>
     <packaging>jar</packaging>
-    <name>Codenvy API :: Factory :: GWT Client</name>
+    <name>Codenvy API :: Analytics :: GWT Client</name>
     <properties>
         <dto-generator-out-directory>${project.build.directory}/generated-sources/dto/</dto-generator-out-directory>
     </properties>
@@ -63,11 +63,6 @@
                         <groupId>com.codenvy.platform-api</groupId>
                         <artifactId>codenvy-api-analytics</artifactId>
                         <version>${codenvy.platform-api.version}</version>
-                    </dependency>
-                    <dependency>
-                        <groupId>com.codenvy.platform-api-gwt-client</groupId>
-                        <artifactId>codenvy-api-analytics-gwt-client</artifactId>
-                        <version>${project.version}</version>
                     </dependency>
                     <dependency>
                         <groupId>com.codenvy.platform-api-gwt-client</groupId>
