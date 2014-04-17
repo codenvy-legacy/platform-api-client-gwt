@@ -17,9 +17,10 @@ package com.codenvy.ide.ui.tree;
 import elemental.events.Event;
 import elemental.events.EventListener;
 import elemental.events.KeyboardEvent;
-import elemental.html.Element;
+import elemental.dom.Element;
 import elemental.html.InputElement;
 
+import com.codenvy.ide.util.dom.DomUtils;
 import com.codenvy.ide.util.dom.Elements;
 import com.google.gwt.resources.client.CssResource;
 
@@ -178,7 +179,7 @@ public class TreeNodeMutator<D> {
 
             // Detach the input box. Note that on Chrome this synchronously dispatches
             // a blur event. The guard above saves us.
-            oldState.input.removeFromParent();
+            DomUtils.removeFromParent(oldState.input);
 
             String newLabel = passedValidation ? oldState.input.getValue() : oldState.oldLabel;
             oldState.callback.onMutationCommit(oldState.node, oldState.oldLabel, newLabel);

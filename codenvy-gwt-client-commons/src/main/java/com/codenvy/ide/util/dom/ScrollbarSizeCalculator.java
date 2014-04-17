@@ -15,7 +15,7 @@
 package com.codenvy.ide.util.dom;
 
 import elemental.css.CSSStyleDeclaration;
-import elemental.html.Element;
+import elemental.dom.Element;
 
 
 /**
@@ -44,7 +44,7 @@ public class ScrollbarSizeCalculator {
         heightOfHorizontalScrollbar = noScrollbarClientHeight - container.getClientHeight();
         widthOfVerticalScrollbar = noScrollbarClientWidth - container.getClientWidth();
 
-        container.removeFromParent();
+        DomUtils.removeFromParent(container);
     }
 
     private Element createContainer() {

@@ -22,8 +22,8 @@ import elemental.html.BodyElement;
 import elemental.html.ButtonElement;
 import elemental.html.CanvasElement;
 import elemental.html.DivElement;
-import elemental.html.Document;
-import elemental.html.Element;
+import elemental.dom.Document;
+import elemental.dom.Element;
 import elemental.html.FormElement;
 import elemental.html.HeadElement;
 import elemental.html.IFrameElement;
@@ -39,7 +39,7 @@ import elemental.html.TableRowElement;
 import elemental.html.TextAreaElement;
 import elemental.html.UListElement;
 import elemental.html.Window;
-import elemental.js.html.JsElement;
+import elemental.js.dom.JsElement;
 import elemental.ranges.Range;
 
 import com.codenvy.ide.collections.Array;
@@ -113,13 +113,13 @@ public class Elements {
     }
 
     public static TableRowElement createTRElement(String... classNames) {
-        TableRowElement elem = getDocument().createTRElement();
+        TableRowElement elem = (TableRowElement)getDocument().createElement("tr");
         addClassesToElement(elem, classNames);
         return elem;
     }
 
     public static TableCellElement createTDElement(String... classNames) {
-        TableCellElement elem = getDocument().createTDElement();
+        TableCellElement elem = (TableCellElement)getDocument().createElement("td");
         addClassesToElement(elem, classNames);
         return elem;
     }
@@ -180,7 +180,7 @@ public class Elements {
     }
 
     public static UListElement createUListElement(String... classNames) {
-        UListElement elem = getDocument().createULElement();
+        UListElement elem = getDocument().createUListElement();
         addClassesToElement(elem, classNames);
         return elem;
     }
@@ -206,7 +206,7 @@ public class Elements {
     }
 
     public static BodyElement getBody(Document document) {
-        return document.getBody();
+        return ((BodyElement)document.getBody());
     }
 
     public static HeadElement getHead() {
@@ -324,8 +324,93 @@ public class Elements {
     public static void addClassesToElement(Element e, String... classNames) {
         for (String className : classNames) {
             if (!StringUtils.isNullOrEmpty(className)) {
-                e.addClassName(className);
+                addClassName(className, e);
             }
+        }
+    }
+
+    public static boolean hasClassName(String className, Element element) {
+        assert className != null : "Unexpected null class name";
+        String currentClassName = element.getClassName();
+        return (currentClassName != null) &&
+               (currentClassName.equals(className)
+                || currentClassName.startsWith(className + " ")
+                || currentClassName.endsWith(" " + className)
+                || currentClassName.indexOf(" " + className + " ") != -1);
+    }
+
+    public static void addClassName(String className, Element element) {
+        assert (className != null) : "Unexpectedly null class name";
+
+        className = className.trim();
+        assert (className.length() != 0) : "Unexpectedly empty class name";
+
+        // Get the current style string.
+        String oldClassName = element.getClassName();
+        int idx = oldClassName.indexOf(className);
+
+        // Calculate matching index.
+        while (idx != -1) {
+            if (idx == 0 || oldClassName.charAt(idx - 1) == ' ') {
+                int last = idx + className.length();
+                int lastPos = oldClassName.length();
+                if ((last == lastPos)
+                    || ((last < lastPos) && (oldClassName.charAt(last) == ' '))) {
+                    break;
+                }
+            }
+            idx = oldClassName.indexOf(className, idx + 1);
+        }
+
+        // Only add the style if it's not already present.
+        if (idx == -1) {
+            if (oldClassName.length() > 0) {
+                oldClassName += " ";
+            }
+            element.setClassName(oldClassName + className);
+        }
+    }
+
+    public static void removeClassName(String className,Element element) {
+        assert (className != null) : "Unexpectedly null class name";
+
+        className = className.trim();
+        assert (className.length() != 0) : "Unexpectedly empty class name";
+
+        // Get the current style string.
+        String oldStyle = element.getClassName();
+        int idx = oldStyle.indexOf(className);
+
+        // Calculate matching index.
+        while (idx != -1) {
+            if (idx == 0 || oldStyle.charAt(idx - 1) == ' ') {
+                int last = idx + className.length();
+                int lastPos = oldStyle.length();
+                if ((last == lastPos)
+                    || ((last < lastPos) && (oldStyle.charAt(last) == ' '))) {
+                    break;
+                }
+            }
+            idx = oldStyle.indexOf(className, idx + 1);
+        }
+
+        // Don't try to remove the style if it's not there.
+        if (idx != -1) {
+            // Get the leading and trailing parts, without the removed name.
+            String begin = oldStyle.substring(0, idx).trim();
+            String end = oldStyle.substring(idx + className.length()).trim();
+
+            // Some contortions to make sure we don't leave extra spaces.
+            String newClassName;
+            if (begin.length() == 0) {
+                newClassName = end;
+            } else if (end.length() == 0) {
+                newClassName = begin;
+            } else {
+                newClassName = begin + " " + end;
+            }
+
+            element.setClassName(newClassName);
         }
     }
 
