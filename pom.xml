@@ -32,7 +32,7 @@
     <name>Codenvy Platform API :: GWT Client :: Parent</name>
     <modules>
         <module>codenvy-gwt-client-commons</module>
-        <module>codenvy-gwt-analytics-gwt-client</module>
+        <module>codenvy-api-analytics-gwt-client</module>
         <module>codenvy-api-builder-gwt-client</module>
         <module>codenvy-api-core-gwt-client</module>
         <module>codenvy-api-project-gwt-client</module>
