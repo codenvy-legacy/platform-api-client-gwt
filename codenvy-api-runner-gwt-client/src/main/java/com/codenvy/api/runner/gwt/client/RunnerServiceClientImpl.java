@@ -20,7 +20,7 @@ package com.codenvy.api.runner.gwt.client;
 import com.codenvy.api.core.rest.shared.dto.Link;
 import com.codenvy.api.runner.dto.ApplicationProcessDescriptor;
 import com.codenvy.api.runner.dto.RunOptions;
-import com.codenvy.api.runner.internal.dto.RunnerDescriptor;
+import com.codenvy.api.runner.dto.RunnerDescriptor;
 import com.codenvy.ide.collections.Array;
 import com.codenvy.ide.rest.AsyncRequestCallback;
 import com.codenvy.ide.rest.AsyncRequestFactory;
