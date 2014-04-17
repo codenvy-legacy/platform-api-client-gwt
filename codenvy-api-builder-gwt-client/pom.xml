@@ -44,6 +44,11 @@
         </dependency>
         <dependency>
             <groupId>com.codenvy.platform-api-gwt-client</groupId>
+            <artifactId>codenvy-api-project-gwt-client</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.codenvy.platform-api-gwt-client</groupId>
             <artifactId>codenvy-gwt-client-commons</artifactId>
             <version>${project.version}</version>
         </dependency>
@@ -88,6 +93,11 @@
                     <dependency>
                         <groupId>com.codenvy.platform-api-gwt-client</groupId>
                         <artifactId>codenvy-api-core-gwt-client</artifactId>
+                        <version>${project.version}</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>com.codenvy.platform-api-gwt-client</groupId>
+                        <artifactId>codenvy-api-project-gwt-client</artifactId>
                         <version>${project.version}</version>
                     </dependency>
                 </dependencies>
