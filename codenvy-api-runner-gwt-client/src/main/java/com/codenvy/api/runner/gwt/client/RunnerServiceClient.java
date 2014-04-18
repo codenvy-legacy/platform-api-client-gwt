@@ -73,10 +73,18 @@ public interface RunnerServiceClient {
     public void stop(Link link, AsyncRequestCallback<String> callback);
 
     /**
-     * Get runners that are available for the specified project.
+     * Get available runners.
+     *
+     * @param callback
+     *         the callback to use for the response
+     */
+    public void getRunners(AsyncRequestCallback<Array<RunnerDescriptor>> callback);
+
+    /**
+     * Get available runners.
      *
      * @param projectName
-     *         name of the project to run
+     *         name of the project
      * @param callback
      *         the callback to use for the response
      */
