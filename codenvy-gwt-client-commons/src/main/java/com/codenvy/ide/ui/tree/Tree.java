@@ -38,11 +38,13 @@ import com.google.gwt.dom.client.Node;
 import com.google.gwt.dom.client.Style;
 import com.google.gwt.resources.client.ClientBundle;
 import com.google.gwt.resources.client.CssResource;
-import com.google.gwt.resources.client.ImageResource;
+import com.google.gwt.resources.client.DataResource;
+import com.google.gwt.resources.client.DataResource.MimeType;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Widget;
+import org.vectomatic.dom.svg.ui.SVGResource;
 
 
 /**
@@ -205,8 +207,12 @@ public class Tree<D> extends UiComponent<Tree.View<D>> implements IsWidget {
      * {@link Tree.Resources#treeCss()}.
      */
     public interface Resources extends ClientBundle {
-        @Source("expansionIcon.png")
-        ImageResource expansionIcon();
+        @MimeType("image/svg+xml")
+        @Source("expansionIcon.svg")
+        DataResource oldExpansionIcon();
+
+        @Source("expansionIcon.svg")
+        SVGResource expansionIcon();
 
         // Default Stylesheet.
         @Source({"com/codenvy/ide/common/constants.css", "Tree.css", "com/codenvy/ide/api/ui/style.css"})
