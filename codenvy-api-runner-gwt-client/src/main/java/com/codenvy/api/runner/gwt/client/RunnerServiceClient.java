@@ -20,6 +20,8 @@ package com.codenvy.api.runner.gwt.client;
 import com.codenvy.api.core.rest.shared.dto.Link;
 import com.codenvy.api.runner.dto.ApplicationProcessDescriptor;
 import com.codenvy.api.runner.dto.RunOptions;
+import com.codenvy.api.runner.dto.RunnerDescriptor;
+import com.codenvy.ide.collections.Array;
 import com.codenvy.ide.rest.AsyncRequestCallback;
 
 /**
@@ -36,6 +38,7 @@ public interface RunnerServiceClient {
      * @param runOptions
      *         options to configure run process
      * @param callback
+     *         the callback to use for the response
      */
     public void run(String projectName, RunOptions runOptions, AsyncRequestCallback<ApplicationProcessDescriptor> callback);
 
@@ -45,7 +48,7 @@ public interface RunnerServiceClient {
      * @param link
      *         link to get application's status
      * @param callback
-     *         callback
+     *         the callback to use for the response
      */
     public void getStatus(Link link, AsyncRequestCallback<ApplicationProcessDescriptor> callback);
 
@@ -55,6 +58,7 @@ public interface RunnerServiceClient {
      * @param link
      *         link to retrieve logs
      * @param callback
+     *         the callback to use for the response
      */
     public void getLogs(Link link, AsyncRequestCallback<String> callback);
 
@@ -64,6 +68,25 @@ public interface RunnerServiceClient {
      * @param link
      *         link to stop an app
      * @param callback
+     *         the callback to use for the response
      */
     public void stop(Link link, AsyncRequestCallback<String> callback);
+
+    /**
+     * Get available runners.
+     *
+     * @param callback
+     *         the callback to use for the response
+     */
+    public void getRunners(AsyncRequestCallback<Array<RunnerDescriptor>> callback);
+
+    /**
+     * Get available runners.
+     *
+     * @param projectName
+     *         name of the project
+     * @param callback
+     *         the callback to use for the response
+     */
+    public void getRunners(String projectName, AsyncRequestCallback<Array<RunnerDescriptor>> callback);
 }

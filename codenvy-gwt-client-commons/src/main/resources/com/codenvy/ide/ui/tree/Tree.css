@@ -20,6 +20,7 @@
 @def treeIndent 14px;
 @def iconHeight 12px;
 @def itemHeight 14px;
+@url oldExpansionIcon oldExpansionIcon;
 
 .treeRoot {
     font-family: alternativeFontFamily;
@@ -80,18 +81,20 @@
     */
 }
 
-@sprite .openedIcon {
+.openedIcon {
     /* TODO: expandControl should have the image, but
      * right now it looks like files have the expandControl rule also.
      * I'm doing the least amount of change for the demo, so
      * don't want to refactor anything. */
-    gwt-image: 'expansionIcon';
+    background-image: oldExpansionIcon;
+    background-repeat: no-repeat;
     -moz-transform: rotate(90deg);
     -webkit-transform: rotate(90deg);
 }
 
-@sprite .closedIcon {
-    gwt-image: 'expansionIcon';
+.closedIcon {
+    background-image: oldExpansionIcon;
+    background-repeat: no-repeat;
     -moz-transform: rotate(0);
     -webkit-transform: rotate(0);
 }
