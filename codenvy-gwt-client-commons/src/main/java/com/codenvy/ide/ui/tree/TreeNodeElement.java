@@ -143,16 +143,8 @@ public class TreeNodeElement<D> extends JsLIElement {
         return !!this.__nodeOpen;
     }-*/;
 
-    private static final native void log(String msg) /*-{
-        console.log(msg);
-    }-*/;
-
     private void setOpen(Tree.Css css, boolean isOpen) {
         if (isOpen != isOpen()) {
-
-            log("set opened > " + isOpen);
-            log("EXPAND CONTROL > " + getExpandControl().getAttribute("class"));
-
             CssUtils.setClassNameEnabled(getExpandControl(), css.openedIcon(), isOpen);
             CssUtils.setClassNameEnabled(getExpandControl(), css.closedIcon(), !isOpen);
             setOpenImpl(isOpen);
