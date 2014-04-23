@@ -112,7 +112,9 @@
 }
 
 .treeNodeLabel {
+    /*
     margin-top: -7px;
+    */
     height: 18px;
 }
 
