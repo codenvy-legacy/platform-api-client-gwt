@@ -17,9 +17,7 @@
  */
 
 /* Default annotated CSS for Tree.java */
-@def treeIndent 14px;
-@def iconHeight 12px;
-@def itemHeight 14px;
+/* @def treeIndent 14px; */
 
 .treeRoot {
     font-family: alternativeFontFamily;
@@ -39,11 +37,6 @@
     display: block;
 }
 
-.treeRoot > .treeNode {
-    min-height: 18px;
-    margin-top: 2px;
-}
-
 .treeRoot > .treeNode > .treeNodeBody > .leafIcon {
     display: none;
 }
@@ -51,7 +44,6 @@
 .childrenContainer {
     position: relative;
     padding-left: 0;
-    margin-left: treeIndent;
     margin-top: 0;
     margin-bottom: 0;
 }
@@ -61,16 +53,33 @@
     display: inline-block;
     position: relative;
     white-space: pre;
-    margin-top: 1px;
+
+    height:18px;
+    overflow: hidden;
+    line-height: 18px;
+
+    vertical-align: middle;
 }
 
-/*.treeNodeBody:hover {*/
-/*background-color: hoverBackground;*/
-/*}*/
+.treeNodeBody:hover {
+    background-color: hoverBackground;
+    /*
+    background-color: #AAA;
+    */
+}
 
 .expandControl {
     display: inline-block;
-    vertical-align: middle;
+
+    /*vertical-align: middle;*/
+    width:16px;
+    height:16px;
+
+    /*background-color: #FFEEAA;*/
+
+    /*margin-top: 1px;*/
+
+
     /*
       This is disabled for now due to chrome bug:
       http://code.google.com/p/chromium/issues/detail?id=85438
@@ -80,7 +89,8 @@
     */
 }
 
-@sprite .openedIcon {
+@sprite
+.openedIcon {
     /* TODO: expandControl should have the image, but
      * right now it looks like files have the expandControl rule also.
      * I'm doing the least amount of change for the demo, so
@@ -90,33 +100,38 @@
     -webkit-transform: rotate(90deg);
 }
 
-@sprite .closedIcon {
+@sprite
+.closedIcon {
     gwt-image: 'expansionIcon';
     -moz-transform: rotate(0);
     -webkit-transform: rotate(0);
 }
 
-.openedIcon, .closedIcon {
+.openedIcon,
+.closedIcon {
     position: relative;
-    background-position: 2px 1px;
-    height: iconHeight;
-    width: iconHeight;
+    /* background-position: 2px 1px; */
+    height: 16px;
+    width: 16px;
 }
 
 /* We have no icon, just a spacer */
 .leafIcon {
-    width: itemHeight;
-    height: itemHeight;
+    width: 16px;
+    height: 16px;
 }
 
 .treeNodeLabel {
+    margin-top: -7px;
+    height: 18px;
 }
 
 .treeNode a:hover {
     color: mainFontColor;
 }
 
-.active, .selected {
+.active,
+.selected {
     background-color: selectionBackground ! important;
 }
 
