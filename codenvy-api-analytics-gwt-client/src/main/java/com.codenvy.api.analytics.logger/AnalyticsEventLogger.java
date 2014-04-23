@@ -15,7 +15,7 @@
  * is strictly forbidden unless prior written permission is obtained
  * from Codenvy S.A..
  */
-package com.codenvy.api.logger;
+package com.codenvy.api.analytics.logger;
 
 import java.util.Map;
 
