@@ -17,9 +17,7 @@
  */
 
 /* Default annotated CSS for Tree.java */
-@def treeIndent 14px;
-@def iconHeight 12px;
-@def itemHeight 14px;
+/* @def treeIndent 14px; */
 @url oldExpansionIcon oldExpansionIcon;
 
 .treeRoot {
@@ -41,7 +39,7 @@
 }
 
 .treeRoot > .treeNode {
-    min-height: 18px;
+    height: 18px;
     margin-top: 2px;
 }
 
@@ -52,7 +50,6 @@
 .childrenContainer {
     position: relative;
     padding-left: 0;
-    margin-left: treeIndent;
     margin-top: 0;
     margin-bottom: 0;
 }
@@ -62,7 +59,7 @@
     display: inline-block;
     position: relative;
     white-space: pre;
-    margin-top: 1px;
+    height: 18px;
 }
 
 /*.treeNodeBody:hover {*/
@@ -88,6 +85,7 @@
      * don't want to refactor anything. */
     background-image: oldExpansionIcon;
     background-repeat: no-repeat;
+    background-position: 3px;
     -moz-transform: rotate(90deg);
     -webkit-transform: rotate(90deg);
 }
@@ -95,31 +93,35 @@
 .closedIcon {
     background-image: oldExpansionIcon;
     background-repeat: no-repeat;
+    background-position: 3px;
     -moz-transform: rotate(0);
     -webkit-transform: rotate(0);
 }
 
-.openedIcon, .closedIcon {
+.openedIcon,
+.closedIcon {
     position: relative;
-    background-position: 2px 1px;
-    height: iconHeight;
-    width: iconHeight;
+    height: 16px;
+    width: 16px;
 }
 
 /* We have no icon, just a spacer */
 .leafIcon {
-    width: itemHeight;
-    height: itemHeight;
+    width: 16px;
+    height: 16px;
+    visibility: hidden;
 }
 
 .treeNodeLabel {
+    height: 18px;
 }
 
 .treeNode a:hover {
     color: mainFontColor;
 }
 
-.active, .selected {
+.active,
+.selected {
     background-color: selectionBackground ! important;
 }
 

@@ -69,10 +69,13 @@ class DevModeLogger implements Logger {
     }
 
     private static native void invokeBrowserLogger(String logFuncName, Object o) /*-{
-        if ($wnd.console && $wnd.console[logFuncName]) {
-            $wnd.console[logFuncName](o);
+        try {
+            if ($wnd.console && $wnd.console[logFuncName]) {
+                $wnd.console[logFuncName](o);
+            }
+        } catch (e) {
+            console.log("EXCEPTION : " + e.message);
         }
-        return;
     }-*/;
 
     private static void log(Class<?> clazz, LogLevel logLevel, Object... args) {

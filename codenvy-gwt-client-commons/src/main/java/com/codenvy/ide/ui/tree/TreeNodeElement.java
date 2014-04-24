@@ -62,26 +62,36 @@ public class TreeNodeElement<D> extends JsLIElement {
      */
     static <D> TreeNodeElement<D> create(
             D data, NodeDataAdapter<D> dataAdapter, NodeRenderer<D> nodeRenderer, Tree.Css css) {
-        // Make the node base.
+
         @SuppressWarnings("unchecked")
         TreeNodeElement<D> treeNode = (TreeNodeElement<D>)Elements.createElement("li", css.treeNode());
         treeNode.setData(data);
         treeNode.setRenderer(nodeRenderer);
+
         // Associate the rendered node with the underlying model data.
         dataAdapter.setRenderedTreeNode(data, treeNode);
 
-        // Attach the Tree node body.
-        DivElement treeNodeBody = Elements.createDivElement(css.treeNodeBody());
-        treeNodeBody.setAttribute("draggable", "true");
-        DivElement expandControl = Elements.createDivElement();
-        SpanElement nodeContents = nodeRenderer.renderNodeContents(data);
-        Elements.addClassName(css.treeNodeLabel(), nodeContents);
+                // Attach the Tree node body.
+                DivElement nodeBody = Elements.createDivElement(css.treeNodeBody());
+                nodeBody.setAttribute("draggable", "true");
+                treeNode.appendChild(nodeBody);
 
-        treeNodeBody.appendChild(expandControl);
-        treeNodeBody.appendChild(nodeContents);
+                        // Attach expand node element
+                        DivElement expand = Elements.createDivElement();
+                        Elements.addClassName(css.expandControl(), expand);
+                        nodeBody.appendChild(expand);
 
-        treeNode.appendChild(treeNodeBody);
-        treeNode.ensureChildrenContainer(dataAdapter, css);
+                        SpanElement nodeContent = nodeRenderer.renderNodeContents(data);
+                        Elements.addClassName(css.treeNodeLabel(), nodeContent);
+                        nodeBody.appendChild(nodeContent);
+
+                        if (nodeContent.hasAttribute("__depth")) {
+                            int depth = Integer.parseInt(nodeContent.getAttribute("__depth"));
+                            expand.getStyle().setMarginLeft("" + (depth * 16) + "px");
+                        }
+
+                // Attach the Tree node children.
+                treeNode.ensureChildrenContainer(dataAdapter, css);
 
         return treeNode;
     }
@@ -100,7 +110,6 @@ public class TreeNodeElement<D> extends JsLIElement {
     public final void addChild(
             NodeDataAdapter<D> dataAdapter, TreeNodeElement<D> child, Tree.Css css) {
         ensureChildrenContainer(dataAdapter, css);
-
         getChildrenContainer().appendChild(child);
     }
 
