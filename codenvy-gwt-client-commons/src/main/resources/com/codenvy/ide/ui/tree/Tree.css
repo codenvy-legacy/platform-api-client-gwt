@@ -39,7 +39,7 @@
 }
 
 .treeRoot > .treeNode {
-    min-height: 18px;
+    height: 18px;
     margin-top: 2px;
 }
 
@@ -50,7 +50,6 @@
 .childrenContainer {
     position: relative;
     padding-left: 0;
-    margin-left: treeIndent;
     margin-top: 0;
     margin-bottom: 0;
 }
@@ -60,7 +59,7 @@
     display: inline-block;
     position: relative;
     white-space: pre;
-    margin-top: 1px;
+    height: 18px;
 }
 
 /*.treeNodeBody:hover {*/
@@ -102,7 +101,6 @@
 .openedIcon,
 .closedIcon {
     position: relative;
-    /* background-position: 2px 1px; */
     height: 16px;
     width: 16px;
 }
@@ -111,12 +109,10 @@
 .leafIcon {
     width: 16px;
     height: 16px;
+    visibility: hidden;
 }
 
 .treeNodeLabel {
-    /*
-    margin-top: -7px;
-    */
     height: 18px;
 }
 
