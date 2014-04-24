@@ -19,7 +19,7 @@ package com.codenvy.ide.ui.loader;
 
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Grid;
-import com.google.gwt.user.client.ui.Image;
+import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.inject.Inject;
 
@@ -38,16 +38,18 @@ public class IdeLoader extends Loader {
      */
     @Inject
     public IdeLoader(LoaderResources resources) {
+        resources.Css().ensureInjected();
         loader = new PopupPanel();
         FlowPanel container = new FlowPanel();
-
-        Image ajaxImage = new Image(resources.loader());
+        HTML pinionWidget = new HTML("<i></i><i></i>");
+        pinionWidget.getElement().setClassName(resources.Css().pinion());
         Grid grid = new Grid(1, 2);
-        grid.setWidget(0, 0, ajaxImage);
+        grid.setWidget(0, 0, pinionWidget);
         grid.setText(0, 1, getMessage());
         container.add(grid);
 
         loader.add(container);
+        loader.ensureDebugId("loader");
     }
 
     /** {@inheritDoc} */
