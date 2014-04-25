@@ -18,7 +18,7 @@ import elemental.css.CSSStyleDeclaration;
 import elemental.css.CSSStyleDeclaration.Unit;
 import elemental.dom.Node;
 import elemental.html.ClientRect;
-import elemental.html.Element;
+import elemental.dom.Element;
 
 import com.codenvy.ide.runtime.Assert;
 import com.codenvy.ide.util.CssUtils;

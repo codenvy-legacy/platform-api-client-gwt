@@ -17,9 +17,8 @@ package com.codenvy.ide.ui.tree;
 import elemental.events.Event;
 import elemental.events.EventListener;
 import elemental.events.MouseEvent;
-import elemental.html.DragEvent;
-import elemental.html.Element;
-import elemental.js.html.JsElement;
+import elemental.dom.Element;
+import elemental.js.dom.JsElement;
 
 import com.codenvy.ide.collections.Array;
 import com.codenvy.ide.collections.Collections;
@@ -27,6 +26,7 @@ import com.codenvy.ide.mvp.CompositeView;
 import com.codenvy.ide.mvp.UiComponent;
 import com.codenvy.ide.util.AnimationController;
 import com.codenvy.ide.util.CssUtils;
+import com.codenvy.ide.util.dom.DomUtils;
 import com.codenvy.ide.util.dom.Elements;
 import com.codenvy.ide.util.dom.MouseGestureListener;
 import com.codenvy.ide.util.input.SignalEvent;
@@ -38,11 +38,13 @@ import com.google.gwt.dom.client.Node;
 import com.google.gwt.dom.client.Style;
 import com.google.gwt.resources.client.ClientBundle;
 import com.google.gwt.resources.client.CssResource;
-import com.google.gwt.resources.client.ImageResource;
+import com.google.gwt.resources.client.DataResource;
+import com.google.gwt.resources.client.DataResource.MimeType;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Widget;
+import org.vectomatic.dom.svg.ui.SVGResource;
 
 
 /**
@@ -123,9 +125,9 @@ public class Tree<D> extends UiComponent<Tree.View<D>> implements IsWidget {
 
         void onNodeContextMenu(int mouseX, int mouseY, TreeNodeElement<D> node);
 
-        void onNodeDragStart(TreeNodeElement<D> node, DragEvent event);
+        void onNodeDragStart(TreeNodeElement<D> node, MouseEvent event);
 
-        void onNodeDragDrop(TreeNodeElement<D> node, DragEvent event);
+        void onNodeDragDrop(TreeNodeElement<D> node, MouseEvent event);
 
         void onNodeExpanded(TreeNodeElement<D> node);
 
@@ -133,7 +135,7 @@ public class Tree<D> extends UiComponent<Tree.View<D>> implements IsWidget {
 
         void onRootContextMenu(int mouseX, int mouseY);
 
-        void onRootDragDrop(DragEvent event);
+        void onRootDragDrop(MouseEvent event);
     }
 
     /** A visitor interface to visit nodes of the tree. */
@@ -205,8 +207,12 @@ public class Tree<D> extends UiComponent<Tree.View<D>> implements IsWidget {
      * {@link Tree.Resources#treeCss()}.
      */
     public interface Resources extends ClientBundle {
-        @Source("expansionIcon.png")
-        ImageResource expansionIcon();
+        @MimeType("image/svg+xml")
+        @Source("expansionIcon.svg")
+        DataResource oldExpansionIcon();
+
+        @Source("expansionIcon.svg")
+        SVGResource expansionIcon();
 
         // Default Stylesheet.
         @Source({"com/codenvy/ide/common/constants.css", "Tree.css", "com/codenvy/ide/api/ui/style.css"})
@@ -392,7 +398,7 @@ public class Tree<D> extends UiComponent<Tree.View<D>> implements IsWidget {
                 @Override
                 public void handleEvent(Event event) {
                     if (getDelegate() != null) {
-                        getDelegate().onDragDropEvent((DragEvent)event);
+                        getDelegate().onDragDropEvent((MouseEvent)event);
                     }
                 }
             };
@@ -467,7 +473,7 @@ public class Tree<D> extends UiComponent<Tree.View<D>> implements IsWidget {
 
         public void onNodeContextMenu(int mouseX, int mouseY, TreeNodeElement<D> node);
 
-        public void onDragDropEvent(DragEvent event);
+        public void onDragDropEvent(MouseEvent event);
 
         public void onNodeExpanded(TreeNodeElement<D> node);
 
@@ -475,7 +481,7 @@ public class Tree<D> extends UiComponent<Tree.View<D>> implements IsWidget {
 
         public void onRootContextMenu(int mouseX, int mouseY);
 
-        public void onRootDragDrop(DragEvent event);
+        public void onRootDragDrop(MouseEvent event);
     }
 
     private class DragDropController {
@@ -497,7 +503,7 @@ public class Tree<D> extends UiComponent<Tree.View<D>> implements IsWidget {
             }
         };
 
-        void handleDragDropEvent(DragEvent evt) {
+        void handleDragDropEvent(MouseEvent evt) {
             final D rootData = getModel().root;
             final NodeDataAdapter<D> dataAdapter = getModel().getDataAdapter();
             final Css css = getModel().resources.treeCss();
@@ -608,7 +614,7 @@ public class Tree<D> extends UiComponent<Tree.View<D>> implements IsWidget {
         }
 
         @Override
-        public void onDragDropEvent(DragEvent event) {
+        public void onDragDropEvent(MouseEvent event) {
             dragDropController.handleDragDropEvent(event);
         }
 
@@ -630,7 +636,7 @@ public class Tree<D> extends UiComponent<Tree.View<D>> implements IsWidget {
         }
 
         @Override
-        public void onRootDragDrop(DragEvent event) {
+        public void onRootDragDrop(MouseEvent event) {
             if (getModel().externalEventDelegate != null) {
                 getModel().externalEventDelegate.onRootDragDrop(event);
             }
@@ -844,7 +850,6 @@ public class Tree<D> extends UiComponent<Tree.View<D>> implements IsWidget {
      * @param depth
      *         integer indicating how deep we should auto-expand. -1 means
      *         render the entire tree.
-     * @see: {@link #replaceSubtree(Object, Object)}.
      */
     public void renderTree(int depth) {
         // Clear the current view.
@@ -923,7 +928,7 @@ public class Tree<D> extends UiComponent<Tree.View<D>> implements IsWidget {
             parentElem.insertBefore(newRenderedNode, oldRenderedNode);
 
             // Remove the old rendered node from the tree.
-            oldRenderedNode.removeFromParent();
+            DomUtils.removeFromParent(oldRenderedNode);
         }
 
         // If the old node was the root, or if it and its parents were expanded, then we should

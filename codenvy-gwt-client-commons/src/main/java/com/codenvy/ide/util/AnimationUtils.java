@@ -17,7 +17,7 @@ package com.codenvy.ide.util;
 import elemental.css.CSSStyleDeclaration;
 import elemental.events.Event;
 import elemental.events.EventListener;
-import elemental.html.Element;
+import elemental.dom.Element;
 
 import com.codenvy.ide.util.browser.UserAgent;
 import com.google.gwt.core.client.Scheduler;

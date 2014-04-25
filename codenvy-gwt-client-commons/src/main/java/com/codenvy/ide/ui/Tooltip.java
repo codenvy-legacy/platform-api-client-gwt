@@ -20,7 +20,7 @@ import elemental.events.EventListener;
 import elemental.events.EventRemover;
 import elemental.events.EventTarget;
 import elemental.events.MouseEvent;
-import elemental.html.Element;
+import elemental.dom.Element;
 import elemental.util.Timer;
 
 import com.codenvy.ide.collections.Array;
@@ -125,7 +125,7 @@ public class Tooltip extends AutoHideComponent<AutoHideView<Void>,
     private static AutoHideView<Void> getViewInstance(Css css) {
         if (tooltipViewInstance == null) {
             tooltipViewInstance = new AutoHideView<Void>(Elements.createDivElement());
-            tooltipViewInstance.getElement().addClassName(css.tooltipPosition());
+            Elements.addClassName(css.tooltipPosition(), tooltipViewInstance.getElement());
         }
         return tooltipViewInstance;
     }
@@ -211,20 +211,20 @@ public class Tooltip extends AutoHideComponent<AutoHideView<Void>,
         PositionController.HorizontalAlign hAlign = positioner.getHorizontalAlignment();
         switch (positioner.getVerticalAlignment()) {
             case TOP:
-                contentElement.addClassName(css.tooltipAbove());
+                Elements.addClassName(css.tooltipAbove(), contentElement);
                 break;
             case BOTTOM:
                 if (hAlign == PositionController.HorizontalAlign.RIGHT) {
-                    contentElement.addClassName(css.tooltipBelowRightAligned());
+                    Elements.addClassName(css.tooltipBelowRightAligned(), contentElement);
                 } else {
-                    contentElement.addClassName(css.tooltipBelow());
+                    Elements.addClassName(css.tooltipBelow(), contentElement);
                 }
                 break;
             case MIDDLE:
                 if (hAlign == PositionController.HorizontalAlign.LEFT) {
-                    contentElement.addClassName(css.tooltipLeft());
+                    Elements.addClassName(css.tooltipLeft(), contentElement);
                 } else if (hAlign == PositionController.HorizontalAlign.RIGHT) {
-                    contentElement.addClassName(css.tooltipRight());
+                    Elements.addClassName(css.tooltipRight(), contentElement);
                 }
                 break;
         }
@@ -312,7 +312,7 @@ public class Tooltip extends AutoHideComponent<AutoHideView<Void>,
             // Set the maximum width.
             setMaxWidth(maxWidth);
 
-            contentElement.addClassName(css.tooltip());
+            Elements.addClassName(css.tooltip(), contentElement);
             Element triangle = Elements.createDivElement(css.triangle());
             contentElement.appendChild(triangle);
             setPositionStyle();

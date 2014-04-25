@@ -20,6 +20,8 @@ package com.codenvy.api.runner.gwt.client;
 import com.codenvy.api.core.rest.shared.dto.Link;
 import com.codenvy.api.runner.dto.ApplicationProcessDescriptor;
 import com.codenvy.api.runner.dto.RunOptions;
+import com.codenvy.api.runner.dto.RunnerDescriptor;
+import com.codenvy.ide.collections.Array;
 import com.codenvy.ide.rest.AsyncRequestCallback;
 import com.codenvy.ide.rest.AsyncRequestFactory;
 import com.codenvy.ide.ui.loader.Loader;
@@ -54,7 +56,7 @@ public class RunnerServiceClientImpl implements RunnerServiceClient {
     @Override
     public void run(String projectName, RunOptions runOptions, AsyncRequestCallback<ApplicationProcessDescriptor> callback) {
         final String requestUrl = baseUrl + "/runner/" + workspaceId + "/run";
-        String params = "project=" + projectName;
+        final String params = "project=" + projectName;
         asyncRequestFactory.createPostRequest(requestUrl + "?" + params, runOptions).send(callback);
     }
 
@@ -76,5 +78,19 @@ public class RunnerServiceClientImpl implements RunnerServiceClient {
     public void stop(Link link, AsyncRequestCallback<String> callback) {
         loader.setMessage("Stopping an application...");
         asyncRequestFactory.createPostRequest(link.getHref(), null).loader(loader).send(callback);
+    }
+
+    @Override
+    public void getRunners(AsyncRequestCallback<Array<RunnerDescriptor>> callback) {
+        final String requestUrl = baseUrl + "/runner/" + workspaceId + "/available";
+        asyncRequestFactory.createGetRequest(requestUrl, false).send(callback);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public void getRunners(String projectName, AsyncRequestCallback<Array<RunnerDescriptor>> callback) {
+        final String requestUrl = baseUrl + "/runner/" + workspaceId + "/available";
+        final String params = "project=" + projectName;
+        asyncRequestFactory.createGetRequest(requestUrl + "?" + params, false).send(callback);
     }
 }

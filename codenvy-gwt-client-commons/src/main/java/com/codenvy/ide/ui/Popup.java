@@ -14,7 +14,7 @@
 
 package com.codenvy.ide.ui;
 
-import elemental.html.Element;
+import elemental.dom.Element;
 
 import com.codenvy.ide.runtime.Assert;
 import com.codenvy.ide.ui.menu.AutoHideComponent;

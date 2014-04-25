@@ -23,7 +23,7 @@
     <parent>
         <artifactId>codenvy-platform-api-gwt-client-parent</artifactId>
         <groupId>com.codenvy.platform-api-gwt-client</groupId>
-        <version>0.4.1-SNAPSHOT</version>
+        <version>0.5.0-SNAPSHOT</version>
     </parent>
     <artifactId>codenvy-gwt-client-commons</artifactId>
     <packaging>jar</packaging>
@@ -50,7 +50,7 @@
         <dependency>
             <groupId>com.google.gwt</groupId>
             <artifactId>gwt-elemental</artifactId>
-            <version>collide</version>
+            <version>${gwt.version}</version>
         </dependency>
         <dependency>
             <groupId>com.google.gwt.inject</groupId>
@@ -71,6 +71,11 @@
             <groupId>org.reflections</groupId>
             <artifactId>reflections</artifactId>
             <version>${reflections.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.vectomatic</groupId>
+            <artifactId>lib-gwt-svg</artifactId>
+            <version>0.5.9</version>
         </dependency>
         <dependency>
             <groupId>com.google.gwt</groupId>
