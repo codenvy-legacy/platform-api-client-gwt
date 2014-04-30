@@ -855,6 +855,7 @@ public class Tree<D> extends UiComponent<Tree.View<D>> implements IsWidget {
         // Clear the current view.
         Element rootElement = getView().getElement();
         rootElement.setInnerHTML("");
+        rootElement.setAttribute("___depth", "0");
 
         // If the root is not set, we have nothing to render.
         D root = getModel().root;
@@ -926,6 +927,7 @@ public class Tree<D> extends UiComponent<Tree.View<D>> implements IsWidget {
             // Make a new tree node.
             newRenderedNode = createNode(incomingSubtreeData);
             parentElem.insertBefore(newRenderedNode, oldRenderedNode);
+            newRenderedNode.updateLeafOffset(parentElem);
 
             // Remove the old rendered node from the tree.
             DomUtils.removeFromParent(oldRenderedNode);
@@ -1124,6 +1126,8 @@ public class Tree<D> extends UiComponent<Tree.View<D>> implements IsWidget {
         }
     }
 
+
+
     private void renderRecursive(Element parentContainer, D nodeData, int depth) {
         NodeDataAdapter<D> dataAdapter = getModel().dataAdapter;
         Tree.Css css = getResources().treeCss();
@@ -1131,6 +1135,7 @@ public class Tree<D> extends UiComponent<Tree.View<D>> implements IsWidget {
         // Make the node.
         TreeNodeElement<D> newNode = createNode(nodeData);
         parentContainer.appendChild(newNode);
+        newNode.updateLeafOffset(parentContainer);
 
         // If we reach depth 0, we stop the recursion.
         if (depth == 0 || !newNode.hasChildrenContainer()) {
