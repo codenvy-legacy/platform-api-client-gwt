@@ -40,7 +40,6 @@
         <module>codenvy-api-runner-gwt-client</module>
         <module>codenvy-api-vfs-gwt-client</module>
         <module>codenvy-api-factory-gwt-client</module>
-        <module>codenvy-api-workspace-gwt-client</module>
     </modules>
     <scm>
         <connection>scm:git:git@github.com:codenvy/platform-api-gwt-client.git</connection>
