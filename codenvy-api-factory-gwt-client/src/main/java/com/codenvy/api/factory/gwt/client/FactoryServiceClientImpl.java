@@ -4,7 +4,7 @@ import com.codenvy.api.factory.dto.Factory;
 import com.codenvy.ide.MimeType;
 import com.codenvy.ide.dto.DtoFactory;
 import com.codenvy.ide.rest.HTTPHeader;
-import com.codenvy.ide.util.Utils;
+import com.codenvy.ide.util.Config;
 import com.codenvy.ide.websocket.Message;
 import com.codenvy.ide.websocket.MessageBuilder;
 import com.codenvy.ide.websocket.MessageBus;
@@ -54,11 +54,12 @@ public class FactoryServiceClientImpl implements FactoryServiceClient {
     @Override
     public void acceptFactory(@NotNull Factory factory, @NotNull RequestCallback<Factory> callback) throws WebSocketException {
         Message message =
-                new MessageBuilder(RequestBuilder.POST, "/factory-handler/" + Utils.getWorkspaceId() + "/accept")
+                new MessageBuilder(RequestBuilder.POST, "/factory-handler/" + Config.getWorkspaceId() + "/accept")
                         .header(HTTPHeader.CONTENT_TYPE, MimeType.APPLICATION_JSON)
                         .header(HTTPHeader.ACCEPT, MimeType.APPLICATION_JSON)
                         .data(dtoFactory.toJson(factory)).build();
 
         messageBus.send(message, callback);
     }
+
 }
