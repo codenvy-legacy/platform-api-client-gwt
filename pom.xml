@@ -31,16 +31,16 @@
     <packaging>pom</packaging>
     <name>Codenvy Platform API :: GWT Client :: Parent</name>
     <modules>
-        <module>codenvy-gwt-client-commons</module>
+        <module>codenvy-api-core-gwt-client</module>
         <module>codenvy-api-analytics-gwt-client</module>
         <module>codenvy-api-builder-gwt-client</module>
-        <module>codenvy-api-core-gwt-client</module>
         <module>codenvy-api-project-gwt-client</module>
         <module>codenvy-api-user-gwt-client</module>
         <module>codenvy-api-runner-gwt-client</module>
         <module>codenvy-api-vfs-gwt-client</module>
         <module>codenvy-api-factory-gwt-client</module>
         <module>codenvy-api-workspace-gwt-client</module>
+        <module>codenvy-gwt-client-commons</module>
     </modules>
     <scm>
         <connection>scm:git:git@github.com:codenvy/platform-api-gwt-client.git</connection>
