@@ -42,6 +42,13 @@
             <artifactId>codenvy-gwt-client-commons</artifactId>
             <version>${project.version}</version>
         </dependency>
+
+        <dependency>
+            <groupId>com.codenvy.platform-api-gwt-client</groupId>
+            <artifactId>codenvy-api-core-gwt-client</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
         <dependency>
             <groupId>com.google.gwt</groupId>
             <artifactId>gwt-user</artifactId>
@@ -51,9 +58,6 @@
     </dependencies>
     <build>
         <resources>
-            <!--resource>
-                <directory>src/main/java</directory>
-            </resource-->
             <resource>
                 <directory>src/main/resources</directory>
             </resource>
