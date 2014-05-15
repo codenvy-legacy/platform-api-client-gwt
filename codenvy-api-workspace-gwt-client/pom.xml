@@ -56,9 +56,9 @@
     </dependencies>
     <build>
         <resources>
-            <resource>
+            <!--resource>
                 <directory>src/main/java</directory>
-            </resource>
+            </resource-->
             <resource>
                 <directory>src/main/resources</directory>
             </resource>
@@ -78,14 +78,14 @@
                         <goals>
                             <goal>generate</goal>
                         </goals>
-                        <!--configuration>
+                        <configuration>
                             <dtoPackages>
                                 <package>com.codenvy.api.workspace.shared.dto</package>
                             </dtoPackages>
                             <outputDirectory>${dto-generator-out-directory}</outputDirectory>
                             <genClassName>com.codenvy.api.workspace.client.dto.DtoClientImpls</genClassName>
                             <impl>client</impl>
-                        </configuration-->
+                        </configuration>
                     </execution>
                 </executions>
 
@@ -108,15 +108,6 @@
                     </dependency-->
 
                 </dependencies>
-
-                <configuration>
-                    <dtoPackages>
-                        <package>com.codenvy.api.workspace.shared.dto</package>
-                    </dtoPackages>
-                    <outputDirectory>${dto-generator-out-directory}</outputDirectory>
-                    <genClassName>com.codenvy.api.workspace.client.dto.DtoClientImpls</genClassName>
-                    <impl>client</impl>
-                </configuration>
 
                 <!--configuration>
                     <dtoPackages>
