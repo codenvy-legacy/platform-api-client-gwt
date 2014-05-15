@@ -37,11 +37,11 @@
             <artifactId>codenvy-api-workspace</artifactId>
             <version>${codenvy.platform-api.version}</version>
         </dependency>
-        <dependency>
+        <!--dependency>
             <groupId>com.codenvy.platform-api-gwt-client</groupId>
             <artifactId>codenvy-api-core-gwt-client</artifactId>
             <version>${project.version}</version>
-        </dependency>
+        </dependency-->
         <dependency>
             <groupId>com.codenvy.platform-api-gwt-client</groupId>
             <artifactId>codenvy-gwt-client-commons</artifactId>
@@ -95,11 +95,11 @@
                         <artifactId>codenvy-api-workspace</artifactId>
                         <version>${codenvy.platform-api.version}</version>
                     </dependency>
-                    <dependency>
+                    <!--dependency>
                         <groupId>com.codenvy.platform-api-gwt-client</groupId>
                         <artifactId>codenvy-api-workspace-gwt-client</artifactId>
                         <version>${project.version}</version>
-                    </dependency>
+                    </dependency-->
 
                     <!--dependency>
                         <groupId>com.google.gwt</groupId>
