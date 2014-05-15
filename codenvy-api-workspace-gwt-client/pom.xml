@@ -37,11 +37,6 @@
             <artifactId>codenvy-api-workspace</artifactId>
             <version>${codenvy.platform-api.version}</version>
         </dependency>
-        <!--dependency>
-            <groupId>com.codenvy.platform-api-gwt-client</groupId>
-            <artifactId>codenvy-api-core-gwt-client</artifactId>
-            <version>${project.version}</version>
-        </dependency-->
         <dependency>
             <groupId>com.codenvy.platform-api-gwt-client</groupId>
             <artifactId>codenvy-gwt-client-commons</artifactId>
@@ -71,53 +66,29 @@
                 <groupId>com.codenvy.platform-api</groupId>
                 <artifactId>codenvy-dto-maven-plugin</artifactId>
                 <version>${codenvy.platform-api.version}</version>
-
                 <executions>
                     <execution>
                         <phase>process-sources</phase>
                         <goals>
                             <goal>generate</goal>
                         </goals>
-                        <configuration>
-                            <dtoPackages>
-                                <package>com.codenvy.api.workspace.shared.dto</package>
-                            </dtoPackages>
-                            <outputDirectory>${dto-generator-out-directory}</outputDirectory>
-                            <genClassName>com.codenvy.api.workspace.client.dto.DtoClientImpls</genClassName>
-                            <impl>client</impl>
-                        </configuration>
                     </execution>
                 </executions>
-
                 <dependencies>
                     <dependency>
                         <groupId>com.codenvy.platform-api</groupId>
                         <artifactId>codenvy-api-workspace</artifactId>
                         <version>${codenvy.platform-api.version}</version>
                     </dependency>
-                    <!--dependency>
-                        <groupId>com.codenvy.platform-api-gwt-client</groupId>
-                        <artifactId>codenvy-api-workspace-gwt-client</artifactId>
-                        <version>${project.version}</version>
-                    </dependency-->
-
-                    <!--dependency>
-                        <groupId>com.google.gwt</groupId>
-                        <artifactId>gwt-user</artifactId>
-                        <version>${gwt.version}</version>
-                    </dependency-->
-
                 </dependencies>
-
-                <!--configuration>
+                <configuration>
                     <dtoPackages>
                         <package>com.codenvy.api.workspace.shared.dto</package>
                     </dtoPackages>
                     <outputDirectory>${dto-generator-out-directory}</outputDirectory>
                     <genClassName>com.codenvy.api.workspace.client.dto.DtoClientImpls</genClassName>
                     <impl>client</impl>
-                </configuration-->
-
+                </configuration>
             </plugin>
             <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
