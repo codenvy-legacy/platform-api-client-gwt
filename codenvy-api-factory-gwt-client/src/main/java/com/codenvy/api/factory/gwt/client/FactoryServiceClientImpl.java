@@ -18,7 +18,7 @@ import javax.validation.constraints.NotNull;
 
 /**
  * Implementation of {@link com.codenvy.api.factory.gwt.client.FactoryServiceClient} service.
- *
+ * 
  * @author Vladyslav Zhukovskii
  */
 @Singleton
@@ -46,7 +46,8 @@ public class FactoryServiceClientImpl implements FactoryServiceClient {
         url.append("legacy=true");
 
         Message message =
-                new MessageBuilder(RequestBuilder.GET, url.toString()).header(HTTPHeader.ACCEPT, MimeType.APPLICATION_JSON).build();
+                          new MessageBuilder(RequestBuilder.GET, url.toString()).header(HTTPHeader.ACCEPT, MimeType.APPLICATION_JSON)
+                                                                                .build();
         messageBus.send(message, callback);
     }
 
@@ -54,10 +55,22 @@ public class FactoryServiceClientImpl implements FactoryServiceClient {
     @Override
     public void acceptFactory(@NotNull Factory factory, @NotNull RequestCallback<Factory> callback) throws WebSocketException {
         Message message =
-                new MessageBuilder(RequestBuilder.POST, "/factory-handler/" + Utils.getWorkspaceId() + "/accept")
-                        .header(HTTPHeader.CONTENT_TYPE, MimeType.APPLICATION_JSON)
-                        .header(HTTPHeader.ACCEPT, MimeType.APPLICATION_JSON)
-                        .data(dtoFactory.toJson(factory)).build();
+                          new MessageBuilder(RequestBuilder.POST, "/factory-handler/" + Utils.getWorkspaceId() + "/accept")
+                                                                                                                           .header(HTTPHeader.CONTENT_TYPE,
+                                                                                                                                   MimeType.APPLICATION_JSON)
+                                                                                                                           .header(HTTPHeader.ACCEPT,
+                                                                                                                                   MimeType.APPLICATION_JSON)
+                                                                                                                           .data(dtoFactory.toJson(factory))
+                                                                                                                           .build();
+
+        messageBus.send(message, callback);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public void getFactorySnippet(String factoryId, String type, RequestCallback<String> callback) throws WebSocketException {
+        Message message =
+                          new MessageBuilder(RequestBuilder.GET, "/factory/" + factoryId + "/snippet?type=" + type).build();
 
         messageBus.send(message, callback);
     }
