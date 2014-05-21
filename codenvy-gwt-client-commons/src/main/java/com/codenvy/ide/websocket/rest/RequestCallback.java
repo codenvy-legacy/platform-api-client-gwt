@@ -131,10 +131,12 @@ public abstract class RequestCallback<T> {
         }
 
         Array<Pair> headers = response.getHeaders();
-        for (int i = 0; i < headers.size(); i++) {
-            Pair header = headers.get(i);
-            if (HTTPHeader.JAXRS_BODY_PROVIDED.equals(header.getName()) && "Authentication-required".equals(header.getValue())) {
-                return false;
+        if (headers != null) {
+            for (int i = 0; i < headers.size(); i++) {
+                Pair header = headers.get(i);
+                if (HTTPHeader.JAXRS_BODY_PROVIDED.equals(header.getName()) && "Authentication-required".equals(header.getValue())) {
+                    return false;
+                }
             }
         }
 

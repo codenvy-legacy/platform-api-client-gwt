@@ -53,10 +53,12 @@ public class ServerException extends Exception {
 
     public String getHeader(String key) {
         Array<Pair> headers = response.getHeaders();
-        for (int i = 0; i < headers.size(); i++) {
-            Pair header = headers.get(i);
-            if (key.equals(header.getName())) {
-                return header.getValue();
+        if (headers != null) {
+            for (int i = 0; i < headers.size(); i++) {
+                Pair header = headers.get(i);
+                if (key.equals(header.getName())) {
+                    return header.getValue();
+                }
             }
         }
 
