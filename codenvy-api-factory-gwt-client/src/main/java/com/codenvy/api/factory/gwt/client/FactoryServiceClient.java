@@ -1,6 +1,7 @@
 package com.codenvy.api.factory.gwt.client;
 
 import com.codenvy.api.factory.dto.Factory;
+import com.codenvy.ide.rest.AsyncRequestCallback;
 import com.codenvy.ide.websocket.WebSocketException;
 import com.codenvy.ide.websocket.rest.RequestCallback;
 
@@ -48,10 +49,9 @@ public interface FactoryServiceClient {
     void acceptFactory(@NotNull Factory factory, @NotNull RequestCallback<Factory> callback) throws WebSocketException;
     
     /**
-     * @param factoryId Factory's id
+     * @param raw factory ID or query string which represents factory non encoded version
      * @param type snippent's type (markdown, html, etc)
      * @param callback callback which returns snippet of the factory or exception if occurred
-     * @throws WebSocketException if problem with websocket occurred
      */
-    void getFactorySnippet(@NotNull String factoryId, @NotNull String type, @NotNull RequestCallback<String> callback) throws WebSocketException;
+    void getFactorySnippet(@NotNull String raw, boolean isEncoded, @NotNull String type, @NotNull AsyncRequestCallback<String> callback);
 }
