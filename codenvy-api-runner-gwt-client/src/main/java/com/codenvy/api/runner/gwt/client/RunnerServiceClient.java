@@ -70,7 +70,7 @@ public interface RunnerServiceClient {
      * @param callback
      *         the callback to use for the response
      */
-    public void stop(Link link, AsyncRequestCallback<String> callback);
+    public void stop(Link link, AsyncRequestCallback<ApplicationProcessDescriptor> callback);
 
     /**
      * Get available runners.

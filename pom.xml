@@ -21,25 +21,26 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <artifactId>maven-parent-pom</artifactId>
+        <artifactId>maven-depmgt-pom</artifactId>
         <groupId>com.codenvy</groupId>
-        <version>3.1.1</version>
+        <version>1.7.5-SNAPSHOT</version>
     </parent>
     <groupId>com.codenvy.platform-api-gwt-client</groupId>
     <artifactId>codenvy-platform-api-gwt-client-parent</artifactId>
-    <version>0.5.0-SNAPSHOT</version>
+    <version>0.7.0-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>Codenvy Platform API :: GWT Client :: Parent</name>
     <modules>
-        <module>codenvy-gwt-client-commons</module>
+        <module>codenvy-api-core-gwt-client</module>
         <module>codenvy-api-analytics-gwt-client</module>
         <module>codenvy-api-builder-gwt-client</module>
-        <module>codenvy-api-core-gwt-client</module>
         <module>codenvy-api-project-gwt-client</module>
         <module>codenvy-api-user-gwt-client</module>
         <module>codenvy-api-runner-gwt-client</module>
         <module>codenvy-api-vfs-gwt-client</module>
         <module>codenvy-api-factory-gwt-client</module>
+        <module>codenvy-api-workspace-gwt-client</module>
+        <module>codenvy-gwt-client-commons</module>
     </modules>
     <scm>
         <connection>scm:git:git@github.com:codenvy/platform-api-gwt-client.git</connection>
@@ -48,26 +49,8 @@
         <url>https://fisheye.codenvycorp.com/browse/platform-api-gwt-client</url>
     </scm>
     <properties>
-        <ch.qos.logback.version>1.0.13</ch.qos.logback.version>
-        <codenvy.commons.version>0.20.0-SNAPSHOT</codenvy.commons.version>
-        <codenvy.platform-api.version>0.16.0-SNAPSHOT</codenvy.platform-api.version>
-        <enforcer.plugin.version>1.0.1</enforcer.plugin.version>
-        <failsafe.plugin.version>2.6</failsafe.plugin.version>
-        <gin.version>2.1.2</gin.version>
-        <gson.version>2.1</gson.version>
-        <guava.version>12.0.1</guava.version>
-        <gwt-test-utils.version>0.47</gwt-test-utils.version>
         <gwt.test.skip>true</gwt.test.skip>
-        <gwt.version>2.6.0</gwt.version>
-        <javax.validation.version>1.0.0.GA</javax.validation.version>
-        <junit.version>4.7</junit.version>
         <maven-model.version>3.0.5</maven-model.version>
-        <mockito.version>1.9.5</mockito.version>
-        <org.easytesting.fest-assert.version>1.4</org.easytesting.fest-assert.version>
-        <org.slf4j.version>1.7.5</org.slf4j.version>
-        <reflections.version>0.9.9-RC1</reflections.version>
-        <version.animal-sniffer.enforcer-rule>1.8</version.animal-sniffer.enforcer-rule>
-        <version.enforcer.plugin>1.2</version.enforcer.plugin>
     </properties>
     <repositories>
         <repository>

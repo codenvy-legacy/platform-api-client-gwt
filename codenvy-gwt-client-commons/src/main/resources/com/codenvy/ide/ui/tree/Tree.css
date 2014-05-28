@@ -39,7 +39,7 @@
 }
 
 .treeRoot > .treeNode {
-    height: 18px;
+    /*height: 18px;*/
     margin-top: 2px;
 }
 
@@ -62,9 +62,8 @@
     height: 18px;
 }
 
-/*.treeNodeBody:hover {*/
-/*background-color: hoverBackground;*/
-/*}*/
+.treeNodeBody:HOVER {
+}
 
 .expandControl {
     display: inline-block;

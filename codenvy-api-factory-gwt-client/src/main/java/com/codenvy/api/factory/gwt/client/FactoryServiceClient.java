@@ -46,4 +46,12 @@ public interface FactoryServiceClient {
      *         if problem with websocket occurred
      */
     void acceptFactory(@NotNull Factory factory, @NotNull RequestCallback<Factory> callback) throws WebSocketException;
+    
+    /**
+     * @param factoryId Factory's id
+     * @param type snippent's type (markdown, html, etc)
+     * @param callback callback which returns snippet of the factory or exception if occurred
+     * @throws WebSocketException if problem with websocket occurred
+     */
+    void getFactorySnippet(@NotNull String factoryId, @NotNull String type, @NotNull RequestCallback<String> callback) throws WebSocketException;
 }

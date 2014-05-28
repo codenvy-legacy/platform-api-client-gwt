@@ -75,7 +75,7 @@ public class RunnerServiceClientImpl implements RunnerServiceClient {
 
     /** {@inheritDoc} */
     @Override
-    public void stop(Link link, AsyncRequestCallback<String> callback) {
+    public void stop(Link link, AsyncRequestCallback<ApplicationProcessDescriptor> callback) {
         loader.setMessage("Stopping an application...");
         asyncRequestFactory.createPostRequest(link.getHref(), null).loader(loader).send(callback);
     }

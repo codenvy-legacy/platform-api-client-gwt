@@ -85,11 +85,6 @@ public class TreeNodeElement<D> extends JsLIElement {
                         Elements.addClassName(css.treeNodeLabel(), nodeContent);
                         nodeBody.appendChild(nodeContent);
 
-                        if (nodeContent.hasAttribute("__depth")) {
-                            int depth = Integer.parseInt(nodeContent.getAttribute("__depth"));
-                            expand.getStyle().setMarginLeft("" + (depth * 16) + "px");
-                        }
-
                 // Attach the Tree node children.
                 treeNode.ensureChildrenContainer(dataAdapter, css);
 
@@ -98,6 +93,25 @@ public class TreeNodeElement<D> extends JsLIElement {
 
     protected TreeNodeElement() {
     }
+
+    public final void updateLeafOffset(Element parent) {
+        if (!parent.hasAttribute("___depth")) {
+            return;
+        }
+
+        try {
+            int depth = Integer.parseInt(parent.getAttribute("___depth"));
+
+            Element expandElement = (Element)getNodeBody().getChildren().item(0);
+            expandElement.getStyle().setMarginLeft("" + (depth * 16) + "px");
+
+            getChildrenContainer().setAttribute("___depth", "" + (depth + 1));
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 
     /**
      * Appends the specified child to this TreeNodeElement's child container

@@ -235,10 +235,12 @@ public class MessageBusImpl implements MessageBus {
         Message message = parseMessage(event.getMessage());
 
         Array<Pair> headers = message.getHeaders();
-        for (int i = 0; i < headers.size(); i++) {
-            Pair header = headers.get(i);
-            if (HTTPHeader.LOCATION.equals(header.getName()) && header.getValue().contains("async/")) {
-                return;
+        if (headers != null) {
+            for (int i = 0; i < headers.size(); i++) {
+                Pair header = headers.get(i);
+                if (HTTPHeader.LOCATION.equals(header.getName()) && header.getValue().contains("async/")) {
+                    return;
+                }
             }
         }
 
@@ -311,10 +313,13 @@ public class MessageBusImpl implements MessageBus {
     private String getChannel(Message message) {
         Array<Pair> headers = message.getHeaders();
 
-        for (int i = 0; i < headers.size(); i++) {
-            Pair header = headers.get(i);
-            if ("x-everrest-websocket-channel".equals(header.getName())) {
-                return header.getValue();
+
+        if (headers != null) {
+            for (int i = 0; i < headers.size(); i++) {
+                Pair header = headers.get(i);
+                if ("x-everrest-websocket-channel".equals(header.getName())) {
+                    return header.getValue();
+                }
             }
         }
 
