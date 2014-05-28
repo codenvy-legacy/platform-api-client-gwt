@@ -1,6 +1,7 @@
 package com.codenvy.api.factory.gwt.client;
 
 import com.codenvy.api.factory.dto.Factory;
+import com.codenvy.ide.rest.AsyncRequestCallback;
 import com.codenvy.ide.websocket.WebSocketException;
 import com.codenvy.ide.websocket.rest.RequestCallback;
 
@@ -22,10 +23,9 @@ public interface FactoryServiceClient {
      *         false
      * @param callback
      *         callback which return valid JSON object of factory or exception if occurred
-     * @throws WebSocketException
-     *         if problem with websocket occurred
+     *
      */
-    void getFactory(@NotNull String raw, boolean encoded, @NotNull RequestCallback<Factory> callback) throws WebSocketException;
+    void getFactory(@NotNull String raw, boolean encoded, @NotNull AsyncRequestCallback<Factory> callback);
 
     /**
      * Send valid JSON factory object to server side of IDE3 to accept it. Accepting means
@@ -45,7 +45,7 @@ public interface FactoryServiceClient {
      * @throws WebSocketException
      *         if problem with websocket occurred
      */
-    void acceptFactory(@NotNull Factory factory, @NotNull RequestCallback<Factory> callback) throws WebSocketException;
+    void acceptFactory(@NotNull Factory factory, @NotNull AsyncRequestCallback<Factory> callback) ;
     
     /**
      * @param factoryId Factory's id
