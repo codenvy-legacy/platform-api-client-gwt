@@ -70,11 +70,12 @@ public class FactoryServiceClientImpl implements FactoryServiceClient {
 
     /** {@inheritDoc} */
     @Override
-    public void getFactorySnippet(String factoryId, String type, RequestCallback<String> callback) throws WebSocketException {
-        Message message =
-                          new MessageBuilder(RequestBuilder.GET, "/factory/" + factoryId + "/snippet?type=" + type).build();
+    public void getFactorySnippet(String factoryId, String type, AsyncRequestCallback<String> callback) {
+        final String requestUrl = "/api/factory/" + factoryId + "/snippet?type=" + type;
+        asyncRequestFactory.createGetRequest(requestUrl).send(callback);
 
-        messageBus.send(message, callback);
+
+
     }
 
 }

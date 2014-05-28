@@ -42,8 +42,6 @@ public interface FactoryServiceClient {
      *         JSON factory object to accept
      * @param callback
      *         callback which return valid JSON object of factory or exception if occurred
-     * @throws WebSocketException
-     *         if problem with websocket occurred
      */
     void acceptFactory(@NotNull Factory factory, @NotNull AsyncRequestCallback<Factory> callback) ;
     
@@ -51,7 +49,6 @@ public interface FactoryServiceClient {
      * @param factoryId Factory's id
      * @param type snippent's type (markdown, html, etc)
      * @param callback callback which returns snippet of the factory or exception if occurred
-     * @throws WebSocketException if problem with websocket occurred
      */
-    void getFactorySnippet(@NotNull String factoryId, @NotNull String type, @NotNull RequestCallback<String> callback) throws WebSocketException;
+    void getFactorySnippet(@NotNull String factoryId, @NotNull String type, @NotNull AsyncRequestCallback<String> callback);
 }
