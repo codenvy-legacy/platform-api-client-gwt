@@ -14,29 +14,30 @@
 
 package com.codenvy.ide.ui.tree;
 
-import elemental.css.CSSStyleDeclaration;
-import elemental.html.DivElement;
-import elemental.dom.Element;
-import elemental.html.SpanElement;
-import elemental.js.html.JsLIElement;
-import elemental.js.html.JsUListElement;
-
 import com.codenvy.ide.ui.tree.Tree.Css;
 import com.codenvy.ide.util.AnimationController;
 import com.codenvy.ide.util.CssUtils;
 import com.codenvy.ide.util.dom.DomUtils;
 import com.codenvy.ide.util.dom.Elements;
+import com.codenvy.ide.util.loging.Log;
+
+import elemental.css.CSSStyleDeclaration;
+import elemental.dom.Element;
+import elemental.html.DivElement;
+import elemental.html.SpanElement;
+import elemental.js.html.JsLIElement;
+import elemental.js.html.JsUListElement;
 
 /**
  * Overlay type for the base element for a Node in the tree.
  * <p/>
  * Nodes with no children have no UL element.
  * <p/>
- * Nodes that have children, but that have never been expanded (nodes render
- * lazily on expansion), have an empty UL element.
+ * Nodes that have children, but that have never been expanded (nodes render lazily on expansion), have an empty UL element.
  * <p/>
+ * 
  * <pre>
- *
+ * 
  * <li class="treeNode">
  *   <div class="treeNodeBody">
  *     <div class="expandControl"></div><span class="treeNodeLabel"></span>
@@ -44,24 +45,20 @@ import com.codenvy.ide.util.dom.Elements;
  *   <ul class="childrenContainer">
  *   </ul>
  * </li>
- *
+ * 
  * </pre>
  */
 public class TreeNodeElement<D> extends JsLIElement {
 
     /**
-     * Creates a TreeNodeElement from some data. Should only be called by
-     * {@link Tree}.
-     *
-     * @param <D>
-     *         the type of data
-     * @param dataAdapter
-     *         An {@link NodeDataAdapter} that allows us to visit the
-     *         NodeData
+     * Creates a TreeNodeElement from some data. Should only be called by {@link Tree}.
+     * 
+     * @param <D> the type of data
+     * @param dataAdapter An {@link NodeDataAdapter} that allows us to visit the NodeData
      * @return a new {@link TreeNodeElement} created from the supplied data.
      */
     static <D> TreeNodeElement<D> create(
-            D data, NodeDataAdapter<D> dataAdapter, NodeRenderer<D> nodeRenderer, Tree.Css css) {
+                                         D data, NodeDataAdapter<D> dataAdapter, NodeRenderer<D> nodeRenderer, Tree.Css css) {
 
         @SuppressWarnings("unchecked")
         TreeNodeElement<D> treeNode = (TreeNodeElement<D>)Elements.createElement("li", css.treeNode());
@@ -71,22 +68,22 @@ public class TreeNodeElement<D> extends JsLIElement {
         // Associate the rendered node with the underlying model data.
         dataAdapter.setRenderedTreeNode(data, treeNode);
 
-                // Attach the Tree node body.
-                DivElement nodeBody = Elements.createDivElement(css.treeNodeBody());
-                nodeBody.setAttribute("draggable", "true");
-                treeNode.appendChild(nodeBody);
+        // Attach the Tree node body.
+        DivElement nodeBody = Elements.createDivElement(css.treeNodeBody());
+        nodeBody.setAttribute("draggable", "true");
+        treeNode.appendChild(nodeBody);
 
-                        // Attach expand node element
-                        DivElement expand = Elements.createDivElement();
-                        Elements.addClassName(css.expandControl(), expand);
-                        nodeBody.appendChild(expand);
+        // Attach expand node element
+        DivElement expand = Elements.createDivElement();
+        Elements.addClassName(css.expandControl(), expand);
+        nodeBody.appendChild(expand);
 
-                        SpanElement nodeContent = nodeRenderer.renderNodeContents(data);
-                        Elements.addClassName(css.treeNodeLabel(), nodeContent);
-                        nodeBody.appendChild(nodeContent);
+        SpanElement nodeContent = nodeRenderer.renderNodeContents(data);
+        Elements.addClassName(css.treeNodeLabel(), nodeContent);
+        nodeBody.appendChild(nodeContent);
 
-                // Attach the Tree node children.
-                treeNode.ensureChildrenContainer(dataAdapter, css);
+        // Attach the Tree node children.
+        treeNode.ensureChildrenContainer(dataAdapter, css);
 
         return treeNode;
     }
@@ -103,41 +100,38 @@ public class TreeNodeElement<D> extends JsLIElement {
             int depth = Integer.parseInt(parent.getAttribute("___depth"));
 
             Element expandElement = (Element)getNodeBody().getChildren().item(0);
-            expandElement.getStyle().setMarginLeft("" + (depth * 16) + "px");
+            expandElement.getStyle().setMarginLeft(String.valueOf(depth * 16) + "px");
 
-            getChildrenContainer().setAttribute("___depth", "" + (depth + 1));
+            if (hasChildrenContainer()) {
+                getChildrenContainer().setAttribute("___depth", String.valueOf(depth + 1));
+            }
 
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        } catch (final NumberFormatException e) {
+            Log.error(TreeNodeElement.class, "Invalid numeric value for ___depth :" + parent.getAttribute("___depth"));
+        } // other exception should be fixed
     }
 
-
     /**
-     * Appends the specified child to this TreeNodeElement's child container
-     * element.
-     *
-     * @param child
-     *         The {@link TreeNodeElement} we want to append to as a child of
-     *         this node.
+     * Appends the specified child to this TreeNodeElement's child container element.
+     * 
+     * @param child The {@link TreeNodeElement} we want to append to as a child of this node.
      */
     public final void addChild(
-            NodeDataAdapter<D> dataAdapter, TreeNodeElement<D> child, Tree.Css css) {
+                               NodeDataAdapter<D> dataAdapter, TreeNodeElement<D> child, Tree.Css css) {
         ensureChildrenContainer(dataAdapter, css);
         getChildrenContainer().appendChild(child);
     }
 
     /**
-     * @return The associated NodeData that is a bound to this node when it was
-     *         rendered.
+     * @return The associated NodeData that is a bound to this node when it was rendered.
      */
     public final native D getData() /*-{
-        return this.__nodeData;
+		return this.__nodeData;
     }-*/;
 
     /**
      * Nodes with no children have no UL element, only a DIV for the Node body.
-     *
+     * 
      * @return whether or not this node has children.
      */
     public final boolean hasChildrenContainer() {
@@ -154,7 +148,7 @@ public class TreeNodeElement<D> extends JsLIElement {
 
     /** Checks whether or not this node is open. */
     public final native boolean isOpen() /*-{
-        return !!this.__nodeOpen;
+		return !!this.__nodeOpen;
     }-*/;
 
     private void setOpen(Tree.Css css, boolean isOpen) {
@@ -167,7 +161,7 @@ public class TreeNodeElement<D> extends JsLIElement {
     }
 
     private native void setOpenImpl(boolean isOpen) /*-{
-        this.__nodeOpen = isOpen;
+		this.__nodeOpen = isOpen;
     }-*/;
 
     public final boolean isSelected(Tree.Css css) {
@@ -183,8 +177,7 @@ public class TreeNodeElement<D> extends JsLIElement {
     }
 
     /**
-     * Removes this node from the {@link Tree} and breaks the back reference from
-     * the underlying node data.
+     * Removes this node from the {@link Tree} and breaks the back reference from the underlying node data.
      */
     public final void removeFromTree() {
         DomUtils.removeFromParent(this);
@@ -212,12 +205,9 @@ public class TreeNodeElement<D> extends JsLIElement {
 
     /**
      * Closes the current node. Must have children if you call this!
-     *
-     * @param css
-     *         The {@link Tree.Css} instance that contains relevant selector
-     *         names.
-     * @param shouldAnimate
-     *         whether to do the animation or not
+     * 
+     * @param css The {@link Tree.Css} instance that contains relevant selector names.
+     * @param shouldAnimate whether to do the animation or not
      */
     final void closeNode(NodeDataAdapter<D> dataAdapter, Tree.Css css, AnimationController closer,
                          boolean shouldAnimate) {
@@ -226,8 +216,7 @@ public class TreeNodeElement<D> extends JsLIElement {
         Element expandControl = getExpandControl();
 
         assert (hasChildrenContainer() && CssUtils.containsClassName(expandControl,
-                                                                     css.expandControl())) :
-                "Tried to close a node that didn't have an expand control";
+                                                                     css.expandControl())) : "Tried to close a node that didn't have an expand control";
 
         setOpen(css, false);
 
@@ -240,9 +229,8 @@ public class TreeNodeElement<D> extends JsLIElement {
     }
 
     /**
-     * You should call hasChildren() before calling this method. This will throw
-     * an exception if a Node is a leaf node.
-     *
+     * You should call hasChildren() before calling this method. This will throw an exception if a Node is a leaf node.
+     * 
      * @return The UL element containing children of this TreeNodeElement.
      */
     final JsUListElement getChildrenContainer() {
@@ -255,12 +243,9 @@ public class TreeNodeElement<D> extends JsLIElement {
 
     /**
      * Expands the current node. Must have children if you call this!
-     *
-     * @param css
-     *         The {@link Tree.Css} instance that contains relevant selector
-     *         names.
-     * @param shouldAnimate
-     *         whether to do the animation or not
+     * 
+     * @param css The {@link Tree.Css} instance that contains relevant selector names.
+     * @param shouldAnimate whether to do the animation or not
      */
     final void openNode(NodeDataAdapter<D> dataAdapter, Tree.Css css, AnimationController opener,
                         boolean shouldAnimate) {
@@ -269,8 +254,7 @@ public class TreeNodeElement<D> extends JsLIElement {
         Element expandControl = getExpandControl();
 
         assert (hasChildrenContainer() && CssUtils.containsClassName(expandControl,
-                                                                     css.expandControl())) :
-                "Tried to open a node that didn't have an expand control";
+                                                                     css.expandControl())) : "Tried to open a node that didn't have an expand control";
 
         setOpen(css, true);
 
@@ -283,8 +267,7 @@ public class TreeNodeElement<D> extends JsLIElement {
     }
 
     /**
-     * If this node does not have a children container, but has children data,
-     * then we coerce a children container into existence.
+     * If this node does not have a children container, but has children data, then we coerce a children container into existence.
      */
     final void ensureChildrenContainer(NodeDataAdapter<D> dataAdapter, Tree.Css css) {
         if (!hasChildrenContainer()) {
@@ -305,8 +288,7 @@ public class TreeNodeElement<D> extends JsLIElement {
     }
 
     /**
-     * @return The node body element that contains the expansion control and the
-     *         node contents.
+     * @return The node body element that contains the expansion control and the node contents.
      */
     private Element getNodeBody() {
         return (Element)getChildren().item(0);
@@ -317,21 +299,19 @@ public class TreeNodeElement<D> extends JsLIElement {
     }
 
     /**
-     * Stashes associate NodeData as an expando on our element, and also sets up a
-     * reverse mapping.
-     *
-     * @param data
-     *         The NodeData we want to associate with this node element.
+     * Stashes associate NodeData as an expando on our element, and also sets up a reverse mapping.
+     * 
+     * @param data The NodeData we want to associate with this node element.
      */
     private native void setData(D data) /*-{
-        this.__nodeData = data;
+		this.__nodeData = data;
     }-*/;
 
     private native NodeRenderer<D> getRenderer() /*-{
-        return this.__nodeRenderer;
+		return this.__nodeRenderer;
     }-*/;
 
     private native void setRenderer(NodeRenderer<D> renderer) /*-{
-        this.__nodeRenderer = renderer;
+		this.__nodeRenderer = renderer;
     }-*/;
 }
