@@ -43,7 +43,7 @@ public final class SignalKeyLogic {
      */
     public static final int IME_CODE = 229;
 
-    protected String operatingSystem = "Unknown OS";
+    protected OperatingSystem operatingSystem;
 
     private static final String DELETE_KEY_IDENTIFIER = "U+007F";
 
@@ -104,7 +104,7 @@ public final class SignalKeyLogic {
         this.commandComboDoesntGiveKeypress = commandComboDoesntGiveKeypress;
         commandIsCtrl = os != OperatingSystem.MAC;
         //For a correct determination os in debug mode
-        operatingSystem = getOperatingSystem();
+        operatingSystem = os;
     }
 
     public boolean commandIsCtrl() {
@@ -159,8 +159,8 @@ public final class SignalKeyLogic {
                 // us keypress events (though they happen after the dom is changed,
                 // for some things like delete. So not too useful). The number
                 // 63200 is known as the cutoff mark.
-                keyIdentifier = keyIdentifierModifierForWindowsChromeV32Bugs(keyIdentifier, keyCode, typeName);
-                if (typeInt == Event.ONKEYDOWN && computedKeyCode > 63200) {
+                keyIdentifier = keyIdentifierModifierForChromeBugs(keyIdentifier, keyCode, typeName);
+                if ((typeInt == Event.ONKEYDOWN && computedKeyCode > 63200) || keyIdentifier == null) {
                     result.type = null;
                     return;
                 } else if (typeInt == Event.ONKEYPRESS) {
@@ -379,18 +379,22 @@ public final class SignalKeyLogic {
     /**
      * Replace keyIdentifier bugs for Chrome
      */
-    public String keyIdentifierModifierForWindowsChromeV32Bugs(String keyIdentifier, int keyCode, String typeName) {
-        if (operatingSystem.indexOf("Win") != -1) {
-            if (typeName.equalsIgnoreCase("keypress")) {
-                if (((keyCode == 46) && (keyIdentifier.equalsIgnoreCase("U+007F")))
-                    || ((keyCode == 39) && (keyIdentifier.equalsIgnoreCase("Right")))
-                    || ((keyCode == 34) && (keyIdentifier.equalsIgnoreCase("PageDown")))
-                    || ((keyCode == 40) && (keyIdentifier.equalsIgnoreCase("Down")))
-                    || ((keyCode == 38) && (keyIdentifier.equalsIgnoreCase("Up")))
-                    || ((keyCode == 37) && (keyIdentifier.equalsIgnoreCase("Left")))
-                    || ((keyCode == 36) && (keyIdentifier.equalsIgnoreCase("Home")))
-                    || ((keyCode == 35) && (keyIdentifier.equalsIgnoreCase("End")))
-                    || ((keyCode == 33) && (keyIdentifier.equalsIgnoreCase("PageUp")))) {
+    public String keyIdentifierModifierForChromeBugs(String keyIdentifier, int keyCode, String typeName) {
+        if (operatingSystem == OperatingSystem.LINUX) {
+            if ("keydown".equals(typeName) && keyCode == 229 && keyIdentifier.equalsIgnoreCase("U+00E5")) {
+                return null;
+            }
+        } else if (operatingSystem == OperatingSystem.WINDOWS) {
+            if ("keypress".equals(typeName)) {
+                if (((keyCode == 46) && keyIdentifier.equalsIgnoreCase("U+007F"))
+                    || (keyCode == 39 && keyIdentifier.equalsIgnoreCase("Right"))
+                    || (keyCode == 34 && keyIdentifier.equalsIgnoreCase("PageDown"))
+                    || (keyCode == 40 && keyIdentifier.equalsIgnoreCase("Down"))
+                    || (keyCode == 38 && keyIdentifier.equalsIgnoreCase("Up"))
+                    || (keyCode == 37 && keyIdentifier.equalsIgnoreCase("Left"))
+                    || (keyCode == 36 && keyIdentifier.equalsIgnoreCase("Home"))
+                    || (keyCode == 35 && keyIdentifier.equalsIgnoreCase("End"))
+                    || (keyCode == 33 && keyIdentifier.equalsIgnoreCase("PageUp"))) {
 
                     StringBuilder newKeyIdentifier = new StringBuilder();
                     String hexKeyCode = Integer.toHexString(keyCode).toUpperCase();
@@ -407,11 +411,4 @@ public final class SignalKeyLogic {
         }
         return keyIdentifier;
     }
-
-    /**
-     * Get information of the browser as a string
-     */
-    protected static native String getOperatingSystem() /*-{
-        return navigator.appVersion;
-    }-*/;
 }
