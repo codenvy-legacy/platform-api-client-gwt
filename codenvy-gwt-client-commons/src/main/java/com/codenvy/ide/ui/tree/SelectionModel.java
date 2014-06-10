@@ -345,6 +345,8 @@ public class SelectionModel<D> {
         TreeNodeElement<D> renderedNode = dataAdapter.getRenderedTreeNode(nodeData);
         if (renderedNode != null) {
             renderedNode.setSelected(isSelected, css);
+//            renderedNode.getSelectionElement().getStyle().setVisibility("hidden");
+//            renderedNode.getSelectionElement().getStyle().setVisibility("visible");
         }
     }
 

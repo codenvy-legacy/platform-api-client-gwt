@@ -15,30 +15,10 @@
 package com.codenvy.ide.util.dom;
 
 import elemental.client.Browser;
-import elemental.dom.Text;
-import elemental.html.AnchorElement;
-import elemental.html.BRElement;
-import elemental.html.BodyElement;
-import elemental.html.ButtonElement;
-import elemental.html.CanvasElement;
-import elemental.html.DivElement;
 import elemental.dom.Document;
 import elemental.dom.Element;
-import elemental.html.FormElement;
-import elemental.html.HeadElement;
-import elemental.html.IFrameElement;
-import elemental.html.ImageElement;
-import elemental.html.InputElement;
-import elemental.html.LIElement;
-import elemental.html.ParagraphElement;
-import elemental.html.PreElement;
-import elemental.html.SpanElement;
-import elemental.html.TableCellElement;
-import elemental.html.TableElement;
-import elemental.html.TableRowElement;
-import elemental.html.TextAreaElement;
-import elemental.html.UListElement;
-import elemental.html.Window;
+import elemental.dom.Text;
+import elemental.html.*;
 import elemental.js.dom.JsElement;
 import elemental.ranges.Range;
 

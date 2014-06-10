@@ -434,7 +434,7 @@ public class Tree<D> extends UiComponent<Tree.View<D>> implements IsWidget {
                 // Otherwise we can get into an inconsistent state if we click really
                 // fast.
                 Element childrenContainer = treeNode.getChildrenContainer();
-                if (childrenContainer != null && !CssUtils.isVisible(childrenContainer)) {
+                if (childrenContainer != null /*&& !CssUtils.isVisible(childrenContainer)*/) {
                     getDelegate().onNodeExpanded(treeNode);
                 }
             }
