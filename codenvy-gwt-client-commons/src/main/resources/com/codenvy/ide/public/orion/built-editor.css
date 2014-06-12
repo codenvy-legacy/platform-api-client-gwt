@@ -359,7 +359,7 @@
 .cm-error { color: #ff0000; }
 .cm-qualifier { color: gray; }
 .cm-builtin { color: #7F0055; }
-.cm-bracket { color: white; background-color: gray; }
+.cm-bracket { color: white }
 .cm-tag { color: #3f7f7f; }
 .cm-attribute { color: #7f007f; }
 .annotation {
