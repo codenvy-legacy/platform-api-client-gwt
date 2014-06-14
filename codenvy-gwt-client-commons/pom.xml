@@ -202,6 +202,7 @@
                 <artifactId>license-maven-plugin</artifactId>
                 <configuration>
                     <skip>true</skip>
+                    <!-- Apache license -->
                     <excludes>**com/codenvy/ide/collections/**</excludes>
                     <excludes>**com/codenvy/ide/dto/client/RoutableDtoClientImpl.java</excludes>
                     <excludes>**com/codenvy/ide/dto/server/JsonSerializable.java</excludes>
@@ -268,6 +269,12 @@
                     <excludes>**com/google/gwt/webworker/dtogen/DtoImplClientTemplate.java</excludes>
                     <excludes>**com/google/gwt/webworker/dtogen/DtoTemplate.java</excludes>
                     <excludes>**com/google/gwt/webworker/linker/DedicatedWorkerLinker.java</excludes>
+
+                    <!-- IBM license -->
+                    <excludes>**com/codenvy/ide/runtime/CoreException.java</excludes>
+                    <excludes>**com/codenvy/ide/runtime/Status.java</excludes>
+                    <excludes>**com/codenvy/ide/runtime/IStatus.java</excludes>
+                    <excludes>**com/codenvy/ide/runtime/OperationCanceledException.java</excludes>
                 </configuration>
             </plugin>
         </plugins>
