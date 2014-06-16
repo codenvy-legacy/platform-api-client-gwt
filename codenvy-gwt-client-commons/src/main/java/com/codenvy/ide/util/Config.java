@@ -17,6 +17,8 @@
  */
 package com.codenvy.ide.util;
 
+import com.codenvy.api.workspace.shared.dto.Workspace;
+
 /**
  * A smattering of useful methods.
  *
@@ -24,6 +26,8 @@ package com.codenvy.ide.util;
  * @author Vitaliy Guliy
  */
 public class Config {
+
+    private static Workspace workspace;
 
     /**
      * Returns workspace name
@@ -98,4 +102,20 @@ public class Config {
         return null;
     }-*/;
 
+    /**
+     * @param ws
+     *         the Workspace to set
+     */
+    public static void setCurrentWorkspace(Workspace ws) {
+        workspace = ws;
+    }
+
+    /**
+     * Get current workspace information.
+     *
+     * @return workspace
+     */
+    public static Workspace getCurrentWorkspace() {
+        return workspace;
+    }
 }

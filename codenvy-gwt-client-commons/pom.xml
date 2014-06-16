@@ -27,6 +27,11 @@
     <dependencies>
         <dependency>
             <groupId>com.codenvy.platform-api</groupId>
+            <artifactId>codenvy-api-workspace</artifactId>
+            <version>${codenvy.platform-api.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.codenvy.platform-api</groupId>
             <artifactId>codenvy-dto</artifactId>
             <version>${codenvy.platform-api.version}</version>
         </dependency>
