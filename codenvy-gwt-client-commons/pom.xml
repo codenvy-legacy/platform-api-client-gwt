@@ -206,7 +206,99 @@
                 <groupId>com.mycila</groupId>
                 <artifactId>license-maven-plugin</artifactId>
                 <configuration>
-                    <skip>true</skip>
+                    <excludes>
+                        <!-- Apache license -->
+                        <exclude>**/com/codenvy/ide/collections/**</exclude>
+                        <exclude>**/com/codenvy/ide/dto/client/RoutableDtoClientImpl.java</exclude>
+                        <exclude>**/com/codenvy/ide/dto/server/JsonSerializable.java</exclude>
+                        <exclude>**/com/codenvy/ide/dto/server/RoutableDtoServerImpl.java</exclude>
+                        <exclude>**/com/codenvy/ide/dto/shared/**</exclude>
+                        <exclude>**/com/codenvy/ide/dto/JsonSerializable.java</exclude>
+                        <exclude>**/com/codenvy/ide/mvp/**</exclude>
+                        <exclude>**/com/codenvy/ide/ui/list/*.java</exclude>
+                        <exclude>**/com/codenvy/ide/ui/menu/**</exclude>
+                        <exclude>**/com/codenvy/ide/ui/tree/NodeDataAdapter.java</exclude>
+                        <exclude>**/com/codenvy/ide/ui/tree/Tree.java</exclude>
+                        <exclude>**/com/codenvy/ide/ui/tree/TreeNodeElement.java</exclude>
+                        <exclude>**/com/codenvy/ide/ui/tree/TreeNodeLabelRenamer.java</exclude>
+                        <exclude>**/com/codenvy/ide/ui/tree/TreeNodeMutator.java</exclude>
+                        <exclude>**/com/codenvy/ide/ui/ElementView.java</exclude>
+                        <exclude>**/com/codenvy/ide/ui/Popup.java</exclude>
+                        <exclude>**/com/codenvy/ide/ui/tree/TreeNodeMutator.java</exclude>
+                        <exclude>**/com/codenvy/ide/ui/ElementView.java</exclude>
+                        <exclude>**/com/codenvy/ide/ui/Popup.java</exclude>
+                        <exclude>**/com/codenvy/ide/ui/Tooltip.java</exclude>
+                        <exclude>**/com/codenvy/ide/util/browser/**</exclude>
+                        <exclude>**/com/codenvy/ide/util/dom/**</exclude>
+                        <exclude>**/com/codenvy/ide/util/executor/**</exclude>
+                        <exclude>**/com/codenvy/ide/util/input/CharCodeWithModifiers.java</exclude>
+                        <exclude>**/com/codenvy/ide/util/input/KeyCodeMap.java</exclude>
+                        <exclude>**/com/codenvy/ide/util/input/ModifierKeys.java</exclude>
+                        <exclude>**/com/codenvy/ide/util/input/SignalEvent.java</exclude>
+                        <exclude>**/com/codenvy/ide/util/input/SignalEventImpl.java</exclude>
+                        <exclude>**/com/codenvy/ide/util/input/SignalEventUtils.java</exclude>
+                        <exclude>**/com/codenvy/ide/util/input/SignalKeyLogic.java</exclude>
+                        <exclude>**/com/codenvy/ide/util/loging/Log.java</exclude>
+                        <exclude>**/com/codenvy/ide/util/loging/LogConfig.java</exclude>
+                        <exclude>**/com/codenvy/ide/util/AbstractTrie.java</exclude>
+                        <exclude>**/com/codenvy/ide/util/AnimationUtils.java</exclude>
+                        <exclude>**/com/codenvy/ide/util/Box.java</exclude>
+                        <exclude>**/com/codenvy/ide/util/CssUtils.java</exclude>
+                        <exclude>**/com/codenvy/ide/util/ExceptionUtils.java</exclude>
+                        <exclude>**/com/codenvy/ide/util/Function.java</exclude>
+                        <exclude>**/com/codenvy/ide/util/HoverController.java</exclude>
+                        <exclude>**/com/codenvy/ide/util/ImageResourceUtils.java</exclude>
+                        <exclude>**/com/codenvy/ide/util/ListenerManager.java</exclude>
+                        <exclude>**/com/codenvy/ide/util/ListenerRegistrar.java</exclude>
+                        <exclude>**/com/codenvy/ide/util/MathUtils.java</exclude>
+                        <exclude>**/com/codenvy/ide/util/Pair.java</exclude>
+                        <exclude>**/com/codenvy/ide/util/PrefixIndex.java</exclude>
+                        <exclude>**/com/codenvy/ide/util/RegExpUtils.java</exclude>
+                        <exclude>**/com/codenvy/ide/util/RelativeClientRect.java</exclude>
+                        <exclude>**/com/codenvy/ide/util/SortedList.java</exclude>
+                        <exclude>**/com/codenvy/ide/util/StringUtils.java</exclude>
+                        <exclude>**/com/codenvy/ide/util/TextUtils.java</exclude>
+                        <exclude>**/com/codenvy/ide/util/TrieNode.java</exclude>
+                        <exclude>**/com/codenvy/ide/util/UnicodeUtils.java</exclude>
+                        <exclude>**/com/codenvy/ide/websocket/MessageFilter.java</exclude>
+                        <exclude>**/com/google/gwt/webworker/client/messages/CompactJsonMessage.java</exclude>
+                        <exclude>**/com/google/gwt/webworker/client/messages/MessageImpl.java</exclude>
+                        <exclude>**/com/google/gwt/webworker/client/messages/MessageType.java</exclude>
+                        <exclude>**/com/google/gwt/webworker/client/messages/SerializationIndex.java</exclude>
+                        <exclude>**/com/google/gwt/webworker/client/AbstractWorker.java</exclude>
+                        <exclude>**/com/google/gwt/webworker/client/DedicatedWorkerEntryPoint.java</exclude>
+                        <exclude>**/com/google/gwt/webworker/client/DedicatedWorkerGlobalScope.java</exclude>
+                        <exclude>**/com/google/gwt/webworker/client/ErrorEvent.java</exclude>
+                        <exclude>**/com/google/gwt/webworker/client/ErrorHandler.java</exclude>
+                        <exclude>**/com/google/gwt/webworker/client/MessageEvent.java</exclude>
+                        <exclude>**/com/google/gwt/webworker/client/MessageHandler.java</exclude>
+                        <exclude>**/com/google/gwt/webworker/client/MessagePort.java</exclude>
+                        <exclude>**/com/google/gwt/webworker/client/Worker.java</exclude>
+                        <exclude>**/com/google/gwt/webworker/client/WorkerGlobalScope.java</exclude>
+                        <exclude>**/com/google/gwt/webworker/client/WorkerLocation.java</exclude>
+                        <exclude>**/com/google/gwt/webworker/dtogen/DtoGenerator.java</exclude>
+                        <exclude>**/com/google/gwt/webworker/dtogen/DtoImplClientTemplate.java</exclude>
+                        <exclude>**/com/google/gwt/webworker/dtogen/DtoTemplate.java</exclude>
+                        <exclude>**/com/google/gwt/webworker/linker/DedicatedWorkerLinker.java</exclude>
+
+                        <!-- IBM license -->
+                        <exclude>**/com/codenvy/ide/runtime/CoreException.java</exclude>
+                        <exclude>**/com/codenvy/ide/runtime/Status.java</exclude>
+                        <exclude>**/com/codenvy/ide/runtime/IStatus.java</exclude>
+                        <exclude>**/com/codenvy/ide/runtime/OperationCanceledException.java</exclude>
+
+                        <!-- cddl1 license -->
+                        <exclude>**/com/codenvy/ide/MimeType.java</exclude>
+
+                        <!-- Resources -->
+                        <exclude>**/com/google/gwt/webworker/linker/DedicatedWorkerTemplate.js</exclude>
+                        <exclude>**/com/google/gwt/webworker/WebWorker.gwt.xml</exclude>
+                        <exclude>**/com/codenvy/ide/runtime/Runtime.gwt.xml</exclude>
+                        <exclude>**/com/codenvy/ide/collections/Collections.gwt.xml</exclude>
+                        <exclude>**/com/google/gwt/webworker/WebWorker.gwt.xml</exclude>
+                        <exclude>**/com/codenvy/ide/public/codemirror2_base.js</exclude>
+                        <exclude>**/com/codenvy/ide/public/codemirror2_parsers.js</exclude>
+                    </excludes>
                 </configuration>
             </plugin>
         </plugins>
