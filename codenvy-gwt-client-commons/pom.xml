@@ -210,7 +210,7 @@
                         <exclude>**/com/codenvy/ide/dto/shared/**</exclude>
                         <exclude>**/com/codenvy/ide/dto/JsonSerializable.java</exclude>
                         <exclude>**/com/codenvy/ide/mvp/**</exclude>
-                        <exclude>**/com/codenvy/ide/ui/list/**</exclude>
+                        <exclude>**/com/codenvy/ide/ui/list/*.java</exclude>
                         <exclude>**/com/codenvy/ide/ui/menu/**</exclude>
                         <exclude>**/com/codenvy/ide/ui/tree/NodeDataAdapter.java</exclude>
                         <exclude>**/com/codenvy/ide/ui/tree/Tree.java</exclude>
@@ -226,7 +226,13 @@
                         <exclude>**/com/codenvy/ide/util/browser/**</exclude>
                         <exclude>**/com/codenvy/ide/util/dom/**</exclude>
                         <exclude>**/com/codenvy/ide/util/executor/**</exclude>
-                        <exclude>**/com/codenvy/ide/util/input/**</exclude>
+                        <exclude>**/com/codenvy/ide/util/input/CharCodeWithModifiers.java</exclude>
+                        <exclude>**/com/codenvy/ide/util/input/KeyCodeMap.java</exclude>
+                        <exclude>**/com/codenvy/ide/util/input/ModifierKeys.java</exclude>
+                        <exclude>**/com/codenvy/ide/util/input/SignalEvent.java</exclude>
+                        <exclude>**/com/codenvy/ide/util/input/SignalEventImpl.java</exclude>
+                        <exclude>**/com/codenvy/ide/util/input/SignalEventUtils.java</exclude>
+                        <exclude>**/com/codenvy/ide/util/input/SignalKeyLogic.java</exclude>
                         <exclude>**/com/codenvy/ide/util/loging/Log.java</exclude>
                         <exclude>**/com/codenvy/ide/util/loging/LogConfig.java</exclude>
                         <exclude>**/com/codenvy/ide/util/AbstractTrie.java</exclude>
