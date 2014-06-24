@@ -59,6 +59,13 @@ public class RunnerServiceClientImpl implements RunnerServiceClient {
         asyncRequestFactory.createGetRequest(link.getHref()).send(callback);
     }
 
+    @Override
+    public void getRunningProcesses(String projectName, AsyncRequestCallback<Array<ApplicationProcessDescriptor>> callback) {
+        final String requestUrl = baseUrl + "/runner/" + workspaceId + "/processes";
+        final String params = "project=" + projectName;
+        asyncRequestFactory.createGetRequest(requestUrl + "?" + params).send(callback);
+    }
+
     /** {@inheritDoc} */
     @Override
     public void getLogs(Link link, AsyncRequestCallback<String> callback) {

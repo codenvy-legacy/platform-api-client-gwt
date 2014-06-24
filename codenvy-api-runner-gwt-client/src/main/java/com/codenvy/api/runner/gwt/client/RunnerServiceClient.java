@@ -46,6 +46,16 @@ public interface RunnerServiceClient {
     public void getStatus(Link link, AsyncRequestCallback<ApplicationProcessDescriptor> callback);
 
     /**
+     * Get runner processes by project name.
+     *
+     * @param project
+     *         name of the project to get an appropriate runner processes
+     * @param callback
+     *         the callback to use for the response
+     */
+    public void getRunningProcesses(String project, AsyncRequestCallback<Array<ApplicationProcessDescriptor>> callback);
+
+    /**
      * Retrieve logs from application server where app is launched.
      *
      * @param link
