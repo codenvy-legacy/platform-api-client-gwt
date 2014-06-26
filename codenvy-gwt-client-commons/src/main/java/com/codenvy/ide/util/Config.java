@@ -10,6 +10,8 @@
  *******************************************************************************/
 package com.codenvy.ide.util;
 
+import com.codenvy.api.user.shared.dto.Attribute;
+import com.codenvy.api.user.shared.dto.Profile;
 import com.codenvy.api.workspace.shared.dto.Workspace;
 
 /**
@@ -20,7 +22,8 @@ import com.codenvy.api.workspace.shared.dto.Workspace;
  */
 public class Config {
 
-    private static Workspace workspace;
+    private static Workspace    _workspace;
+    private static Profile      _profile;
 
     /**
      * Returns workspace name
@@ -96,11 +99,13 @@ public class Config {
     }-*/;
 
     /**
-     * @param ws
+     * Set current Workspace.
+     *
+     * @param workspace
      *         the Workspace to set
      */
-    public static void setCurrentWorkspace(Workspace ws) {
-        workspace = ws;
+    public static void setCurrentWorkspace(Workspace workspace) {
+        _workspace = workspace;
     }
 
     /**
@@ -109,6 +114,44 @@ public class Config {
      * @return workspace
      */
     public static Workspace getCurrentWorkspace() {
-        return workspace;
+        return _workspace;
     }
+
+    /**
+     * Set current user Profile.
+     *
+     * @param profile
+     *          user profile
+     */
+    public static void setCurrentProfile(Profile profile) {
+        _profile = profile;
+    }
+
+    /**
+     * Get current user Profile.
+     *
+     * @return
+     *          current profile
+     */
+    public static Profile getCurrentProfile() {
+        return _profile;
+    }
+
+    /**
+     * Determines whether the user is permanent.
+     *
+     * @return <b>true</b> for permanent user, <b>false</b> otherwise
+     */
+    public static boolean isUserPermanent() {
+        if (_profile != null && _profile.getAttributes() != null) {
+            for (Attribute attribute : _profile.getAttributes()) {
+                if ("temporary".equals(attribute.getName()) && "true".equals(attribute.getValue())) {
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
+
 }
