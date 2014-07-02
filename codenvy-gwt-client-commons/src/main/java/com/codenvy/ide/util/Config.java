@@ -26,6 +26,25 @@ public class Config {
     private static Profile      _profile;
 
     /**
+     * Returns the base context of the IDE.
+     * Is used to give IDE an ability to build valid URL when using history.
+     * Valid IDE url looks like
+     *      "/ide-context/workspace-name/project-name"
+     * and can be got by code below
+     *      Config.getContext() + "/" + Config.getWorkspaceName() + "/" + Config.getProjectName()
+     *
+     * @return
+     */
+    public static native String getContext() /*-{
+        try {
+            return $wnd.IDE.config.context;
+        } catch (e) {
+            return null;
+        }
+    }-*/;
+
+
+    /**
      * Returns workspace name
      *
      * @return
