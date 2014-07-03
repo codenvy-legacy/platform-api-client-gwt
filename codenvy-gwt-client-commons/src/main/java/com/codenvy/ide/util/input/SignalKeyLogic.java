@@ -43,25 +43,12 @@ public final class SignalKeyLogic {
      */
     public static final int IME_CODE = 229;
 
-    protected OperatingSystem operatingSystem;
-
-    private static final String DELETE_KEY_IDENTIFIER = "U+007F";
-
     //TODO(danilatos): Use int map
     private static final Set<Integer> NAVIGATION_KEYS = new HashSet<Integer>();
 
     private static final StringMap<Integer> NAVIGATION_KEY_IDENTIFIERS = Collections.createStringMap();
 
     static {
-
-        NAVIGATION_KEY_IDENTIFIERS.put("Left", KeyCodes.KEY_LEFT);
-        NAVIGATION_KEY_IDENTIFIERS.put("Right", KeyCodes.KEY_RIGHT);
-        NAVIGATION_KEY_IDENTIFIERS.put("Up", KeyCodes.KEY_UP);
-        NAVIGATION_KEY_IDENTIFIERS.put("Down", KeyCodes.KEY_DOWN);
-        NAVIGATION_KEY_IDENTIFIERS.put("PageUp", KeyCodes.KEY_PAGEUP);
-        NAVIGATION_KEY_IDENTIFIERS.put("PageDown", KeyCodes.KEY_PAGEDOWN);
-        NAVIGATION_KEY_IDENTIFIERS.put("Home", KeyCodes.KEY_HOME);
-        NAVIGATION_KEY_IDENTIFIERS.put("End", KeyCodes.KEY_END);
 
         NAVIGATION_KEY_IDENTIFIERS.iterate(new IterationCallback<Integer>() {
             @Override
@@ -103,15 +90,13 @@ public final class SignalKeyLogic {
         this.userAgent = userAgent;
         this.commandComboDoesntGiveKeypress = commandComboDoesntGiveKeypress;
         commandIsCtrl = os != OperatingSystem.MAC;
-        //For a correct determination os in debug mode
-        operatingSystem = os;
     }
 
     public boolean commandIsCtrl() {
         return commandIsCtrl;
     }
 
-    public void computeKeySignalType(Result result, String typeName, int keyCode, int which, String keyIdentifier,
+    public void computeKeySignalType(Result result, String typeName, int keyCode, int which,
                                      boolean metaKey, boolean ctrlKey, boolean altKey, boolean shiftKey) {
 
         boolean ret = true;
@@ -150,17 +135,11 @@ public final class SignalKeyLogic {
                 // for safari 3.1, because with 3.1 the webkit folks made a big shift to
                 // get the events to be in line with IE for compatibility. 3.0 events
                 // are a lot more similar to FF, but different enough to need special
-                // handling. However, it seems that using more advanced features like
-                // keyIdentifier for safaris is probably better and more future-proof,
-                // as well as being compatible between the two, so for now we're not
-                // using IE logic for safari 3.1
-
-                // Weird special large keycode numbers for safari 3.0, where it gives
+                // handling. Weird special large keycode numbers for safari 3.0, where it gives
                 // us keypress events (though they happen after the dom is changed,
                 // for some things like delete. So not too useful). The number
                 // 63200 is known as the cutoff mark.
-                keyIdentifier = keyIdentifierModifierForChromeBugs(keyIdentifier, keyCode, typeName);
-                if ((typeInt == Event.ONKEYDOWN && computedKeyCode > 63200) || keyIdentifier == null) {
+                if (typeInt == Event.ONKEYDOWN && computedKeyCode > 63200) {
                     result.type = null;
                     return;
                 } else if (typeInt == Event.ONKEYPRESS) {
@@ -176,30 +155,25 @@ public final class SignalKeyLogic {
                 // boolean isPossiblyCtrlInput = typeInt == Event.ONKEYDOWN && ret.getCtrlKey();
                 boolean isActuallyCtrlInput = false;
 
-                boolean startsWithUPlus = keyIdentifier != null && keyIdentifier.startsWith("U+");
-
                 // Need to use identifier for the delete key because the keycode conflicts
                 // with the keycode for the full stop.
                 if (isIME) {
-                    // If is IME, override the logic below - we get keyIdentifiers for IME events,
-                    // but those are basically useless as the event is basically still an IME input
-                    // event (e.g. keyIdentifier might say "Up", but it's certainly not navigation,
-                    // it's just the user selecting from the IME dialog).
-                    type = KeySignalType.INPUT;
-                } else if (DELETE_KEY_IDENTIFIER.equals(keyIdentifier) || computedKeyCode == KeyCodes.KEY_BACKSPACE) {
-
+                    if(typeInt == Event.ONKEYDOWN){
+                        type = KeySignalType.NOEFFECT;
+                    }else{
+                        type = KeySignalType.INPUT;
+                    }
+                } else if ((computedKeyCode == KeyCodes.KEY_DELETE && typeInt == Event.ONKEYDOWN)|| computedKeyCode == KeyCodes.KEY_BACKSPACE) {
                     type = KeySignalType.DELETE;
-                } else if (NAVIGATION_KEY_IDENTIFIERS.containsKey(keyIdentifier)) {
+                } else if (NAVIGATION_KEYS.contains(computedKeyCode)) {
                     type = KeySignalType.NAVIGATION;
                     // Escape, backspace and context-menu-key (U+0010) are, to my knowledge,
                     // the only non-navigation keys that
-                    // have a "U+..." keyIdentifier, so we handle them explicitly.
-                    // (Backspace was handled earlier).
-                } else if (computedKeyCode == KeyCodes.KEY_ESCAPE || "U+0010".equals(keyIdentifier)) {
+                } else if (computedKeyCode == KeyCodes.KEY_ESCAPE || computedKeyCode == KeyCodes.KEY_SHIFT) {
                     type = KeySignalType.NOEFFECT;
                 } else if (computedKeyCode < 63200 && // if it's not a safari 3.0 non-input key (See (X) above)
                            (typeInt == Event.ONKEYPRESS || // if it's a regular keypress
-                            startsWithUPlus || computedKeyCode == KeyCodes.KEY_ENTER)) {
+                            computedKeyCode == KeyCodes.KEY_ENTER)) {
                     type = KeySignalType.INPUT;
                     isActuallyCtrlInput = ctrlKey || (commandComboDoesntGiveKeypress && commandKey);
                 } else {
@@ -376,39 +350,4 @@ public final class SignalKeyLogic {
         return ret;
     }
 
-    /**
-     * Replace keyIdentifier bugs for Chrome
-     */
-    public String keyIdentifierModifierForChromeBugs(String keyIdentifier, int keyCode, String typeName) {
-        if (operatingSystem == OperatingSystem.LINUX) {
-            if ("keydown".equals(typeName) && keyCode == 229 && keyIdentifier.equalsIgnoreCase("U+00E5")) {
-                return null;
-            }
-        } else if (operatingSystem == OperatingSystem.WINDOWS) {
-            if ("keypress".equals(typeName)) {
-                if (((keyCode == 46) && keyIdentifier.equalsIgnoreCase("U+007F"))
-                    || (keyCode == 39 && keyIdentifier.equalsIgnoreCase("Right"))
-                    || (keyCode == 34 && keyIdentifier.equalsIgnoreCase("PageDown"))
-                    || (keyCode == 40 && keyIdentifier.equalsIgnoreCase("Down"))
-                    || (keyCode == 38 && keyIdentifier.equalsIgnoreCase("Up"))
-                    || (keyCode == 37 && keyIdentifier.equalsIgnoreCase("Left"))
-                    || (keyCode == 36 && keyIdentifier.equalsIgnoreCase("Home"))
-                    || (keyCode == 35 && keyIdentifier.equalsIgnoreCase("End"))
-                    || (keyCode == 33 && keyIdentifier.equalsIgnoreCase("PageUp"))) {
-
-                    StringBuilder newKeyIdentifier = new StringBuilder();
-                    String hexKeyCode = Integer.toHexString(keyCode).toUpperCase();
-                    int lengthHexKeyCode = hexKeyCode.length();
-
-                    newKeyIdentifier.append("U+");
-                    for (int n = (4 - lengthHexKeyCode); n > 0; n--) {
-                        newKeyIdentifier.append("0");
-                    }
-                    newKeyIdentifier.append(hexKeyCode);
-                    keyIdentifier = newKeyIdentifier.toString();
-                }
-            }
-        }
-        return keyIdentifier;
-    }
 }
