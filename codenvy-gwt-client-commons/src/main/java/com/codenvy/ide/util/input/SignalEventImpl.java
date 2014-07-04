@@ -283,8 +283,10 @@ public class SignalEventImpl implements SignalEvent {
         if (isKeyEvent(event)) {
             keySignalResult = computeKeySignalTypeResult;
 
+            String keyIdentifier = getKeyIdentifier(event);
+
             logic.computeKeySignalType(keySignalResult, event.getType(), getNativeKeyCode(event), getWhich(event),
-                                       event.getMetaKey(), event.getCtrlKey(), event.getAltKey(), event.getShiftKey());
+                                       keyIdentifier, event.getMetaKey(), event.getCtrlKey(), event.getAltKey(), event.getShiftKey());
 
         } else {
             keySignalResult = null;

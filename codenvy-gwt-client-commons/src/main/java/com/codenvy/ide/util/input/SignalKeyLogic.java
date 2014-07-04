@@ -96,7 +96,7 @@ public final class SignalKeyLogic {
         return commandIsCtrl;
     }
 
-    public void computeKeySignalType(Result result, String typeName, int keyCode, int which,
+    public void computeKeySignalType(Result result, String typeName, int keyCode, int which, String keyIdentifier,
                                      boolean metaKey, boolean ctrlKey, boolean altKey, boolean shiftKey) {
 
         boolean ret = true;
@@ -151,19 +151,27 @@ public final class SignalKeyLogic {
                         return;
                     }
                 }
-
+                // We get that for Alt Shift combos for mac computers.
+                if (!commandIsCtrl) {
+                    if (keyCode == 123 && keyIdentifier.equals("U+0028")) {
+                        keyCode = 40;
+                    } else if (keyCode == 125 && keyIdentifier.equals("U+0029")) {
+                        keyCode = 41;
+                    }
+                }
                 // boolean isPossiblyCtrlInput = typeInt == Event.ONKEYDOWN && ret.getCtrlKey();
                 boolean isActuallyCtrlInput = false;
 
                 // Need to use identifier for the delete key because the keycode conflicts
                 // with the keycode for the full stop.
                 if (isIME) {
-                    if(typeInt == Event.ONKEYDOWN){
+                    if (typeInt == Event.ONKEYDOWN) {
                         type = KeySignalType.NOEFFECT;
-                    }else{
+                    } else {
                         type = KeySignalType.INPUT;
                     }
-                } else if ((computedKeyCode == KeyCodes.KEY_DELETE && typeInt == Event.ONKEYDOWN)|| computedKeyCode == KeyCodes.KEY_BACKSPACE) {
+                } else if ((computedKeyCode == KeyCodes.KEY_DELETE && typeInt == Event.ONKEYDOWN) ||
+                           computedKeyCode == KeyCodes.KEY_BACKSPACE) {
                     type = KeySignalType.DELETE;
                 } else if (NAVIGATION_KEYS.contains(computedKeyCode)) {
                     type = KeySignalType.NAVIGATION;
