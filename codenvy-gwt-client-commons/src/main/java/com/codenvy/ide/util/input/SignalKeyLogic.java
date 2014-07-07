@@ -152,23 +152,6 @@ public final class SignalKeyLogic {
                     }
                 }
 
-                // We get this for 'Alt' + '(' and 'Alt' + ')' combinations for MAC computers and Chromium.
-                if (!commandIsCtrl) {
-                    if (shiftKey) {
-                        if (keyCode == 91) {
-                            computedKeyCode = 123;
-                        } else if (keyCode == 93) {
-                            computedKeyCode = 125;
-                        }
-                    } else {
-                        if (keyCode == 123) {
-                            computedKeyCode = 91;
-                        } else if (keyCode == 125) {
-                            computedKeyCode = 93;
-                        }
-                    }
-                }
-
                 // Need to use identifier for the delete key because the keycode conflicts
                 // with the keycode for the full stop.
                 boolean isActuallyCtrlInput = false;
