@@ -151,19 +151,27 @@ public final class SignalKeyLogic {
                         return;
                     }
                 }
-                // We get that for Alt Shift combos for mac computers.
+
+                // We get this for 'Alt' + '(' and 'Alt' + ')' combinations for MAC computers and Chromium.
                 if (!commandIsCtrl) {
-                    if (keyCode == 123 && keyIdentifier.equals("U+0028")) {
-                        keyCode = 40;
-                    } else if (keyCode == 125 && keyIdentifier.equals("U+0029")) {
-                        keyCode = 41;
+                    if (shiftKey) {
+                        if (keyCode == 91) {
+                            computedKeyCode = 123;
+                        } else if (keyCode == 93) {
+                            computedKeyCode = 125;
+                        }
+                    } else {
+                        if (keyCode == 123) {
+                            computedKeyCode = 91;
+                        } else if (keyCode == 125) {
+                            computedKeyCode = 93;
+                        }
                     }
                 }
-                // boolean isPossiblyCtrlInput = typeInt == Event.ONKEYDOWN && ret.getCtrlKey();
-                boolean isActuallyCtrlInput = false;
 
                 // Need to use identifier for the delete key because the keycode conflicts
                 // with the keycode for the full stop.
+                boolean isActuallyCtrlInput = false;
                 if (isIME) {
                     if (typeInt == Event.ONKEYDOWN) {
                         type = KeySignalType.NOEFFECT;
