@@ -16,9 +16,6 @@
 
 package com.codenvy.ide.util.input;
 
-import com.codenvy.ide.collections.Collections;
-import com.codenvy.ide.collections.StringMap;
-import com.codenvy.ide.collections.StringMap.IterationCallback;
 import com.codenvy.ide.util.input.SignalEvent.KeySignalType;
 import com.google.gwt.event.dom.client.KeyCodes;
 import com.google.gwt.user.client.Event;
@@ -44,19 +41,17 @@ public final class SignalKeyLogic {
     public static final int IME_CODE = 229;
 
     //TODO(danilatos): Use int map
-    private static final Set<Integer> NAVIGATION_KEYS = new HashSet<Integer>();
-
-    private static final StringMap<Integer> NAVIGATION_KEY_IDENTIFIERS = Collections.createStringMap();
+    private static final Set<Integer> NAVIGATION_KEYS = new HashSet();
 
     static {
-
-        NAVIGATION_KEY_IDENTIFIERS.iterate(new IterationCallback<Integer>() {
-            @Override
-            public void onIteration(String key, Integer keyCode) {
-                NAVIGATION_KEYS.add(keyCode);
-            }
-        });
-
+        NAVIGATION_KEYS.add(KeyCodes.KEY_LEFT);
+        NAVIGATION_KEYS.add(KeyCodes.KEY_RIGHT);
+        NAVIGATION_KEYS.add(KeyCodes.KEY_UP);
+        NAVIGATION_KEYS.add(KeyCodes.KEY_DOWN);
+        NAVIGATION_KEYS.add(KeyCodes.KEY_PAGEUP);
+        NAVIGATION_KEYS.add(KeyCodes.KEY_PAGEDOWN);
+        NAVIGATION_KEYS.add(KeyCodes.KEY_HOME);
+        NAVIGATION_KEYS.add(KeyCodes.KEY_END);
     }
 
     public enum UserAgentType {
@@ -157,7 +152,9 @@ public final class SignalKeyLogic {
                 boolean isActuallyCtrlInput = false;
                 if (isIME) {
                     if (typeInt == Event.ONKEYDOWN) {
-                        type = KeySignalType.NOEFFECT;
+                        //Don't actually react to press key with keyCode==229
+                        result.type = null;
+                        return;
                     } else {
                         type = KeySignalType.INPUT;
                     }
@@ -168,7 +165,7 @@ public final class SignalKeyLogic {
                     type = KeySignalType.NAVIGATION;
                     // Escape, backspace and context-menu-key (U+0010) are, to my knowledge,
                     // the only non-navigation keys that
-                } else if (computedKeyCode == KeyCodes.KEY_ESCAPE || computedKeyCode == KeyCodes.KEY_SHIFT) {
+                } else if (computedKeyCode == KeyCodes.KEY_ESCAPE) {
                     type = KeySignalType.NOEFFECT;
                 } else if (computedKeyCode < 63200 && // if it's not a safari 3.0 non-input key (See (X) above)
                            (typeInt == Event.ONKEYPRESS || // if it's a regular keypress
@@ -187,7 +184,7 @@ public final class SignalKeyLogic {
                     }
                     // HACK(danilatos): Don't actually nullify isActuallyCtrlInput for key press.
                     // We get that for AltGr combos on non-mac computers.
-                } else if (isIME || keyCode == KeyCodes.KEY_TAB) {
+                } else if (keyCode == KeyCodes.KEY_TAB) {
                     ret = typeInt == Event.ONKEYDOWN;
                 } else {
                     ret = maybeNullWebkitIE(ret, typeInt, type);
@@ -268,7 +265,7 @@ public final class SignalKeyLogic {
                     type = KeySignalType.INPUT;
                 }
 
-                if (hasModifiersThatResultInNoKeyPress || isIME || computedKeyCode == KeyCodes.KEY_TAB) {
+                if (hasModifiersThatResultInNoKeyPress || computedKeyCode == KeyCodes.KEY_TAB) {
                     ret = typeInt == Event.ONKEYDOWN ? ret : false;
                 } else {
                     ret = maybeNullWebkitIE(ret, typeInt, type);
@@ -348,5 +345,4 @@ public final class SignalKeyLogic {
 
         return ret;
     }
-
 }
