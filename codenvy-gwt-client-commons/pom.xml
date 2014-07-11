@@ -295,9 +295,8 @@
                         <exclude>**/com/google/gwt/webworker/WebWorker.gwt.xml</exclude>
                         <exclude>**/com/codenvy/ide/runtime/Runtime.gwt.xml</exclude>
                         <exclude>**/com/codenvy/ide/collections/Collections.gwt.xml</exclude>
-                        <exclude>**/com/google/gwt/webworker/WebWorker.gwt.xml</exclude>
-                        <exclude>**/com/codenvy/ide/public/codemirror2_base.js</exclude>
-                        <exclude>**/com/codenvy/ide/public/codemirror2_parsers.js</exclude>
+                        <exclude>**/com/codenvy/ide/public/codemirror-4.2/**</exclude>
+                        <exclude>**/com/codenvy/ide/public/orion/**</exclude>
                         <exclude>**/*.svg</exclude>
                         <exclude>**/*.png</exclude>
                     </excludes>
