@@ -60,13 +60,8 @@
 .expandControl {
     display: inline-block;
     vertical-align: middle;
-    /*
-      This is disabled for now due to chrome bug:
-      http://code.google.com/p/chromium/issues/detail?id=85438
-
     -moz-transition: -moz-transform 0.2s ease-out;
     -webkit-transition: -webkit-transform 0.2s ease-out;
-    */
 }
 
 .openedIcon {
