@@ -317,7 +317,7 @@ public class TreeNodeElement<D> extends JsLIElement {
     }
 
     /**
-     * Stashes associate NodeData as an expando on our element, and also sets up a
+     * Stashes associate NodeData as an expand on our element, and also sets up a
      * reverse mapping.
      *
      * @param data

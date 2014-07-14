@@ -873,7 +873,7 @@ public class Tree<D> extends UiComponent<Tree.View<D>> implements IsWidget {
 
     /**
      * Replaces the old node in the tree with data representing the subtree rooted
-     * where the old node used to be iff the old node was rendered.
+     * where the old node used to be if the old node was rendered.
      * <p/>
      * <p>{@code oldSubtreeData} and {@code incomingSubtreeData} are allowed to be
      * the same node (it will simply get re-rendered).
@@ -972,7 +972,7 @@ public class Tree<D> extends UiComponent<Tree.View<D>> implements IsWidget {
     }
 
     /**
-     * Populates the selection model from a list of selected paths iff they
+     * Populates the selection model from a list of selected paths if they
      * resolve to nodes in the data model.
      */
     private void restoreSelectionModel(Array<Array<String>> selectedPaths) {
