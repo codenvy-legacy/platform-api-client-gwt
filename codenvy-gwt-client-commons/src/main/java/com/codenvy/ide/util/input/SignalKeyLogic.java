@@ -161,7 +161,7 @@ public final class SignalKeyLogic {
                 } else if ((computedKeyCode == KeyCodes.KEY_DELETE && typeInt == Event.ONKEYDOWN) ||
                            computedKeyCode == KeyCodes.KEY_BACKSPACE) {
                     type = KeySignalType.DELETE;
-                } else if (NAVIGATION_KEYS.contains(computedKeyCode)) {
+                } else if (NAVIGATION_KEYS.contains(computedKeyCode) && typeInt == Event.ONKEYDOWN) {
                     type = KeySignalType.NAVIGATION;
                     // Escape, backspace and context-menu-key (U+0010) are, to my knowledge,
                     // the only non-navigation keys that
