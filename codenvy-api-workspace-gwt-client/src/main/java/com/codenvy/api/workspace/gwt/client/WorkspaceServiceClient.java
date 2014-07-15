@@ -10,7 +10,7 @@
  *******************************************************************************/
 package com.codenvy.api.workspace.gwt.client;
 
-import com.codenvy.api.workspace.shared.dto.Workspace;
+import com.codenvy.api.workspace.shared.dto.WorkspaceDescriptor;
 import com.codenvy.ide.rest.AsyncRequestCallback;
 
 /**
@@ -25,5 +25,5 @@ public interface WorkspaceServiceClient {
      * @param wsId workspace's id
      * @param callback
      */
-    public void getWorkspace(String wsId, AsyncRequestCallback<Workspace> callback);
+    public void getWorkspace(String wsId, AsyncRequestCallback<WorkspaceDescriptor> callback);
 }

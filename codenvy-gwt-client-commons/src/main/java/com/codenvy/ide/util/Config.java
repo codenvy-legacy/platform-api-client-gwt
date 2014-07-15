@@ -12,7 +12,7 @@ package com.codenvy.ide.util;
 
 import com.codenvy.api.user.shared.dto.Attribute;
 import com.codenvy.api.user.shared.dto.Profile;
-import com.codenvy.api.workspace.shared.dto.Workspace;
+import com.codenvy.api.workspace.shared.dto.WorkspaceDescriptor;
 
 /**
  * A smattering of useful methods.
@@ -22,7 +22,7 @@ import com.codenvy.api.workspace.shared.dto.Workspace;
  */
 public class Config {
 
-    private static Workspace    _workspace;
+    private static WorkspaceDescriptor  _workspace;
     private static Profile      _profile;
 
     /**
@@ -123,7 +123,7 @@ public class Config {
      * @param workspace
      *         the Workspace to set
      */
-    public static void setCurrentWorkspace(Workspace workspace) {
+    public static void setCurrentWorkspace(WorkspaceDescriptor workspace) {
         _workspace = workspace;
     }
 
@@ -132,7 +132,7 @@ public class Config {
      *
      * @return workspace
      */
-    public static Workspace getCurrentWorkspace() {
+    public static WorkspaceDescriptor getCurrentWorkspace() {
         return _workspace;
     }
 

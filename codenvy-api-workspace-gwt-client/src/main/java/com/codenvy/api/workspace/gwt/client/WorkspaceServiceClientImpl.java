@@ -10,7 +10,7 @@
  *******************************************************************************/
 package com.codenvy.api.workspace.gwt.client;
 
-import com.codenvy.api.workspace.shared.dto.Workspace;
+import com.codenvy.api.workspace.shared.dto.WorkspaceDescriptor;
 import com.codenvy.ide.rest.AsyncRequestCallback;
 import com.codenvy.ide.rest.AsyncRequestFactory;
 import com.codenvy.ide.ui.loader.Loader;
@@ -42,7 +42,7 @@ public class WorkspaceServiceClientImpl implements WorkspaceServiceClient {
 
     /** {@inheritDoc} */
     @Override
-    public void getWorkspace(String wsId, AsyncRequestCallback<Workspace> callback) {
+    public void getWorkspace(String wsId, AsyncRequestCallback<WorkspaceDescriptor> callback) {
         asyncRequestFactory.createGetRequest(restContext + "/workspace/" + wsId)
                            .loader(loader)
                            .header(ACCEPT, APPLICATION_JSON)
