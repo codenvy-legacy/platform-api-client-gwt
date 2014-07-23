@@ -144,7 +144,7 @@ public class AnimationUtils {
 
     /** @see: {@link #enableTransitions(CSSStyleDeclaration, double)} */
     public static void enableTransitions(CSSStyleDeclaration style) {
-        enableTransitions(style, SHORT_TRANSITION_DURATION);
+        enableTransitions(style, MEDIUM_TRANSITION_DURATION);
     }
 
     /**
