@@ -10,8 +10,7 @@
  *******************************************************************************/
 package com.codenvy.api.user.gwt.client;
 
-import com.codenvy.api.user.shared.dto.Attribute;
-import com.codenvy.api.user.shared.dto.Profile;
+import com.codenvy.api.user.shared.dto.ProfileDescriptor;
 import com.codenvy.ide.rest.AsyncRequestCallback;
 
 import javax.validation.constraints.NotNull;
@@ -32,7 +31,7 @@ public interface UserProfileServiceClient {
      * @param filter
      * @param callback
      */
-    void getCurrentProfile(String filter, AsyncRequestCallback<Profile> callback);
+    void getCurrentProfile(String filter, AsyncRequestCallback<ProfileDescriptor> callback);
     
     /**
      * Update current user's profile.
@@ -40,7 +39,7 @@ public interface UserProfileServiceClient {
      * @param updates attributes to update
      * @param callback
      */
-    void updateCurrentProfile(@NotNull List<Attribute> updates, AsyncRequestCallback<Profile> callback);
+    void updateCurrentProfile(@NotNull Map<String, String> updates, AsyncRequestCallback<ProfileDescriptor> callback);
 
     /**
      * Get profile by id.
@@ -48,7 +47,7 @@ public interface UserProfileServiceClient {
      * @param id profile's id
      * @param callback
      */
-    void getProfileById(@NotNull String id, AsyncRequestCallback<Profile> callback);
+    void getProfileById(@NotNull String id, AsyncRequestCallback<ProfileDescriptor> callback);
 
     /**
      * Update profile.
@@ -57,7 +56,7 @@ public interface UserProfileServiceClient {
      * @param updates attributes to update
      * @param callback
      */
-    void updateProfile(@NotNull String id, List<Attribute> updates, AsyncRequestCallback<Profile> callback);
+    void updateProfile(@NotNull String id, Map<String, String> updates, AsyncRequestCallback<ProfileDescriptor> callback);
 
     /**
      * Update preferences.
@@ -65,5 +64,5 @@ public interface UserProfileServiceClient {
      * @param prefsToUpdate preferences to update
      * @param callback
      */
-    void updatePreferences(@NotNull Map<String, String> prefsToUpdate, AsyncRequestCallback<Profile> callback);
+    void updatePreferences(@NotNull Map<String, String> prefsToUpdate, AsyncRequestCallback<ProfileDescriptor> callback);
 }

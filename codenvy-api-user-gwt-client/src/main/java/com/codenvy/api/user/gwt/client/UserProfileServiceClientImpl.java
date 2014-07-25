@@ -10,11 +10,8 @@
  *******************************************************************************/
 package com.codenvy.api.user.gwt.client;
 
-import com.codenvy.api.user.shared.dto.Attribute;
-import com.codenvy.api.user.shared.dto.Profile;
+import com.codenvy.api.user.shared.dto.ProfileDescriptor;
 import com.codenvy.ide.MimeType;
-import com.codenvy.ide.collections.Array;
-import com.codenvy.ide.collections.Collections;
 import com.codenvy.ide.dto.DtoFactory;
 import com.codenvy.ide.json.JsonHelper;
 import com.codenvy.ide.rest.AsyncRequestCallback;
@@ -54,7 +51,7 @@ public class UserProfileServiceClientImpl implements UserProfileServiceClient {
 
     /** {@inheritDoc} */
     @Override
-    public void getCurrentProfile(String filter, AsyncRequestCallback<Profile> callback) {
+    public void getCurrentProfile(String filter, AsyncRequestCallback<ProfileDescriptor> callback) {
         String requestUrl = (filter != null && !filter.isEmpty()) ? PROFILE + "?filter=" + filter : PROFILE;
 
         loader.setMessage("Retrieving current user's profile...");
@@ -64,16 +61,15 @@ public class UserProfileServiceClientImpl implements UserProfileServiceClient {
 
     /** {@inheritDoc} */
     @Override
-    public void updateCurrentProfile(List<Attribute> updates, AsyncRequestCallback<Profile> callback) {
+    public void updateCurrentProfile(Map<String, String> updates, AsyncRequestCallback<ProfileDescriptor> callback) {
         loader.setMessage("Updating current user's profile...");
-        Array<Attribute> array = Collections.createArray(updates);
         asyncRequestFactory.createPostRequest(PROFILE, null).header(ACCEPT, MimeType.APPLICATION_JSON)
-                           .header(CONTENT_TYPE, MimeType.APPLICATION_JSON).data(dtoFactory.toJson(array)).loader(loader).send(callback);
+                           .header(CONTENT_TYPE, MimeType.APPLICATION_JSON).data(dtoFactory.toJson(updates)).loader(loader).send(callback);
     }
 
     /** {@inheritDoc} */
     @Override
-    public void getProfileById(String id, AsyncRequestCallback<Profile> callback) {
+    public void getProfileById(String id, AsyncRequestCallback<ProfileDescriptor> callback) {
         String requestUrl = PROFILE + id;
 
         loader.setMessage("Getting user's profile...");
@@ -82,18 +78,17 @@ public class UserProfileServiceClientImpl implements UserProfileServiceClient {
 
     /** {@inheritDoc} */
     @Override
-    public void updateProfile(String id, List<Attribute> updates, AsyncRequestCallback<Profile> callback) {
+    public void updateProfile(String id, Map<String, String> updates, AsyncRequestCallback<ProfileDescriptor> callback) {
         String requestUrl = PROFILE + id;
 
         loader.setMessage("Updating user's profile...");
-        Array<Attribute> array = Collections.createArray(updates);
         asyncRequestFactory.createPostRequest(requestUrl, null).header(ACCEPT, MimeType.APPLICATION_JSON)
-                           .header(CONTENT_TYPE, MimeType.APPLICATION_JSON).data(dtoFactory.toJson(array)).loader(loader).send(callback);
+                           .header(CONTENT_TYPE, MimeType.APPLICATION_JSON).data(dtoFactory.toJson(updates)).loader(loader).send(callback);
     }
 
     /** {@inheritDoc} */
     @Override
-    public void updatePreferences(Map<String, String> prefsToUpdate, AsyncRequestCallback<Profile> callback) {
+    public void updatePreferences(Map<String, String> prefsToUpdate, AsyncRequestCallback<ProfileDescriptor> callback) {
         final String data = JsonHelper.toJson(prefsToUpdate);
         asyncRequestFactory.createPostRequest(PREFS, null).header(ACCEPT, MimeType.APPLICATION_JSON)
                            .header(CONTENT_TYPE, MimeType.APPLICATION_JSON).data(data).loader(loader).send(callback);

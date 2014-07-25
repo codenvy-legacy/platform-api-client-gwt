@@ -227,7 +227,8 @@ public class MessageBusImpl implements MessageBus {
     public void onMessageReceived(MessageReceivedEvent event) {
         Message message = parseMessage(event.getMessage());
 
-        // http code 202 is "Accepted": The request has been accepted for processing, but the processing has not been completed.
+        // http code 202 is "Accepted": The request has been accepted for processing,
+        // but the processing has not been completed.
         // At this point, we ignore this code, since the request might or might not eventually be acted upon,
         // as it might be disallowed when processing actually takes place.
         if (message.getResponseCode() == 202) {

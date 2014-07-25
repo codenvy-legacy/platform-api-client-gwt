@@ -25,10 +25,7 @@ import com.codenvy.ide.collections.js.JsoStringSet;
 import com.google.gwt.core.client.GWT;
 
 import javax.annotation.Nullable;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
+import java.util.*;
 
 /** A set of static factory methods for lightweight collections. */
 public final class Collections {
