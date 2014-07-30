@@ -11,7 +11,8 @@
       Codenvy, S.A. - initial API and implementation
 
 -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <artifactId>codenvy-platform-api-gwt-client-parent</artifactId>
@@ -25,6 +26,11 @@
         <generated.test.sources.directory>${project.build.directory}/generated-test-sources/dto</generated.test.sources.directory>
     </properties>
     <dependencies>
+        <dependency>
+            <groupId>com.codenvy.platform-api</groupId>
+            <artifactId>codenvy-api-user</artifactId>
+            <version>${codenvy.platform-api.version}</version>
+        </dependency>
         <dependency>
             <groupId>com.codenvy.platform-api</groupId>
             <artifactId>codenvy-api-workspace</artifactId>
@@ -175,7 +181,8 @@
                             <mainClass>com.codenvy.dto.generator.DtoGenerator</mainClass>
                             <arguments>
                                 <argument>--dto_packages=com.codenvy.ide.dto.definitions</argument>
-                                <argument>--gen_file_name=${generated.test.sources.directory}/com/codenvy/ide/dto/DtoClientImpls.java</argument>
+                                <argument>--gen_file_name=${generated.test.sources.directory}/com/codenvy/ide/dto/DtoClientImpls.java
+                                </argument>
                                 <argument>--impl=client</argument>
                                 <argument>--package_base=${generated.test.sources.directory}/</argument>
                             </arguments>
@@ -280,16 +287,13 @@
                         <exclude>**/com/google/gwt/webworker/dtogen/DtoImplClientTemplate.java</exclude>
                         <exclude>**/com/google/gwt/webworker/dtogen/DtoTemplate.java</exclude>
                         <exclude>**/com/google/gwt/webworker/linker/DedicatedWorkerLinker.java</exclude>
-
                         <!-- IBM license -->
                         <exclude>**/com/codenvy/ide/runtime/CoreException.java</exclude>
                         <exclude>**/com/codenvy/ide/runtime/Status.java</exclude>
                         <exclude>**/com/codenvy/ide/runtime/IStatus.java</exclude>
                         <exclude>**/com/codenvy/ide/runtime/OperationCanceledException.java</exclude>
-
                         <!-- cddl1 license -->
                         <exclude>**/com/codenvy/ide/MimeType.java</exclude>
-
                         <!-- Resources -->
                         <exclude>**/com/google/gwt/webworker/linker/DedicatedWorkerTemplate.js</exclude>
                         <exclude>**/com/google/gwt/webworker/WebWorker.gwt.xml</exclude>

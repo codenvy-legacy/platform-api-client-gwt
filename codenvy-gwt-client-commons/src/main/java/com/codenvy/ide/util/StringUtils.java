@@ -25,6 +25,68 @@ import com.google.gwt.core.client.JsArrayString;
 /** Utility methods for string operations. */
 public class StringUtils {
 
+
+    public static String timeMlsToHumanReadable(double terminationTimeout) {
+        int ss = (int)(terminationTimeout / 1000);
+        int mm = 0;
+        if (ss >= 60) {
+            mm = ss / 60;
+            ss = ss % 60;
+        }
+        int hh = 0;
+        if (mm >= 60) {
+            hh = mm / 60;
+            mm = mm % 60;
+        }
+        int d = 0;
+        if (hh >= 24) {
+            d = hh / 24;
+            hh = hh % 24;
+        }
+        return String.valueOf("" + d + "d:" + getDoubleDigit(hh) + "h:" + getDoubleDigit(mm) + "m:" + getDoubleDigit(ss) + "s");
+    }
+
+
+    /** Get a double digit int from a single, e.g. 1 = "01", 2 = "02". */
+    public static String getDoubleDigit(int i) {
+        final String doubleDigitI;
+        switch (i) {
+            case 0:
+                doubleDigitI = "00";
+                break;
+            case 1:
+                doubleDigitI = "01";
+                break;
+            case 2:
+                doubleDigitI = "02";
+                break;
+            case 3:
+                doubleDigitI = "03";
+                break;
+            case 4:
+                doubleDigitI = "04";
+                break;
+            case 5:
+                doubleDigitI = "05";
+                break;
+            case 6:
+                doubleDigitI = "06";
+                break;
+            case 7:
+                doubleDigitI = "07";
+                break;
+            case 8:
+                doubleDigitI = "08";
+                break;
+            case 9:
+                doubleDigitI = "09";
+                break;
+            default:
+                doubleDigitI = Integer.toString(i);
+        }
+        return doubleDigitI;
+    }
+
     /**
      * Map [N] -> string of N spaces. Used by {@link #getSpaces} to cache strings
      * of spaces.
@@ -44,7 +106,7 @@ public class StringUtils {
 
     /**
      * @return largest n such that
-     *         {@code string1.substring(0, n).equals(string2.substring(0, n))}
+     * {@code string1.substring(0, n).equals(string2.substring(0, n))}
      */
     public static int findCommonPrefixLength(String string1, String string2) {
         int limit = Math.min(string1.length(), string2.length());
@@ -80,7 +142,7 @@ public class StringUtils {
      * @param suffix
      *         the suffix to find, may be null
      * @return true if s ends with suffix or both s and suffix are null, false
-     *         otherwise.
+     * otherwise.
      */
     public static boolean endsWithIgnoreCase(String s, String suffix) {
         if (s == null || suffix == null) {
@@ -146,7 +208,7 @@ public class StringUtils {
 
     /**
      * @return the length of the starting whitespace for the line, or the string
-     *         length if it is all whitespace
+     * length if it is all whitespace
      */
     public static int lengthOfStartingWhitespace(String s) {
         int n = s.length();
@@ -164,7 +226,7 @@ public class StringUtils {
 
     /**
      * @return first character in the string that is not a whitespace, or
-     *         {@code 0} if there is no such characters
+     * {@code 0} if there is no such characters
      */
     public static char firstNonWhitespaceCharacter(String s) {
         for (int i = 0, n = s.length(); i < n; ++i) {
@@ -178,7 +240,7 @@ public class StringUtils {
 
     /**
      * @return last character in the string that is not a whitespace, or
-     *         {@code 0} if there is no such characters
+     * {@code 0} if there is no such characters
      */
     public static char lastNonWhitespaceCharacter(String s) {
         for (int i = s.length() - 1; i >= 0; --i) {
@@ -243,7 +305,7 @@ public class StringUtils {
 
     /**
      * @return true, if both strings are empty or {@code null}, or if they are
-     *         equal
+     * equal
      */
     public static boolean equalStringsOrEmpty(String a, String b) {
         return nullToEmpty(a).equals(nullToEmpty(b));
@@ -358,7 +420,7 @@ public class StringUtils {
      *         add "..." to the end of the String before returning. Additionally,
      *         the ellipsis will only be added if maxLength is greater than 3.
      * @return the original string if it's length is less than or equal to
-     *         maxLength, otherwise a truncated string as mentioned above
+     * maxLength, otherwise a truncated string as mentioned above
      */
     public static String truncateAtMaxLength(String source, int maxLength,
                                              boolean addEllipsis) {
@@ -429,7 +491,7 @@ public class StringUtils {
      * @param end
      *         the ending index, exclusive
      * @return the specified substring, possibly adjusted in order to not
-     *         split unicode surrogate pairs
+     * split unicode surrogate pairs
      * @throws IndexOutOfBoundsException
      *         if the {@code begin} is negative,
      *         or {@code end} is larger than the length of {@code str}, or
