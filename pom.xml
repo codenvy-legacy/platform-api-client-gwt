@@ -20,7 +20,7 @@
     </parent>
     <groupId>com.codenvy.platform-api-gwt-client</groupId>
     <artifactId>codenvy-platform-api-gwt-client-parent</artifactId>
-    <version>0.10.0-SNAPSHOT</version>
+    <version>0.11.0-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>Codenvy Platform API :: GWT Client :: Parent</name>
     <modules>
