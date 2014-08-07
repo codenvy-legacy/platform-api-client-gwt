@@ -19,6 +19,8 @@ import com.codenvy.ide.collections.Array;
 import com.codenvy.ide.collections.StringMap;
 import com.codenvy.ide.rest.AsyncRequestCallback;
 
+import javax.annotation.Nullable;
+
 /**
  * Client for Project service.
  *
@@ -186,11 +188,11 @@ public interface ProjectServiceClient {
      * @param newName
      *         new name
      * @param newMediaType
-     *         new media type
+     *         new media type. May be <code>null</code>
      * @param callback
      *         the callback to use for the response
      */
-    public void rename(String path, String newName, String newMediaType, AsyncRequestCallback<Void> callback);
+    public void rename(String path, String newName, @Nullable String newMediaType, AsyncRequestCallback<Void> callback);
 
     /**
      * Import sources into project.

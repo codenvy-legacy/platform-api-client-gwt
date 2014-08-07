@@ -223,7 +223,10 @@ public class ProjectServiceClientImpl implements ProjectServiceClient {
 
     @Override
     public void rename(String path, String newName, String newMediaType, AsyncRequestCallback<Void> callback) {
-        final String requestUrl = RENAME + normalizePath(path) + "?name=" + newName + "&mediaType=" + newMediaType;
+        String requestUrl = RENAME + normalizePath(path) + "?name=" + newName;
+        if (newMediaType != null) {
+            requestUrl += "&mediaType=" + newMediaType;
+        }
         loader.setMessage("Renaming item...");
         asyncRequestFactory.createPostRequest(requestUrl, null)
                            .loader(loader)
@@ -248,7 +251,7 @@ public class ProjectServiceClientImpl implements ProjectServiceClient {
         loader.setMessage("Generating project...");
         //we need to send map, so don't use asyncRequestFactory
         AsyncRequest.build(RequestBuilder.POST, requestUrl).header(ACCEPT, MimeType.APPLICATION_JSON).
-                    header(CONTENTTYPE, MimeType.APPLICATION_JSON).loader(loader)
+                header(CONTENTTYPE, MimeType.APPLICATION_JSON).loader(loader)
                     .data(stringMapToJson(options)).send(
                 callback);
     }
