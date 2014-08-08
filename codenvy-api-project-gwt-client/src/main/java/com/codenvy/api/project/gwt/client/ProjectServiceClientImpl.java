@@ -53,6 +53,7 @@ public class ProjectServiceClientImpl implements ProjectServiceClient {
     private final String              GET_CHILDREN;
     private final String              GET_TREE;
     private final String              SEARCH;
+    private final String              SWITCH_VISIBILITY;
     private final Loader              loader;
     private final AsyncRequestFactory asyncRequestFactory;
 
@@ -75,6 +76,7 @@ public class ProjectServiceClientImpl implements ProjectServiceClient {
         GET_CHILDREN = restContext + "/project/" + workspaceId + "/children";
         GET_TREE = restContext + "/project/" + workspaceId + "/tree";
         SEARCH = restContext + "/project/" + workspaceId + "/search";
+        SWITCH_VISIBILITY = restContext + "/project/" + workspaceId + "/switch_visibility";
     }
 
     private static String stringMapToJson(StringMap<String> map) {
@@ -296,6 +298,17 @@ public class ProjectServiceClientImpl implements ProjectServiceClient {
         asyncRequestFactory.createGetRequest(requestUrl + queryParameters.toString().replaceFirst("&", "?"))
                            .header(ACCEPT, MimeType.APPLICATION_JSON)
                            .send(callback);
+    }
+    
+    /** {@inheritDoc} */
+    @Override
+    public void switchVisibility(String path, String visibility, AsyncRequestCallback<Void> callback) {
+        final String requestUrl = SWITCH_VISIBILITY + normalizePath(path) + "?visibility=" + visibility;
+        loader.setMessage("Switching visibility...");
+        asyncRequestFactory.createPostRequest(requestUrl, null)
+                           .loader(loader)
+                           .send(callback);
+
     }
 
     /**

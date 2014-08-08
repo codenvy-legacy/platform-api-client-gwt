@@ -253,4 +253,16 @@ public interface ProjectServiceClient {
      *         the callback to use for the response
      */
     public void search(QueryExpression expression, AsyncRequestCallback<Array<ItemReference>> callback);
+    
+    /**
+     * Switch visibility(public/private) of the project represented by it's path.
+     *
+     * @param path
+     *         path of the project to change visibility
+     * @param visibility
+     *         visibility to set
+     * @param callback
+     *         the callback to use for the response
+     */
+    public void switchVisibility(String path, String visibility, AsyncRequestCallback<Void> callback);
 }
