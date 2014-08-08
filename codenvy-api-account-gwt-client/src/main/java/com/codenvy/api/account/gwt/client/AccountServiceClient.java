@@ -1,0 +1,53 @@
+/*******************************************************************************
+ * Copyright (c) 2012-2014 Codenvy, S.A.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *   Codenvy, S.A. - initial API and implementation
+ *******************************************************************************/
+package com.codenvy.api.account.gwt.client;
+
+import com.codenvy.api.account.shared.dto.AccountDescriptor;
+import com.codenvy.api.account.shared.dto.MemberDescriptor;
+import com.codenvy.api.account.shared.dto.SubscriptionDescriptor;
+import com.codenvy.ide.collections.Array;
+import com.codenvy.ide.rest.AsyncRequestCallback;
+
+/**
+ * Client for IDE3 Subscription service.
+ *
+ * @author Sergii Leschenko
+ */
+public interface AccountServiceClient {
+
+    /**
+     * Get account by id.
+     *
+     * @param accountId
+     *         id of account
+     * @param callback
+     *         the callback to use for the response
+     */
+    void getAccountById(String accountId, AsyncRequestCallback<AccountDescriptor> callback);
+
+    /**
+     * Get memberships for current user
+     *
+     * @param callback
+     *         the callback to use for the response
+     */
+    void getMemberships(AsyncRequestCallback<Array<MemberDescriptor>> callback);
+
+    /**
+     * Get all subscriptions for .
+     *
+     * @param accountId
+     *         id of account
+     * @param callback
+     *         the callback to use for the response
+     */
+    void getSubscriptions(String accountId, AsyncRequestCallback<Array<SubscriptionDescriptor>> callback);
+}
