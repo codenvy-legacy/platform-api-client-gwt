@@ -10,6 +10,10 @@
  *******************************************************************************/
 package com.codenvy.api.project.gwt.client;
 
+import com.codenvy.api.core.ForbiddenException;
+import com.codenvy.api.core.NotFoundException;
+import com.codenvy.api.core.ServerException;
+import com.codenvy.api.project.server.Project;
 import com.codenvy.api.project.shared.dto.ImportSourceDescriptor;
 import com.codenvy.api.project.shared.dto.ItemReference;
 import com.codenvy.api.project.shared.dto.ProjectDescriptor;
@@ -18,6 +22,12 @@ import com.codenvy.api.project.shared.dto.TreeElement;
 import com.codenvy.ide.collections.Array;
 import com.codenvy.ide.collections.StringMap;
 import com.codenvy.ide.rest.AsyncRequestCallback;
+
+import javax.annotation.security.RolesAllowed;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.QueryParam;
 
 /**
  * Client for Project service.
@@ -251,4 +261,16 @@ public interface ProjectServiceClient {
      *         the callback to use for the response
      */
     public void search(QueryExpression expression, AsyncRequestCallback<Array<ItemReference>> callback);
+    
+    /**
+     * Switch visibility(public/private) of the project represented by it's path.
+     *
+     * @param path
+     *         path of the project to change visibility
+     * @param visibility
+     *         visibility to set
+     * @param callback
+     *         the callback to use for the response
+     */
+    public void switchVisibility(String path, String visibility, AsyncRequestCallback<Void> callback);
 }

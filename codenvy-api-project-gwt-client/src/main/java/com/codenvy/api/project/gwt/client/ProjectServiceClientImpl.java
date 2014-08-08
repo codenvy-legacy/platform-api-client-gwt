@@ -10,6 +10,10 @@
  *******************************************************************************/
 package com.codenvy.api.project.gwt.client;
 
+import com.codenvy.api.core.ForbiddenException;
+import com.codenvy.api.core.NotFoundException;
+import com.codenvy.api.core.ServerException;
+import com.codenvy.api.project.server.Project;
 import com.codenvy.api.project.shared.dto.ImportSourceDescriptor;
 import com.codenvy.api.project.shared.dto.ItemReference;
 import com.codenvy.api.project.shared.dto.ProjectDescriptor;
@@ -27,6 +31,12 @@ import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONString;
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
+
+import javax.annotation.security.RolesAllowed;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.QueryParam;
 
 import static com.codenvy.ide.rest.HTTPHeader.ACCEPT;
 import static com.codenvy.ide.rest.HTTPHeader.CONTENTTYPE;
@@ -53,6 +63,7 @@ public class ProjectServiceClientImpl implements ProjectServiceClient {
     private final String              GET_CHILDREN;
     private final String              GET_TREE;
     private final String              SEARCH;
+    private final String              SWITCH_VISIBILITY;
     private final Loader              loader;
     private final AsyncRequestFactory asyncRequestFactory;
 
@@ -75,6 +86,7 @@ public class ProjectServiceClientImpl implements ProjectServiceClient {
         GET_CHILDREN = restContext + "/project/" + workspaceId + "/children";
         GET_TREE = restContext + "/project/" + workspaceId + "/tree";
         SEARCH = restContext + "/project/" + workspaceId + "/search";
+        SWITCH_VISIBILITY = restContext + "/project/" + workspaceId + "/switch_visibility";
     }
 
     private static String stringMapToJson(StringMap<String> map) {
@@ -293,6 +305,17 @@ public class ProjectServiceClientImpl implements ProjectServiceClient {
         asyncRequestFactory.createGetRequest(requestUrl + queryParameters.toString().replaceFirst("&", "?"))
                            .header(ACCEPT, MimeType.APPLICATION_JSON)
                            .send(callback);
+    }
+    
+    /** {@inheritDoc} */
+    @Override
+    public void switchVisibility(String path, String visibility, AsyncRequestCallback<Void> callback) {
+        final String requestUrl = SWITCH_VISIBILITY + normalizePath(path) + "?visibility=" + visibility;
+        loader.setMessage("Switching visibility...");
+        asyncRequestFactory.createPostRequest(requestUrl, null)
+                           .loader(loader)
+                           .send(callback);
+
     }
 
     /**
