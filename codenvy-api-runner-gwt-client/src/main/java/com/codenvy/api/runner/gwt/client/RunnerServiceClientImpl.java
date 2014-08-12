@@ -12,6 +12,7 @@ package com.codenvy.api.runner.gwt.client;
 
 import com.codenvy.api.core.rest.shared.dto.Link;
 import com.codenvy.api.runner.dto.ApplicationProcessDescriptor;
+import com.codenvy.api.runner.dto.ResourcesDescriptor;
 import com.codenvy.api.runner.dto.RunOptions;
 import com.codenvy.api.runner.dto.RunnerDescriptor;
 import com.codenvy.ide.collections.Array;
@@ -83,6 +84,13 @@ public class RunnerServiceClientImpl implements RunnerServiceClient {
     @Override
     public void getRunners(AsyncRequestCallback<Array<RunnerDescriptor>> callback) {
         final String requestUrl = baseUrl + "/runner/" + workspaceId + "/available";
+        asyncRequestFactory.createGetRequest(requestUrl, false).send(callback);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public void getResources(AsyncRequestCallback<ResourcesDescriptor> callback) {
+        final String requestUrl = baseUrl + "/runner/" + workspaceId + "/resources";
         asyncRequestFactory.createGetRequest(requestUrl, false).send(callback);
     }
 

@@ -12,6 +12,7 @@ package com.codenvy.api.runner.gwt.client;
 
 import com.codenvy.api.core.rest.shared.dto.Link;
 import com.codenvy.api.runner.dto.ApplicationProcessDescriptor;
+import com.codenvy.api.runner.dto.ResourcesDescriptor;
 import com.codenvy.api.runner.dto.RunOptions;
 import com.codenvy.api.runner.dto.RunnerDescriptor;
 import com.codenvy.ide.collections.Array;
@@ -82,6 +83,14 @@ public interface RunnerServiceClient {
      *         the callback to use for the response
      */
     public void getRunners(AsyncRequestCallback<Array<RunnerDescriptor>> callback);
+
+    /**
+     * Get resources for user in current workspace.
+     *
+     * @param callback
+     *         the callback to use for the response
+     */
+    public void getResources(AsyncRequestCallback<ResourcesDescriptor> callback);
 
     /**
      * Get available runners.
