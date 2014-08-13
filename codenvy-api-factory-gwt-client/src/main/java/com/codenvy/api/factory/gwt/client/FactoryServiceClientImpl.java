@@ -13,17 +13,11 @@ package com.codenvy.api.factory.gwt.client;
 import com.codenvy.api.factory.dto.Factory;
 import com.codenvy.ide.MimeType;
 import com.codenvy.ide.dto.DtoFactory;
-import com.codenvy.ide.rest.AsyncRequest;
 import com.codenvy.ide.rest.AsyncRequestCallback;
 import com.codenvy.ide.rest.AsyncRequestFactory;
 import com.codenvy.ide.rest.HTTPHeader;
 import com.codenvy.ide.util.Config;
-import com.codenvy.ide.websocket.Message;
-import com.codenvy.ide.websocket.MessageBuilder;
 import com.codenvy.ide.websocket.MessageBus;
-import com.codenvy.ide.websocket.WebSocketException;
-import com.codenvy.ide.websocket.rest.RequestCallback;
-import com.google.gwt.http.client.RequestBuilder;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 

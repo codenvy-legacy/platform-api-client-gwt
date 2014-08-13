@@ -20,7 +20,6 @@ import com.codenvy.ide.ui.loader.Loader;
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
 
-import java.util.List;
 import java.util.Map;
 
 import static com.codenvy.ide.rest.HTTPHeader.ACCEPT;
@@ -28,7 +27,7 @@ import static com.codenvy.ide.rest.HTTPHeader.CONTENT_TYPE;
 
 /**
  * Implementation for {@link UserProfileServiceClient}.
- * 
+ *
  * @author Ann Shumilova
  */
 public class UserProfileServiceClientImpl implements UserProfileServiceClient {

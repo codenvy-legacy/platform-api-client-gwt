@@ -14,8 +14,6 @@ import com.codenvy.api.user.shared.dto.ProfileDescriptor;
 import com.codenvy.ide.rest.AsyncRequestCallback;
 
 import javax.validation.constraints.NotNull;
-
-import java.util.List;
 import java.util.Map;
 
 /**
