@@ -26,8 +26,23 @@ import com.google.gwt.core.client.JsArrayString;
 public class StringUtils {
 
 
-    public static String timeMlsToHumanReadable(double terminationTimeout) {
-        int ss = (int)(terminationTimeout / 1000);
+    /**
+     * Convert milliseconds to human readable format like 1d:10h:15m:07s
+     * @param timeInMs time in milliseconds
+     * @return formatted string
+     */
+    public static String timeMlsToHumanReadable(long timeInMs) {
+        return timeSecToHumanReadable(timeInMs / 1000);
+    }
+
+
+    /**
+     * Convert seconds to human readable format like 0d:00h:00m:07s
+     * @param timeInSec time in seconds
+     * @return formatted string
+     */
+    public static String timeSecToHumanReadable(long timeInSec) {
+        int ss = (int)timeInSec;
         int mm = 0;
         if (ss >= 60) {
             mm = ss / 60;
@@ -43,7 +58,18 @@ public class StringUtils {
             d = hh / 24;
             hh = hh % 24;
         }
-        return String.valueOf("" + d + "d:" + getDoubleDigit(hh) + "h:" + getDoubleDigit(mm) + "m:" + getDoubleDigit(ss) + "s");
+
+        if (d>0)
+            return String.valueOf(d + "d:" + getDoubleDigit(hh) + "h:" + getDoubleDigit(mm) + "m:" + getDoubleDigit(ss) + "s");
+
+        if (d == 0 && hh > 0)
+            return String.valueOf(hh + "h:" + getDoubleDigit(mm) + "m:" + getDoubleDigit(ss) + "s");
+
+        if (d==0 && hh == 0 && mm > 0)
+            return String.valueOf(mm + "m:" + getDoubleDigit(ss) + "s");
+
+
+        return String.valueOf(getDoubleDigit(ss) + "s");
     }
 
 
