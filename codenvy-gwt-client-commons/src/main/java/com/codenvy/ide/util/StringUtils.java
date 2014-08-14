@@ -27,7 +27,7 @@ public class StringUtils {
 
 
     /**
-     * Convert milliseconds to human readable format like 0d:00h:00m:07s
+     * Convert milliseconds to human readable format like 1d:10h:15m:07s
      * @param timeInMs time in milliseconds
      * @return formatted string
      */
@@ -58,7 +58,18 @@ public class StringUtils {
             d = hh / 24;
             hh = hh % 24;
         }
-        return String.valueOf("" + d + "d:" + getDoubleDigit(hh) + "h:" + getDoubleDigit(mm) + "m:" + getDoubleDigit(ss) + "s");
+
+        if (d>0)
+            return String.valueOf(d + "d:" + getDoubleDigit(hh) + "h:" + getDoubleDigit(mm) + "m:" + getDoubleDigit(ss) + "s");
+
+        if (d == 0 && hh > 0)
+            return String.valueOf(hh + "h:" + getDoubleDigit(mm) + "m:" + getDoubleDigit(ss) + "s");
+
+        if (d==0 && hh == 0 && mm > 0)
+            return String.valueOf(mm + "m:" + getDoubleDigit(ss) + "s");
+
+
+        return String.valueOf(getDoubleDigit(ss) + "s");
     }
 
 
