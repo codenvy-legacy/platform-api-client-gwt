@@ -10,10 +10,6 @@
  *******************************************************************************/
 package com.codenvy.api.project.gwt.client;
 
-import com.codenvy.api.core.ForbiddenException;
-import com.codenvy.api.core.NotFoundException;
-import com.codenvy.api.core.ServerException;
-import com.codenvy.api.project.server.Project;
 import com.codenvy.api.project.shared.dto.ImportSourceDescriptor;
 import com.codenvy.api.project.shared.dto.ItemReference;
 import com.codenvy.api.project.shared.dto.ProjectDescriptor;
@@ -26,17 +22,12 @@ import com.codenvy.ide.rest.AsyncRequest;
 import com.codenvy.ide.rest.AsyncRequestCallback;
 import com.codenvy.ide.rest.AsyncRequestFactory;
 import com.codenvy.ide.ui.loader.Loader;
+import com.codenvy.ide.util.loging.Log;
 import com.google.gwt.http.client.RequestBuilder;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONString;
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
-
-import javax.annotation.security.RolesAllowed;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.QueryParam;
 
 import static com.codenvy.ide.rest.HTTPHeader.ACCEPT;
 import static com.codenvy.ide.rest.HTTPHeader.CONTENTTYPE;
@@ -170,6 +161,12 @@ public class ProjectServiceClientImpl implements ProjectServiceClient {
     public void createFile(String parentPath, String name, String content, String contentType, AsyncRequestCallback<Void> callback) {
         final String requestUrl = FILE + normalizePath(parentPath) + "?name=" + name;
         loader.setMessage("Creating file...");
+        // com.google.gwt.http.client.RequestBuilder doesn't allow to send requests without "Content-type" header. If header isn't set then
+        // RequestBuilder adds "text/plain; charset=utf-8", seen javadocs for method send(). Let server resolve media type.
+        // Agreement with server side: send null/null means we not set mime-type on client side in this case mime-type will be resolved on server side
+        if (contentType == null) {
+            contentType = "null/null";
+        }
         asyncRequestFactory.createPostRequest(requestUrl, null)
                            .header(CONTENT_TYPE, contentType)
                            .data(content)
@@ -190,6 +187,12 @@ public class ProjectServiceClientImpl implements ProjectServiceClient {
     public void updateFile(String path, String content, String contentType, AsyncRequestCallback<Void> callback) {
         final String requestUrl = FILE + normalizePath(path);
         loader.setMessage("Updating file content...");
+        // com.google.gwt.http.client.RequestBuilder doesn't allow to send requests without "Content-type" header. If header isn't set then
+        // RequestBuilder adds "text/plain; charset=utf-8", seen javadocs for method send(). Let server resolve media type.
+        // Agreement with server side: send null/null means we not set mime-type on client side in this case mime-type will be resolved on server side
+        if (contentType == null) {
+            contentType = "null/null";
+        }
         asyncRequestFactory.createRequest(PUT, requestUrl, null, false)
                            .header(CONTENT_TYPE, contentType)
                            .data(content)
@@ -235,7 +238,10 @@ public class ProjectServiceClientImpl implements ProjectServiceClient {
 
     @Override
     public void rename(String path, String newName, String newMediaType, AsyncRequestCallback<Void> callback) {
-        final String requestUrl = RENAME + normalizePath(path) + "?name=" + newName + "&mediaType=" + newMediaType;
+        String requestUrl = RENAME + normalizePath(path) + "?name=" + newName;
+        if (newMediaType != null) {
+            requestUrl += ("&mediaType=" + newMediaType);
+        }
         loader.setMessage("Renaming item...");
         asyncRequestFactory.createPostRequest(requestUrl, null)
                            .loader(loader)
