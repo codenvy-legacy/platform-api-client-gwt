@@ -163,9 +163,10 @@ public class ProjectServiceClientImpl implements ProjectServiceClient {
         loader.setMessage("Creating file...");
         // com.google.gwt.http.client.RequestBuilder doesn't allow to send requests without "Content-type" header. If header isn't set then
         // RequestBuilder adds "text/plain; charset=utf-8", seen javadocs for method send(). Let server resolve media type.
-        // Agreement with server side: send null/null means we not set mime-type on client side in this case mime-type will be resolved on server side
+        // Agreement with server side: send "application/unknown" means we not set mime-type on client side in this case mime-type will be
+        // resolved on server side
         if (contentType == null) {
-            contentType = "null/null";
+            contentType = "application/unknown";
         }
         asyncRequestFactory.createPostRequest(requestUrl, null)
                            .header(CONTENT_TYPE, contentType)
@@ -189,9 +190,10 @@ public class ProjectServiceClientImpl implements ProjectServiceClient {
         loader.setMessage("Updating file content...");
         // com.google.gwt.http.client.RequestBuilder doesn't allow to send requests without "Content-type" header. If header isn't set then
         // RequestBuilder adds "text/plain; charset=utf-8", seen javadocs for method send(). Let server resolve media type.
-        // Agreement with server side: send null/null means we not set mime-type on client side in this case mime-type will be resolved on server side
+        // Agreement with server side: send "application/unknown" means we not set mime-type on client side in this case mime-type will be
+        // resolved on server side
         if (contentType == null) {
-            contentType = "null/null";
+            contentType = "application/unknown";
         }
         asyncRequestFactory.createRequest(PUT, requestUrl, null, false)
                            .header(CONTENT_TYPE, contentType)
