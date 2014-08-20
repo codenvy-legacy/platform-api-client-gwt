@@ -10,7 +10,9 @@
  *******************************************************************************/
 package com.codenvy.api.workspace.gwt.client;
 
+import com.codenvy.api.workspace.shared.dto.MemberDescriptor;
 import com.codenvy.api.workspace.shared.dto.WorkspaceDescriptor;
+import com.codenvy.ide.collections.Array;
 import com.codenvy.ide.rest.AsyncRequestCallback;
 
 /**
@@ -22,8 +24,16 @@ public interface WorkspaceServiceClient {
     /**
      * Get workspace information by ID.
      *
-     * @param wsId workspace's id
+     * @param wsId
+     *         workspace's id
      * @param callback
      */
     public void getWorkspace(String wsId, AsyncRequestCallback<WorkspaceDescriptor> callback);
+
+    /**
+     * Get membership of current user in the given workspace.
+     *
+     * @param callback
+     */
+    public void getMembership(String wsId, AsyncRequestCallback<MemberDescriptor> callback);
 }
