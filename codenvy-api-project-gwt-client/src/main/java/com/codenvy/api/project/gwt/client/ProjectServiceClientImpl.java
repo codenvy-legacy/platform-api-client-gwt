@@ -160,6 +160,13 @@ public class ProjectServiceClientImpl implements ProjectServiceClient {
     public void createFile(String parentPath, String name, String content, String contentType, AsyncRequestCallback<Void> callback) {
         final String requestUrl = FILE + normalizePath(parentPath) + "?name=" + name;
         loader.setMessage("Creating file...");
+        // com.google.gwt.http.client.RequestBuilder doesn't allow to send requests without "Content-type" header. If header isn't set then
+        // RequestBuilder adds "text/plain; charset=utf-8", seen javadocs for method send(). Let server resolve media type.
+        // Agreement with server side: send "application/unknown" means we not set mime-type on client side in this case mime-type will be
+        // resolved on server side
+        if (contentType == null) {
+            contentType = "application/unknown";
+        }
         asyncRequestFactory.createPostRequest(requestUrl, null)
                            .header(CONTENT_TYPE, contentType)
                            .data(content)
@@ -180,6 +187,13 @@ public class ProjectServiceClientImpl implements ProjectServiceClient {
     public void updateFile(String path, String content, String contentType, AsyncRequestCallback<Void> callback) {
         final String requestUrl = FILE + normalizePath(path);
         loader.setMessage("Updating file content...");
+        // com.google.gwt.http.client.RequestBuilder doesn't allow to send requests without "Content-type" header. If header isn't set then
+        // RequestBuilder adds "text/plain; charset=utf-8", seen javadocs for method send(). Let server resolve media type.
+        // Agreement with server side: send "application/unknown" means we not set mime-type on client side in this case mime-type will be
+        // resolved on server side
+        if (contentType == null) {
+            contentType = "application/unknown";
+        }
         asyncRequestFactory.createRequest(PUT, requestUrl, null, false)
                            .header(CONTENT_TYPE, contentType)
                            .data(content)
@@ -299,7 +313,7 @@ public class ProjectServiceClientImpl implements ProjectServiceClient {
                            .header(ACCEPT, MimeType.APPLICATION_JSON)
                            .send(callback);
     }
-    
+
     /** {@inheritDoc} */
     @Override
     public void switchVisibility(String path, String visibility, AsyncRequestCallback<Void> callback) {
