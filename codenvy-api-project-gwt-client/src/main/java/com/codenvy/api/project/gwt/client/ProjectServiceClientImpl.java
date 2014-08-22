@@ -22,7 +22,6 @@ import com.codenvy.ide.rest.AsyncRequest;
 import com.codenvy.ide.rest.AsyncRequestCallback;
 import com.codenvy.ide.rest.AsyncRequestFactory;
 import com.codenvy.ide.ui.loader.Loader;
-import com.codenvy.ide.util.loging.Log;
 import com.google.gwt.http.client.RequestBuilder;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONString;
@@ -242,7 +241,7 @@ public class ProjectServiceClientImpl implements ProjectServiceClient {
     public void rename(String path, String newName, String newMediaType, AsyncRequestCallback<Void> callback) {
         String requestUrl = RENAME + normalizePath(path) + "?name=" + newName;
         if (newMediaType != null) {
-            requestUrl += ("&mediaType=" + newMediaType);
+            requestUrl += "&mediaType=" + newMediaType;
         }
         loader.setMessage("Renaming item...");
         asyncRequestFactory.createPostRequest(requestUrl, null)
@@ -268,7 +267,7 @@ public class ProjectServiceClientImpl implements ProjectServiceClient {
         loader.setMessage("Generating project...");
         //we need to send map, so don't use asyncRequestFactory
         AsyncRequest.build(RequestBuilder.POST, requestUrl).header(ACCEPT, MimeType.APPLICATION_JSON).
-                    header(CONTENTTYPE, MimeType.APPLICATION_JSON).loader(loader)
+                header(CONTENTTYPE, MimeType.APPLICATION_JSON).loader(loader)
                     .data(stringMapToJson(options)).send(
                 callback);
     }
@@ -314,7 +313,7 @@ public class ProjectServiceClientImpl implements ProjectServiceClient {
                            .header(ACCEPT, MimeType.APPLICATION_JSON)
                            .send(callback);
     }
-    
+
     /** {@inheritDoc} */
     @Override
     public void switchVisibility(String path, String visibility, AsyncRequestCallback<Void> callback) {
