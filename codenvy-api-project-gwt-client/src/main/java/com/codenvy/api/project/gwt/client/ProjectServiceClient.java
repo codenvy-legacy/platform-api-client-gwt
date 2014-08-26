@@ -30,12 +30,29 @@ import javax.annotation.Nullable;
 public interface ProjectServiceClient {
 
     /**
-     * Get all projects.
+     * Get all projects in current workspace.
      *
      * @param callback
      *         the callback to use for the response
      */
     public void getProjects(AsyncRequestCallback<Array<ProjectReference>> callback);
+
+    /**
+     * Get all projects in specific workspace.
+     *
+     * @param callback
+     *         the callback to use for the response
+     */
+    public void getProjectsInSpecificWorkspace(String wsId, AsyncRequestCallback<Array<ProjectReference>> callback);
+
+    /**
+     * Clone project from some workspace.
+     *
+     * @param callback
+     *         the callback to use for the response
+     */
+    public void cloneProjectToCurrentWorkspace(String srcWorkspaceId, String srcProjectPath, String newNameForProject,
+                                               AsyncRequestCallback<String> callback);
 
     /**
      * Get project.
@@ -253,7 +270,7 @@ public interface ProjectServiceClient {
      *         the callback to use for the response
      */
     public void search(QueryExpression expression, AsyncRequestCallback<Array<ItemReference>> callback);
-    
+
     /**
      * Switch visibility(public/private) of the project represented by it's path.
      *
