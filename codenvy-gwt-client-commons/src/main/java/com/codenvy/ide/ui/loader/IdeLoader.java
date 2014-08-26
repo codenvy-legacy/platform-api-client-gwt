@@ -23,6 +23,7 @@ import com.google.inject.Inject;
  */
 public class IdeLoader extends Loader {
     private PopupPanel loader;
+    private Grid       grid;
 
     /**
      * Create loader.
@@ -36,11 +37,9 @@ public class IdeLoader extends Loader {
         FlowPanel container = new FlowPanel();
         HTML pinionWidget = new HTML("<i></i><i></i>");
         pinionWidget.getElement().setClassName(resources.Css().pinion());
-        Grid grid = new Grid(1, 2);
+        grid = new Grid(1, 2);
         grid.setWidget(0, 0, pinionWidget);
-        grid.setText(0, 1, getMessage());
         container.add(grid);
-
         loader.add(container);
         loader.ensureDebugId("loader");
     }
@@ -48,6 +47,9 @@ public class IdeLoader extends Loader {
     /** {@inheritDoc} */
     @Override
     public void show() {
+        // Update message
+        grid.setText(0, 1, getMessage());
+
         loader.center();
         loader.show();
     }
