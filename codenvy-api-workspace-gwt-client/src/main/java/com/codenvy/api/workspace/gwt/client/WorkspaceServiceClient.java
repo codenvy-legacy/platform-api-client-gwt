@@ -36,4 +36,11 @@ public interface WorkspaceServiceClient {
      * @param callback
      */
     public void getMembership(String wsId, AsyncRequestCallback<MemberDescriptor> callback);
+
+    /**
+     * Get memberships of current user.
+     *
+     * @param callback
+     */
+    public void getMemberships(AsyncRequestCallback<Array<MemberDescriptor>> callback);
 }

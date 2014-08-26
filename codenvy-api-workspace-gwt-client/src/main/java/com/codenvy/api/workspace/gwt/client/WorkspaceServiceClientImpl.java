@@ -59,4 +59,14 @@ public class WorkspaceServiceClientImpl implements WorkspaceServiceClient {
                            .header(ACCEPT, APPLICATION_JSON)
                            .send(callback);
     }
+
+    /** {@inheritDoc} */
+    @Override
+    public void getMemberships(AsyncRequestCallback<Array<MemberDescriptor>> callback) {
+        loader.setMessage("Getting memberships");
+        asyncRequestFactory.createGetRequest(restContext + "/workspace/all")
+                           .loader(loader)
+                           .header(ACCEPT, APPLICATION_JSON)
+                           .send(callback);
+    }
 }
