@@ -42,10 +42,12 @@ import static com.google.gwt.http.client.RequestBuilder.PUT;
  */
 public class ProjectServiceClientImpl implements ProjectServiceClient {
     private final String              PROJECT;
+    private final String              PROJECTS_IN_SPECIFIC_WORKSPACE;
     private final String              MODULES;
     private final String              FILE;
     private final String              FOLDER;
     private final String              COPY;
+    private final String              CLONE;
     private final String              MOVE;
     private final String              RENAME;
     private final String              IMPORT_PROJECT;
@@ -65,10 +67,12 @@ public class ProjectServiceClientImpl implements ProjectServiceClient {
         this.loader = loader;
         this.asyncRequestFactory = asyncRequestFactory;
         PROJECT = restContext + "/project/" + workspaceId;
+        PROJECTS_IN_SPECIFIC_WORKSPACE = restContext + "/project";
         MODULES = restContext + "/project/" + workspaceId + "/modules";
         FILE = restContext + "/project/" + workspaceId + "/file";
         FOLDER = restContext + "/project/" + workspaceId + "/folder";
         COPY = restContext + "/project/" + workspaceId + "/copy";
+        CLONE = restContext + "/vfs/" + workspaceId + "/v2/clone";
         MOVE = restContext + "/project/" + workspaceId + "/move";
         RENAME = restContext + "/project/" + workspaceId + "/rename";
         IMPORT_PROJECT = restContext + "/project/" + workspaceId + "/import";
@@ -103,6 +107,35 @@ public class ProjectServiceClientImpl implements ProjectServiceClient {
                            .loader(loader)
                            .send(callback);
     }
+
+    @Override
+    public void getProjectsInSpecificWorkspace(String wsId, AsyncRequestCallback<Array<ProjectReference>> callback) {
+        final String requestUrl = PROJECTS_IN_SPECIFIC_WORKSPACE + "/" + wsId;
+        loader.setMessage("Getting projects...");
+        asyncRequestFactory.createGetRequest(requestUrl)
+                           .header(ACCEPT, MimeType.APPLICATION_JSON)
+                           .loader(loader)
+                           .send(callback);
+    }
+
+    @Override
+    public void cloneProjectToCurrentWorkspace(String srcWorkspaceId, String srcProjectPath, String newNameForProject,
+                                               AsyncRequestCallback<String> callback) {
+        final String requestUrl = CLONE + "?srcVfsId=" + srcWorkspaceId +
+                                  "&srcPath=" + srcProjectPath +
+                                  "&parentPath=/" +
+                                  "&name=" + newNameForProject;
+        loader.setMessage("Cloning project...");
+
+        asyncRequestFactory.createPostRequest(requestUrl, null)
+                           .header(ACCEPT, MimeType.APPLICATION_JSON)
+                           .loader(loader)
+                           .send(callback);
+    }
+
+    private native void console(String str) /*-{
+        console.log(str);
+    }-*/;
 
     @Override
     public void getProject(String path, AsyncRequestCallback<ProjectDescriptor> callback) {
