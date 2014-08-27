@@ -14,11 +14,17 @@ package com.codenvy.ide.rest;
 
 public interface AsyncRequestLoader {
 
-    /** show something */
+    /** show something with default message */
     void show();
 
+    /** show something with custom message */
+    void show(String message);
 
-    /** hide this */
+
+    /** hide this with default message */
     void hide();
+
+    /** hide this with custom message */
+    void hide(String message);
 
 }

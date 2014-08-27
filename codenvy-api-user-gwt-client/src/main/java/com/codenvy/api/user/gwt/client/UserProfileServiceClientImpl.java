@@ -53,17 +53,21 @@ public class UserProfileServiceClientImpl implements UserProfileServiceClient {
     public void getCurrentProfile(String filter, AsyncRequestCallback<ProfileDescriptor> callback) {
         String requestUrl = (filter != null && !filter.isEmpty()) ? PROFILE + "?filter=" + filter : PROFILE;
 
-        loader.setMessage("Retrieving current user's profile...");
-
-        asyncRequestFactory.createGetRequest(requestUrl).header(ACCEPT, MimeType.APPLICATION_JSON).loader(loader).send(callback);
+        asyncRequestFactory.createGetRequest(requestUrl)
+                           .header(ACCEPT, MimeType.APPLICATION_JSON)
+                           .loader(loader, "Retrieving current user's profile...")
+                           .send(callback);
     }
 
     /** {@inheritDoc} */
     @Override
     public void updateCurrentProfile(Map<String, String> updates, AsyncRequestCallback<ProfileDescriptor> callback) {
-        loader.setMessage("Updating current user's profile...");
-        asyncRequestFactory.createPostRequest(PROFILE, null).header(ACCEPT, MimeType.APPLICATION_JSON)
-                           .header(CONTENT_TYPE, MimeType.APPLICATION_JSON).data(dtoFactory.toJson(updates)).loader(loader).send(callback);
+        asyncRequestFactory.createPostRequest(PROFILE, null)
+                           .header(ACCEPT, MimeType.APPLICATION_JSON)
+                           .header(CONTENT_TYPE, MimeType.APPLICATION_JSON)
+                           .data(dtoFactory.toJson(updates))
+                           .loader(loader, "Updating current user's profile...")
+                           .send(callback);
     }
 
     /** {@inheritDoc} */
@@ -71,8 +75,10 @@ public class UserProfileServiceClientImpl implements UserProfileServiceClient {
     public void getProfileById(String id, AsyncRequestCallback<ProfileDescriptor> callback) {
         String requestUrl = PROFILE + id;
 
-        loader.setMessage("Getting user's profile...");
-        asyncRequestFactory.createGetRequest(requestUrl).header(ACCEPT, MimeType.APPLICATION_JSON).loader(loader).send(callback);
+        asyncRequestFactory.createGetRequest(requestUrl)
+                           .header(ACCEPT, MimeType.APPLICATION_JSON)
+                           .loader(loader, "Getting user's profile...")
+                           .send(callback);
     }
 
     /** {@inheritDoc} */
@@ -80,9 +86,12 @@ public class UserProfileServiceClientImpl implements UserProfileServiceClient {
     public void updateProfile(String id, Map<String, String> updates, AsyncRequestCallback<ProfileDescriptor> callback) {
         String requestUrl = PROFILE + id;
 
-        loader.setMessage("Updating user's profile...");
-        asyncRequestFactory.createPostRequest(requestUrl, null).header(ACCEPT, MimeType.APPLICATION_JSON)
-                           .header(CONTENT_TYPE, MimeType.APPLICATION_JSON).data(dtoFactory.toJson(updates)).loader(loader).send(callback);
+        asyncRequestFactory.createPostRequest(requestUrl, null)
+                           .header(ACCEPT, MimeType.APPLICATION_JSON)
+                           .header(CONTENT_TYPE, MimeType.APPLICATION_JSON)
+                           .data(dtoFactory.toJson(updates))
+                           .loader(loader, "Updating user's profile...")
+                           .send(callback);
     }
 
     /** {@inheritDoc} */

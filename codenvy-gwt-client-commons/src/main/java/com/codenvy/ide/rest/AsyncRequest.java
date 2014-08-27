@@ -27,6 +27,7 @@ public class AsyncRequest {
     protected RequestBuilder     builder;
     protected AsyncRequestLoader loader;
     protected boolean            async;
+    protected String             loaderMessage;
     protected int delay = 5000;
     protected RequestStatusHandler    handler;
     protected String                  requestStatusUrl;
@@ -218,6 +219,12 @@ public class AsyncRequest {
         return this;
     }
 
+    public final AsyncRequest loader(AsyncRequestLoader loader, String loaderMessage) {
+        this.loader = loader;
+        this.loaderMessage = loaderMessage;
+        return this;
+    }
+
     /**
      * Set delay between requests to async REST Service<br>
      * (Default: 5000 ms).
@@ -243,10 +250,16 @@ public class AsyncRequest {
     }
 
     private void sendRequest(AsyncRequestCallback<?> callback) throws RequestException {
-        callback.setLoader(loader);
+        callback.setLoader(loader, loaderMessage);
         callback.setRequest(this);
         builder.setCallback(callback);
-        loader.show();
+
+        if (loaderMessage == null) {
+            loader.show();
+        } else {
+            loader.show(loaderMessage);
+        }
+
         builder.send();
     }
 
@@ -279,10 +292,22 @@ public class AsyncRequest {
     }
 
     private class EmptyLoader implements AsyncRequestLoader {
+        @Override
         public void hide() {
         }
 
+        @Override
+        public void hide(String message) {
+
+        }
+
+        @Override
         public void show() {
+        }
+
+        @Override
+        public void show(String message) {
+
         }
     }
 

@@ -101,20 +101,18 @@ public class ProjectServiceClientImpl implements ProjectServiceClient {
     @Override
     public void getProjects(AsyncRequestCallback<Array<ProjectReference>> callback) {
         final String requestUrl = PROJECT;
-        loader.setMessage("Getting projects...");
         asyncRequestFactory.createGetRequest(requestUrl)
                            .header(ACCEPT, MimeType.APPLICATION_JSON)
-                           .loader(loader)
+                           .loader(loader, "Getting projects...")
                            .send(callback);
     }
 
     @Override
     public void getProjectsInSpecificWorkspace(String wsId, AsyncRequestCallback<Array<ProjectReference>> callback) {
         final String requestUrl = PROJECTS_IN_SPECIFIC_WORKSPACE + "/" + wsId;
-        loader.setMessage("Getting projects...");
         asyncRequestFactory.createGetRequest(requestUrl)
                            .header(ACCEPT, MimeType.APPLICATION_JSON)
-                           .loader(loader)
+                           .loader(loader, "Getting projects...")
                            .send(callback);
     }
 
@@ -125,45 +123,37 @@ public class ProjectServiceClientImpl implements ProjectServiceClient {
                                   "&srcPath=" + srcProjectPath +
                                   "&parentPath=/" +
                                   "&name=" + newNameForProject;
-        loader.setMessage("Cloning project...");
 
         asyncRequestFactory.createPostRequest(requestUrl, null)
                            .header(ACCEPT, MimeType.APPLICATION_JSON)
-                           .loader(loader)
+                           .loader(loader, "Cloning project...")
                            .send(callback);
     }
-
-    private native void console(String str) /*-{
-        console.log(str);
-    }-*/;
 
     @Override
     public void getProject(String path, AsyncRequestCallback<ProjectDescriptor> callback) {
         final String requestUrl = PROJECT + normalizePath(path);
-        loader.setMessage("Getting project...");
         asyncRequestFactory.createGetRequest(requestUrl)
                            .header(ACCEPT, MimeType.APPLICATION_JSON)
-                           .loader(loader)
+                           .loader(loader, "Getting project...")
                            .send(callback);
     }
 
     @Override
     public void createProject(String name, ProjectDescriptor descriptor, AsyncRequestCallback<ProjectDescriptor> callback) {
         final String requestUrl = PROJECT + "?name=" + name;
-        loader.setMessage("Creating project...");
         asyncRequestFactory.createPostRequest(requestUrl, descriptor)
                            .header(ACCEPT, MimeType.APPLICATION_JSON)
-                           .loader(loader)
+                           .loader(loader, "Creating project...")
                            .send(callback);
     }
 
     @Override
     public void getModules(String path, AsyncRequestCallback<Array<ProjectDescriptor>> callback) {
         final String requestUrl = MODULES + normalizePath(path);
-        loader.setMessage("Getting modules...");
         asyncRequestFactory.createGetRequest(requestUrl)
                            .header(ACCEPT, MimeType.APPLICATION_JSON)
-                           .loader(loader)
+                           .loader(loader, "Getting modules...")
                            .send(callback);
     }
 
@@ -171,28 +161,25 @@ public class ProjectServiceClientImpl implements ProjectServiceClient {
     public void createModule(String parentProjectPath, String name, ProjectDescriptor descriptor,
                              AsyncRequestCallback<ProjectDescriptor> callback) {
         final String requestUrl = PROJECT + normalizePath(parentProjectPath) + "?name=" + name;
-        loader.setMessage("Creating module...");
         asyncRequestFactory.createPostRequest(requestUrl, descriptor)
                            .header(ACCEPT, MimeType.APPLICATION_JSON)
-                           .loader(loader)
+                           .loader(loader, "Creating module...")
                            .send(callback);
     }
 
     @Override
     public void updateProject(String path, ProjectDescriptor descriptor, AsyncRequestCallback<ProjectDescriptor> callback) {
         final String requestUrl = PROJECT + normalizePath(path);
-        loader.setMessage("Updating project...");
         asyncRequestFactory.createRequest(PUT, requestUrl, descriptor, false)
                            .header(CONTENT_TYPE, MimeType.APPLICATION_JSON)
                            .header(ACCEPT, MimeType.APPLICATION_JSON)
-                           .loader(loader)
+                           .loader(loader, "Updating project...")
                            .send(callback);
     }
 
     @Override
     public void createFile(String parentPath, String name, String content, String contentType, AsyncRequestCallback<Void> callback) {
         final String requestUrl = FILE + normalizePath(parentPath) + "?name=" + name;
-        loader.setMessage("Creating file...");
         // com.google.gwt.http.client.RequestBuilder doesn't allow to send requests without "Content-type" header. If header isn't set then
         // RequestBuilder adds "text/plain; charset=utf-8", seen javadocs for method send(). Let server resolve media type.
         // Agreement with server side: send "application/unknown" means we not set mime-type on client side in this case mime-type will be
@@ -203,23 +190,21 @@ public class ProjectServiceClientImpl implements ProjectServiceClient {
         asyncRequestFactory.createPostRequest(requestUrl, null)
                            .header(CONTENT_TYPE, contentType)
                            .data(content)
-                           .loader(loader)
+                           .loader(loader, "Creating file...")
                            .send(callback);
     }
 
     @Override
     public void getFileContent(String path, AsyncRequestCallback<String> callback) {
         final String requestUrl = FILE + normalizePath(path);
-        loader.setMessage("Loading file content...");
         asyncRequestFactory.createGetRequest(requestUrl)
-                           .loader(loader)
+                           .loader(loader, "Loading file content...")
                            .send(callback);
     }
 
     @Override
     public void updateFile(String path, String content, String contentType, AsyncRequestCallback<Void> callback) {
         final String requestUrl = FILE + normalizePath(path);
-        loader.setMessage("Updating file content...");
         // com.google.gwt.http.client.RequestBuilder doesn't allow to send requests without "Content-type" header. If header isn't set then
         // RequestBuilder adds "text/plain; charset=utf-8", seen javadocs for method send(). Let server resolve media type.
         // Agreement with server side: send "application/unknown" means we not set mime-type on client side in this case mime-type will be
@@ -230,43 +215,39 @@ public class ProjectServiceClientImpl implements ProjectServiceClient {
         asyncRequestFactory.createRequest(PUT, requestUrl, null, false)
                            .header(CONTENT_TYPE, contentType)
                            .data(content)
-                           .loader(loader)
+                           .loader(loader, "Updating file content...")
                            .send(callback);
     }
 
     @Override
     public void createFolder(String path, AsyncRequestCallback<Void> callback) {
         final String requestUrl = FOLDER + normalizePath(path);
-        loader.setMessage("Creating folder...");
         asyncRequestFactory.createPostRequest(requestUrl, null)
-                           .loader(loader)
+                           .loader(loader, "Creating folder...")
                            .send(callback);
     }
 
     @Override
     public void delete(String path, AsyncRequestCallback<Void> callback) {
         final String requestUrl = PROJECT + normalizePath(path);
-        loader.setMessage("Deleting project...");
         asyncRequestFactory.createRequest(DELETE, requestUrl, null, false)
-                           .loader(loader)
+                           .loader(loader, "Deleting project...")
                            .send(callback);
     }
 
     @Override
     public void copy(String path, String newParentPath, AsyncRequestCallback<Void> callback) {
         final String requestUrl = COPY + normalizePath(path) + "?to=" + newParentPath;
-        loader.setMessage("Copying item...");
         asyncRequestFactory.createPostRequest(requestUrl, null)
-                           .loader(loader)
+                           .loader(loader, "Copying item...")
                            .send(callback);
     }
 
     @Override
     public void move(String path, String newParentPath, AsyncRequestCallback<Void> callback) {
         final String requestUrl = MOVE + normalizePath(path) + "?to=" + newParentPath;
-        loader.setMessage("Moving item...");
         asyncRequestFactory.createPostRequest(requestUrl, null)
-                           .loader(loader)
+                           .loader(loader, "Moving item...")
                            .send(callback);
     }
 
@@ -276,9 +257,8 @@ public class ProjectServiceClientImpl implements ProjectServiceClient {
         if (newMediaType != null) {
             requestUrl += "&mediaType=" + newMediaType;
         }
-        loader.setMessage("Renaming item...");
         asyncRequestFactory.createPostRequest(requestUrl, null)
-                           .loader(loader)
+                           .loader(loader, "Renaming item...")
                            .send(callback);
     }
 
@@ -286,10 +266,9 @@ public class ProjectServiceClientImpl implements ProjectServiceClient {
     public void importProject(String path, ImportSourceDescriptor importSourceDescriptor,
                               AsyncRequestCallback<ProjectDescriptor> callback) {
         final String requestUrl = IMPORT_PROJECT + normalizePath(path);
-        loader.setMessage("Importing sources into project...");
         asyncRequestFactory.createPostRequest(requestUrl, importSourceDescriptor)
                            .header(ACCEPT, MimeType.APPLICATION_JSON)
-                           .loader(loader)
+                           .loader(loader, "Importing sources into project...")
                            .send(callback);
     }
 
@@ -297,12 +276,12 @@ public class ProjectServiceClientImpl implements ProjectServiceClient {
     public void generateProject(String path, String generatorName, StringMap<String> options,
                                 AsyncRequestCallback<ProjectDescriptor> callback) {
         final String requestUrl = GENERATE_PROJECT + normalizePath(path) + "?generator=" + generatorName;
-        loader.setMessage("Generating project...");
         //we need to send map, so don't use asyncRequestFactory
         AsyncRequest.build(RequestBuilder.POST, requestUrl).header(ACCEPT, MimeType.APPLICATION_JSON).
-                header(CONTENTTYPE, MimeType.APPLICATION_JSON).loader(loader)
-                    .data(stringMapToJson(options)).send(
-                callback);
+                header(CONTENTTYPE, MimeType.APPLICATION_JSON)
+                    .loader(loader, "Generating project...")
+                    .data(stringMapToJson(options))
+                    .send(callback);
     }
 
     @Override
@@ -351,9 +330,8 @@ public class ProjectServiceClientImpl implements ProjectServiceClient {
     @Override
     public void switchVisibility(String path, String visibility, AsyncRequestCallback<Void> callback) {
         final String requestUrl = SWITCH_VISIBILITY + normalizePath(path) + "?visibility=" + visibility;
-        loader.setMessage("Switching visibility...");
         asyncRequestFactory.createPostRequest(requestUrl, null)
-                           .loader(loader)
+                           .loader(loader, "Switching visibility...")
                            .send(callback);
 
     }

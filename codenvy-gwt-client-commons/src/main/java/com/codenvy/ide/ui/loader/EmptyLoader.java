@@ -13,9 +13,21 @@ package com.codenvy.ide.ui.loader;
 /** @author <a href="mailto:gavrikvetal@gmail.com">Vitaliy Gulyy</a> */
 public class EmptyLoader extends Loader {
 
+    @Override
     public void hide() {
     }
 
+    @Override
+    public void hide(String message) {
+
+    }
+
+    @Override
     public void show() {
+    }
+
+    @Override
+    public void show(String message) {
+
     }
 }

@@ -55,19 +55,20 @@ public class UserServiceClientImpl implements UserServiceClient {
         StringBuilder requestUrl = new StringBuilder(CREATE);
         requestUrl.append("?token=").append(token).append("&temporary=").append(isTemporary);
 
-        loader.setMessage("Creating user...");
         asyncRequestFactory.createPostRequest(requestUrl.toString(), null)
                            .header(ACCEPT, MimeType.APPLICATION_JSON)
-                           .loader(loader)
+                           .loader(loader, "Creating user...")
                            .send(callback);
     }
 
     /** {@inheritDoc} */
     @Override
     public void getCurrentUser(AsyncRequestCallback<User> callback) {
-        loader.setMessage("Retrieving current user...");
 
-        asyncRequestFactory.createGetRequest(USER).header(ACCEPT, MimeType.APPLICATION_JSON).loader(loader).send(callback);
+        asyncRequestFactory.createGetRequest(USER)
+                           .header(ACCEPT, MimeType.APPLICATION_JSON)
+                           .loader(loader, "Retrieving current user...")
+                           .send(callback);
     }
 
     /** {@inheritDoc} */
@@ -75,9 +76,10 @@ public class UserServiceClientImpl implements UserServiceClient {
     public void updatePassword(@NotNull String password, AsyncRequestCallback<Void> callback) {
         // TODO form parameter
         String requestUrl = PASSWORD + "?password=" + password;
-        loader.setMessage("Updating user's password...");
 
-        asyncRequestFactory.createPostRequest(requestUrl, null).header(CONTENT_TYPE, MimeType.APPLICATION_FORM_URLENCODED).loader(loader)
+        asyncRequestFactory.createPostRequest(requestUrl, null)
+                           .header(CONTENT_TYPE, MimeType.APPLICATION_FORM_URLENCODED)
+                           .loader(loader, "Updating user's password...")
                            .send(callback);
     }
 
@@ -86,8 +88,10 @@ public class UserServiceClientImpl implements UserServiceClient {
     public void getUserById(@NotNull String id, AsyncRequestCallback<User> callback) {
         String requestUrl = USER + id;
 
-        loader.setMessage("Retrieving user...");
-        asyncRequestFactory.createGetRequest(requestUrl).header(ACCEPT, MimeType.APPLICATION_JSON).loader(loader).send(callback);
+        asyncRequestFactory.createGetRequest(requestUrl)
+                           .header(ACCEPT, MimeType.APPLICATION_JSON)
+                           .loader(loader, "Retrieving user...")
+                           .send(callback);
     }
 
     /** {@inheritDoc} */
@@ -95,8 +99,10 @@ public class UserServiceClientImpl implements UserServiceClient {
     public void getUserByEmail(@NotNull String email, AsyncRequestCallback<User> callback) {
         String requestUrl = FIND + "?email=" + email;
 
-        loader.setMessage("Retrieving user...");
-        asyncRequestFactory.createGetRequest(requestUrl).header(ACCEPT, MimeType.APPLICATION_JSON).loader(loader).send(callback);
+        asyncRequestFactory.createGetRequest(requestUrl)
+                           .header(ACCEPT, MimeType.APPLICATION_JSON)
+                           .loader(loader, "Retrieving user...")
+                           .send(callback);
     }
 
     /** {@inheritDoc} */
@@ -104,9 +110,8 @@ public class UserServiceClientImpl implements UserServiceClient {
     public void removeUser(@NotNull String id, AsyncRequestCallback<Void> callback) {
         String requestUrl = USER + id;
 
-        loader.setMessage("Deleting user...");
         asyncRequestFactory.createRequest(DELETE, requestUrl, null, false)
-                           .loader(loader)
+                           .loader(loader, "Deleting user...")
                            .send(callback);
     }
 

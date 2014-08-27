@@ -70,15 +70,17 @@ public class RunnerServiceClientImpl implements RunnerServiceClient {
     /** {@inheritDoc} */
     @Override
     public void getLogs(Link link, AsyncRequestCallback<String> callback) {
-        loader.setMessage("Retrieving logs...");
-        asyncRequestFactory.createGetRequest(link.getHref()).loader(loader).send(callback);
+        asyncRequestFactory.createGetRequest(link.getHref())
+                           .loader(loader, "Retrieving logs...")
+                           .send(callback);
     }
 
     /** {@inheritDoc} */
     @Override
     public void stop(Link link, AsyncRequestCallback<ApplicationProcessDescriptor> callback) {
-        loader.setMessage("Stopping an application...");
-        asyncRequestFactory.createPostRequest(link.getHref(), null).loader(loader).send(callback);
+        asyncRequestFactory.createPostRequest(link.getHref(), null)
+                           .loader(loader, "Stopping an application...")
+                           .send(callback);
     }
 
     @Override
