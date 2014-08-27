@@ -28,6 +28,15 @@ public class SignalEventUtils {
                 (com.google.gwt.user.client.Event)rawEvent, cancelBubbleIfNullified);
     }
 
+    public static SignalEvent create(com.google.gwt.user.client.Event rawEvent) {
+        return SignalEventImpl.create(rawEvent, true);
+    }
+
+    public static SignalEvent create(com.google.gwt.user.client.Event rawEvent,
+                                     boolean cancelBubbleIfNullified) {
+        return SignalEventImpl.create(rawEvent, cancelBubbleIfNullified);
+    }
+
     /**
      * Returns the paste contents from a "paste" event, or null if it is not a
      * paste event or cannot be retrieved.
