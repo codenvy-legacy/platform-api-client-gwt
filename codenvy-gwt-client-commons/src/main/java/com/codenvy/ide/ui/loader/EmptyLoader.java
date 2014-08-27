@@ -10,8 +10,12 @@
  *******************************************************************************/
 package com.codenvy.ide.ui.loader;
 
-/** @author <a href="mailto:gavrikvetal@gmail.com">Vitaliy Gulyy</a> */
-public class EmptyLoader extends Loader {
+import com.codenvy.ide.rest.AsyncRequestLoader;
+
+/**
+ * @author Vitaliy Gulyy
+ */
+public class EmptyLoader implements AsyncRequestLoader {
 
     @Override
     public void hide() {

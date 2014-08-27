@@ -15,7 +15,7 @@ import com.codenvy.api.workspace.shared.dto.WorkspaceDescriptor;
 import com.codenvy.ide.collections.Array;
 import com.codenvy.ide.rest.AsyncRequestCallback;
 import com.codenvy.ide.rest.AsyncRequestFactory;
-import com.codenvy.ide.ui.loader.Loader;
+import com.codenvy.ide.rest.AsyncRequestLoader;
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
 
@@ -29,12 +29,12 @@ import static com.codenvy.ide.rest.HTTPHeader.ACCEPT;
  */
 public class WorkspaceServiceClientImpl implements WorkspaceServiceClient {
 
-    private final Loader              loader;
+    private final AsyncRequestLoader  loader;
     private final String              restContext;
     private final AsyncRequestFactory asyncRequestFactory;
 
     @Inject
-    protected WorkspaceServiceClientImpl(Loader loader,
+    protected WorkspaceServiceClientImpl(AsyncRequestLoader loader,
                                          @Named("restContext") String restContext,
                                          AsyncRequestFactory asyncRequestFactory) {
         this.loader = loader;

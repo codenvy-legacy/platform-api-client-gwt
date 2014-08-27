@@ -14,7 +14,7 @@ import com.codenvy.api.project.shared.dto.ProjectTypeDescriptor;
 import com.codenvy.ide.collections.Array;
 import com.codenvy.ide.rest.AsyncRequestCallback;
 import com.codenvy.ide.rest.AsyncRequestFactory;
-import com.codenvy.ide.ui.loader.Loader;
+import com.codenvy.ide.rest.AsyncRequestLoader;
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
 
@@ -30,10 +30,10 @@ public class ProjectTypeDescriptionServiceClientImpl implements ProjectTypeDescr
     private static String              GET_DESCRIPTIONS;
     private final  String              restContext;
     private final  AsyncRequestFactory asyncRequestFactory;
-    private        Loader              loader;
+    private        AsyncRequestLoader  loader;
 
     @Inject
-    protected ProjectTypeDescriptionServiceClientImpl(@Named("restContext") String restContext, Loader loader,
+    protected ProjectTypeDescriptionServiceClientImpl(@Named("restContext") String restContext, AsyncRequestLoader loader,
                                                       AsyncRequestFactory asyncRequestFactory) {
         this.restContext = restContext;
         this.loader = loader;

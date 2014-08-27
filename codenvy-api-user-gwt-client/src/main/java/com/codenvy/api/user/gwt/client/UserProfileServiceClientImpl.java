@@ -16,7 +16,7 @@ import com.codenvy.ide.dto.DtoFactory;
 import com.codenvy.ide.json.JsonHelper;
 import com.codenvy.ide.rest.AsyncRequestCallback;
 import com.codenvy.ide.rest.AsyncRequestFactory;
-import com.codenvy.ide.ui.loader.Loader;
+import com.codenvy.ide.rest.AsyncRequestLoader;
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
 
@@ -33,13 +33,13 @@ import static com.codenvy.ide.rest.HTTPHeader.CONTENT_TYPE;
 public class UserProfileServiceClientImpl implements UserProfileServiceClient {
     private final String              PROFILE;
     private final String              PREFS;
-    private final Loader              loader;
+    private final AsyncRequestLoader  loader;
     private final AsyncRequestFactory asyncRequestFactory;
     private final DtoFactory          dtoFactory;
 
     @Inject
     protected UserProfileServiceClientImpl(@Named("restContext") String restContext,
-                                           Loader loader,
+                                           AsyncRequestLoader loader,
                                            AsyncRequestFactory asyncRequestFactory, DtoFactory dtoFactory) {
         this.loader = loader;
         this.asyncRequestFactory = asyncRequestFactory;

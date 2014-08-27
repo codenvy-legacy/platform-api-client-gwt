@@ -18,7 +18,7 @@ import com.codenvy.api.runner.dto.RunnerDescriptor;
 import com.codenvy.ide.collections.Array;
 import com.codenvy.ide.rest.AsyncRequestCallback;
 import com.codenvy.ide.rest.AsyncRequestFactory;
-import com.codenvy.ide.ui.loader.Loader;
+import com.codenvy.ide.rest.AsyncRequestLoader;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.google.inject.name.Named;
@@ -32,13 +32,13 @@ import com.google.inject.name.Named;
 public class RunnerServiceClientImpl implements RunnerServiceClient {
     private final String              baseUrl;
     private final String              workspaceId;
-    private final Loader              loader;
+    private final AsyncRequestLoader  loader;
     private final AsyncRequestFactory asyncRequestFactory;
 
     @Inject
     public RunnerServiceClientImpl(@Named("restContext") String baseUrl,
                                    @Named("workspaceId") String workspaceId,
-                                   Loader loader,
+                                   AsyncRequestLoader loader,
                                    AsyncRequestFactory asyncRequestFactory) {
         this.baseUrl = baseUrl;
         this.workspaceId = workspaceId;

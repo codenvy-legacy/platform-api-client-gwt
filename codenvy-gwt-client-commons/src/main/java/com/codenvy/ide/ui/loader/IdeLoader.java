@@ -10,6 +10,7 @@
  *******************************************************************************/
 package com.codenvy.ide.ui.loader;
 
+import com.codenvy.ide.rest.AsyncRequestLoader;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Grid;
 import com.google.gwt.user.client.ui.HTML;
@@ -26,42 +27,33 @@ import java.util.Map;
  * @author Andrey Plotnikov
  * @author Sergii Leschenko
  */
-public class IdeLoader extends Loader {
-    private PopupPanel loader;
-    private Grid       grid;
-    private MessageHeap messageHeap = new MessageHeap();
+public class IdeLoader implements AsyncRequestLoader {
+    protected final String DEFAULT_MESSAGE = "Loading ...";
+
+    private final MessageHeap messageHeap;
+    private final ViewLoader  loader;
 
     /**
      * Create loader.
-     *
-     * @param resources
      */
     @Inject
     public IdeLoader(LoaderResources resources) {
-        resources.Css().ensureInjected();
-        loader = new PopupPanel();
-        FlowPanel container = new FlowPanel();
-        HTML pinionWidget = new HTML("<i></i><i></i>");
-        pinionWidget.getElement().setClassName(resources.Css().pinion());
-        grid = new Grid(1, 2);
-        grid.setWidget(0, 0, pinionWidget);
-        container.add(grid);
-        loader.add(container);
-        loader.ensureDebugId("loader");
+        messageHeap = new MessageHeap();
+        loader = new ViewLoader(resources);
     }
 
     /** {@inheritDoc} */
     @Override
     public void show() {
         //show with default message
-        show(getMessage());
+        show(DEFAULT_MESSAGE);
     }
 
     /** {@inheritDoc} */
     @Override
     public void show(String message) {
         messageHeap.push(message);
-        updateMessage(message);
+        loader.setMessage(message);
         loader.center();
         loader.show();
     }
@@ -69,7 +61,7 @@ public class IdeLoader extends Loader {
     /** {@inheritDoc} */
     @Override
     public void hide() {
-        hide(getMessage());
+        hide(DEFAULT_MESSAGE);
     }
 
     /** {@inheritDoc} */
@@ -77,14 +69,34 @@ public class IdeLoader extends Loader {
     public void hide(String message) {
         String newMessage = messageHeap.drop(message);
         if (newMessage != null) {
-            updateMessage(newMessage);
+            loader.setMessage(newMessage);
         } else {
             loader.hide();
         }
     }
 
-    private void updateMessage(String message) {
-        grid.setText(0, 1, message);
+    private static class ViewLoader extends PopupPanel {
+        private Grid grid;
+
+        public ViewLoader(LoaderResources resources) {
+            resources.Css().ensureInjected();
+            FlowPanel container = new FlowPanel();
+            HTML pinionWidget = new HTML("<i></i><i></i>");
+            pinionWidget.getElement().setClassName(resources.Css().pinion());
+            grid = new Grid(1, 2);
+            grid.setWidget(0, 0, pinionWidget);
+            container.add(grid);
+            this.add(container);
+            this.ensureDebugId("loader");
+        }
+
+        public void setMessage(String message) {
+            grid.setText(0, 1, message);
+        }
+
+        public String getMessage() {
+            return grid.getText(0, 1);
+        }
     }
 
     private class MessageHeap {
@@ -109,14 +121,19 @@ public class IdeLoader extends Loader {
          *
          * @param message
          *         message for drop
-         * @return
-         * any message from heap or <code>null</code> if heap does have message
+         * @return any message from heap or <code>null</code> if heap does have message
          */
         public String drop(String message) {
             int count = messages.get(message) - 1;
             if (count == 0) {
                 messages.remove(message);
-                if (message.equals(grid.getText(0, 1)) && !messages.isEmpty()) {
+
+                // If dropped message that isn't displayed then do not update text
+                if (!loader.getMessage().equals(message)) {
+                    return loader.getMessage();
+                }
+
+                if (!messages.isEmpty()) {
                     return messages.keySet().iterator().next();
                 }
 

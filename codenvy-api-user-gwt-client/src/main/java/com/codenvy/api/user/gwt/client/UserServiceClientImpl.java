@@ -14,7 +14,7 @@ import com.codenvy.api.user.shared.dto.User;
 import com.codenvy.ide.MimeType;
 import com.codenvy.ide.rest.AsyncRequestCallback;
 import com.codenvy.ide.rest.AsyncRequestFactory;
-import com.codenvy.ide.ui.loader.Loader;
+import com.codenvy.ide.rest.AsyncRequestLoader;
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
 
@@ -26,7 +26,7 @@ import static com.google.gwt.http.client.RequestBuilder.DELETE;
 
 /**
  * Implementation of {@link UserServiceClient}.
- * 
+ *
  * @author Ann Shumilova
  */
 public class UserServiceClientImpl implements UserServiceClient {
@@ -34,12 +34,12 @@ public class UserServiceClientImpl implements UserServiceClient {
     private final String              CREATE;
     private final String              FIND;
     private final String              PASSWORD;
-    private final Loader              loader;
+    private final AsyncRequestLoader  loader;
     private final AsyncRequestFactory asyncRequestFactory;
 
     @Inject
     protected UserServiceClientImpl(@Named("restContext") String restContext,
-                                    Loader loader,
+                                    AsyncRequestLoader loader,
                                     AsyncRequestFactory asyncRequestFactory) {
         this.loader = loader;
         this.asyncRequestFactory = asyncRequestFactory;

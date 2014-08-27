@@ -21,7 +21,7 @@ import com.codenvy.ide.collections.StringMap;
 import com.codenvy.ide.rest.AsyncRequest;
 import com.codenvy.ide.rest.AsyncRequestCallback;
 import com.codenvy.ide.rest.AsyncRequestFactory;
-import com.codenvy.ide.ui.loader.Loader;
+import com.codenvy.ide.rest.AsyncRequestLoader;
 import com.google.gwt.http.client.RequestBuilder;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONString;
@@ -56,13 +56,13 @@ public class ProjectServiceClientImpl implements ProjectServiceClient {
     private final String              GET_TREE;
     private final String              SEARCH;
     private final String              SWITCH_VISIBILITY;
-    private final Loader              loader;
+    private final AsyncRequestLoader  loader;
     private final AsyncRequestFactory asyncRequestFactory;
 
     @Inject
     protected ProjectServiceClientImpl(@Named("restContext") String restContext,
                                        @Named("workspaceId") String workspaceId,
-                                       Loader loader,
+                                       AsyncRequestLoader loader,
                                        AsyncRequestFactory asyncRequestFactory) {
         this.loader = loader;
         this.asyncRequestFactory = asyncRequestFactory;

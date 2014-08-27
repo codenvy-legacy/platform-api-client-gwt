@@ -16,8 +16,8 @@ import com.codenvy.api.core.rest.shared.dto.Link;
 import com.codenvy.ide.MimeType;
 import com.codenvy.ide.rest.AsyncRequestCallback;
 import com.codenvy.ide.rest.AsyncRequestFactory;
+import com.codenvy.ide.rest.AsyncRequestLoader;
 import com.codenvy.ide.rest.HTTPHeader;
-import com.codenvy.ide.ui.loader.Loader;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.google.inject.name.Named;
@@ -30,13 +30,13 @@ import com.google.inject.name.Named;
 @Singleton
 public class BuilderServiceClientImpl implements BuilderServiceClient {
     private final String              baseUrl;
-    private final Loader              loader;
+    private final AsyncRequestLoader  loader;
     private final AsyncRequestFactory asyncRequestFactory;
 
     @Inject
     public BuilderServiceClientImpl(@Named("restContext") String baseUrl,
                                     @Named("workspaceId") String workspaceId,
-                                    Loader loader,
+                                    AsyncRequestLoader loader,
                                     AsyncRequestFactory asyncRequestFactory) {
         this.asyncRequestFactory = asyncRequestFactory;
         this.baseUrl = baseUrl + "/builder/" + workspaceId;
