@@ -19,7 +19,7 @@ import com.codenvy.ide.rest.AsyncRequestCallback;
  *
  * @author Artem Zatsarynnyy
  */
-public interface ProjectTypeDescriptionServiceClient {
+public interface ProjectTypeServiceClient {
     /**
      * Get information about all registered project types
      *

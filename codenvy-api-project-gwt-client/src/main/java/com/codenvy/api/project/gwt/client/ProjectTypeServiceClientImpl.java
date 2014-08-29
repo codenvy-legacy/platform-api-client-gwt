@@ -22,23 +22,23 @@ import static com.codenvy.ide.MimeType.APPLICATION_JSON;
 import static com.codenvy.ide.rest.HTTPHeader.ACCEPT;
 
 /**
- * The implementation of {@link ProjectTypeDescriptionServiceClient}.
+ * The implementation of {@link ProjectTypeServiceClient}.
  *
  * @author Artem Zatsarynnyy
  */
-public class ProjectTypeDescriptionServiceClientImpl implements ProjectTypeDescriptionServiceClient {
+public class ProjectTypeServiceClientImpl implements ProjectTypeServiceClient {
     private static String              GET_DESCRIPTIONS;
     private final  String              restContext;
     private final  AsyncRequestFactory asyncRequestFactory;
     private        AsyncRequestLoader  loader;
 
     @Inject
-    protected ProjectTypeDescriptionServiceClientImpl(@Named("restContext") String restContext, AsyncRequestLoader loader,
-                                                      AsyncRequestFactory asyncRequestFactory) {
+    protected ProjectTypeServiceClientImpl(@Named("restContext") String restContext, AsyncRequestLoader loader,
+                                           AsyncRequestFactory asyncRequestFactory) {
         this.restContext = restContext;
         this.loader = loader;
         this.asyncRequestFactory = asyncRequestFactory;
-        GET_DESCRIPTIONS = "/project-description/descriptions";
+        GET_DESCRIPTIONS = "/project-type";
     }
 
     @Override
