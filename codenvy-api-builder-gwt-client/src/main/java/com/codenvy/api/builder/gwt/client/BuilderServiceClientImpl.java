@@ -12,8 +12,10 @@ package com.codenvy.api.builder.gwt.client;
 
 import com.codenvy.api.builder.dto.BuildOptions;
 import com.codenvy.api.builder.dto.BuildTaskDescriptor;
+import com.codenvy.api.builder.dto.BuilderDescriptor;
 import com.codenvy.api.core.rest.shared.dto.Link;
 import com.codenvy.ide.MimeType;
+import com.codenvy.ide.collections.Array;
 import com.codenvy.ide.rest.AsyncRequestCallback;
 import com.codenvy.ide.rest.AsyncRequestFactory;
 import com.codenvy.ide.rest.AsyncRequestLoader;
@@ -95,4 +97,12 @@ public class BuilderServiceClientImpl implements BuilderServiceClient {
                            .send(callback);
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public void getRegisteredServers(String workspaceId, AsyncRequestCallback<Array<BuilderDescriptor>> callback) {
+        final String requestUrl = baseUrl + "/builders";
+        asyncRequestFactory.createGetRequest(requestUrl).loader(loader)
+                           .header(HTTPHeader.CONTENT_TYPE, MimeType.APPLICATION_JSON)
+                           .send(callback);
+    }
 }
