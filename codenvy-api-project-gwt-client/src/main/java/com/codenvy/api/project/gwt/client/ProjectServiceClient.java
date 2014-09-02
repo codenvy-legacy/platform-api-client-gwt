@@ -216,12 +216,14 @@ public interface ProjectServiceClient {
      *
      * @param path
      *         path to the project to import sources
+     *@param force
+     *         set true for force rewrite existed project
      * @param importSourceDescriptor
      *         {@link ImportSourceDescriptor}
      * @param callback
      *         the callback to use for the response
      */
-    public void importProject(String path, ImportSourceDescriptor importSourceDescriptor,
+    public void importProject(String path, boolean force, ImportSourceDescriptor importSourceDescriptor,
                               AsyncRequestCallback<ProjectDescriptor> callback);
 
     /**
