@@ -65,7 +65,7 @@ public class UserProfileServiceClientImpl implements UserProfileServiceClient {
         asyncRequestFactory.createPostRequest(PROFILE, null)
                            .header(ACCEPT, MimeType.APPLICATION_JSON)
                            .header(CONTENT_TYPE, MimeType.APPLICATION_JSON)
-                           .data(dtoFactory.toJson(updates))
+                           .data(JsonHelper.toJson(updates))
                            .loader(loader, "Updating current user's profile...")
                            .send(callback);
     }
@@ -89,7 +89,7 @@ public class UserProfileServiceClientImpl implements UserProfileServiceClient {
         asyncRequestFactory.createPostRequest(requestUrl, null)
                            .header(ACCEPT, MimeType.APPLICATION_JSON)
                            .header(CONTENT_TYPE, MimeType.APPLICATION_JSON)
-                           .data(dtoFactory.toJson(updates))
+                           .data(JsonHelper.toJson(updates))
                            .loader(loader, "Updating user's profile...")
                            .send(callback);
     }

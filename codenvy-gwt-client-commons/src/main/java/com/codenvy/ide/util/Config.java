@@ -136,26 +136,6 @@ public class Config {
     }
 
     /**
-     * Set current user Profile.
-     *
-     * @param profile
-     *          user profile
-     */
-    public static void setCurrentProfile(ProfileDescriptor profile) {
-        _profile = profile;
-    }
-
-    /**
-     * Get current user Profile.
-     *
-     * @return
-     *          current profile
-     */
-    public static ProfileDescriptor getCurrentProfile() {
-        return _profile;
-    }
-
-    /**
      * Determines whether the user is permanent.
      *
      * @return <b>true</b> for permanent user, <b>false</b> otherwise
