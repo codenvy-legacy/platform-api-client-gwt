@@ -12,7 +12,9 @@ package com.codenvy.api.builder.gwt.client;
 
 import com.codenvy.api.builder.dto.BuildOptions;
 import com.codenvy.api.builder.dto.BuildTaskDescriptor;
+import com.codenvy.api.builder.dto.BuilderDescriptor;
 import com.codenvy.api.core.rest.shared.dto.Link;
+import com.codenvy.ide.collections.Array;
 import com.codenvy.ide.rest.AsyncRequestCallback;
 
 /**
@@ -76,5 +78,14 @@ public interface BuilderServiceClient {
      */
     public void result(String buildId, AsyncRequestCallback<String> callback);
 
+    /**
+     * Get build result.
+     *
+     * @param workspaceId
+     *         workspace ID of build
+     * @param callback
+     *         callback
+     */
+    public void getRegisteredServers(String workspaceId, AsyncRequestCallback<Array<BuilderDescriptor>> callback);
 
 }
