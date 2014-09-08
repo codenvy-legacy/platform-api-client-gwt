@@ -10,7 +10,6 @@
  *******************************************************************************/
 package com.codenvy.ide.util;
 
-import com.codenvy.api.user.shared.dto.ProfileDescriptor;
 import com.codenvy.api.workspace.shared.dto.WorkspaceDescriptor;
 
 /**
@@ -22,7 +21,6 @@ import com.codenvy.api.workspace.shared.dto.WorkspaceDescriptor;
 public class Config {
 
     private static WorkspaceDescriptor _workspace;
-    private static ProfileDescriptor   _profile;
 
     /**
      * Returns the base context of the IDE.
@@ -134,40 +132,4 @@ public class Config {
     public static WorkspaceDescriptor getCurrentWorkspace() {
         return _workspace;
     }
-
-    /**
-     * Set current user Profile.
-     *
-     * @param profile
-     *          user profile
-     */
-    public static void setCurrentProfile(ProfileDescriptor profile) {
-        _profile = profile;
-    }
-
-    /**
-     * Get current user Profile.
-     *
-     * @return
-     *          current profile
-     */
-    public static ProfileDescriptor getCurrentProfile() {
-        return _profile;
-    }
-
-    /**
-     * Determines whether the user is permanent.
-     *
-     * @return <b>true</b> for permanent user, <b>false</b> otherwise
-     */
-    public static boolean isUserPermanent() {
-        if (_profile != null && _profile.getAttributes() != null) {
-                if ("true".equals(_profile.getAttributes().get("temporary"))) {
-                    return false;
-                }
-        }
-
-        return true;
-    }
-
 }
