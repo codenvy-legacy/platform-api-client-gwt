@@ -126,7 +126,7 @@ public class ProjectServiceClientImpl implements ProjectServiceClient {
 
         asyncRequestFactory.createPostRequest(requestUrl, null)
                            .header(ACCEPT, MimeType.APPLICATION_JSON)
-                           .loader(loader, "Cloning project...")
+                           .loader(loader, "Copying project...")
                            .send(callback);
     }
 

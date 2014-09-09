@@ -70,8 +70,11 @@ public class MessageBusImpl implements MessageBus {
             }
         }
     };
+    private final Message heartbeatMessage;
+    /** Counter of attempts to reconnect. */
+    private       int     frequentlyReconnectionAttemptsCounter;
     /** Timer for reconnecting WebSocket. */
-    private              Timer  frequentlyReconnectionTimer          = new Timer() {
+    private Timer frequentlyReconnectionTimer = new Timer() {
         @Override
         public void run() {
             if (frequentlyReconnectionAttemptsCounter == MAX_FREQUENTLY_RECONNECTION_ATTEMPTS) {
@@ -83,8 +86,10 @@ public class MessageBusImpl implements MessageBus {
             initialize();
         }
     };
+    /** Counter of attempts to reconnect. */
+    private int seldomReconnectionAttemptsCounter;
     /** Timer for reconnecting WebSocket. */
-    private              Timer  seldomReconnectionTimer              = new Timer() {
+    private Timer seldomReconnectionTimer = new Timer() {
         @Override
         public void run() {
             if (seldomReconnectionAttemptsCounter == MAX_SELDOM_RECONNECTION_ATTEMPTS) {
@@ -95,56 +100,6 @@ public class MessageBusImpl implements MessageBus {
             initialize();
         }
     };
-
-    private class WsListener implements ConnectionOpenedHandler, ConnectionClosedHandler, ConnectionErrorHandler {
-
-        @Override
-        public void onClose(final WebSocketClosedEvent event) {
-            heartbeatTimer.cancel();
-            frequentlyReconnectionTimer.scheduleRepeating(FREQUENTLY_RECONNECTION_PERIOD);
-            connectionClosedHandlers.dispatch(new ListenerManager.Dispatcher<ConnectionClosedHandler>() {
-                @Override
-                public void dispatch(ConnectionClosedHandler listener) {
-                    listener.onClose(event);
-                }
-            });
-        }
-
-        @Override
-        public void onError() {
-            connectionErrorHandlers.dispatch(new ListenerManager.Dispatcher<ConnectionErrorHandler>() {
-                @Override
-                public void dispatch(ConnectionErrorHandler listener) {
-                    listener.onError();
-                }
-            });
-        }
-
-        @Override
-        public void onOpen() {
-            // If the any timer has been started then stop it.
-            if (frequentlyReconnectionAttemptsCounter > 0)
-                frequentlyReconnectionTimer.cancel();
-            if (seldomReconnectionAttemptsCounter > 0)
-                seldomReconnectionTimer.cancel();
-
-            frequentlyReconnectionAttemptsCounter = 0;
-            seldomReconnectionAttemptsCounter = 0;
-            heartbeatTimer.scheduleRepeating(HEARTBEAT_PERIOD);
-            connectionOpenedHandlers.dispatch(new ListenerManager.Dispatcher<ConnectionOpenedHandler>() {
-                @Override
-                public void dispatch(ConnectionOpenedHandler listener) {
-                    listener.onOpen();
-                }
-            });
-        }
-
-    }
-
-    /** Counter of attempts to reconnect. */
-    private int       frequentlyReconnectionAttemptsCounter;
-    /** Counter of attempts to reconnect. */
-    private int       seldomReconnectionAttemptsCounter;
     /** Internal {@link WebSocket} instance. */
     private WebSocket ws;
     /** WebSocket server URL. */
@@ -157,8 +112,8 @@ public class MessageBusImpl implements MessageBus {
     private ListenerManager<ConnectionOpenedHandler> connectionOpenedHandlers = ListenerManager.create();
     private ListenerManager<ConnectionClosedHandler> connectionClosedHandlers = ListenerManager.create();
     private ListenerManager<ConnectionErrorHandler>  connectionErrorHandlers  = ListenerManager.create();
-    private       WsListener wsListener;
-    private final Message    heartbeatMessage;
+    private WsListener wsListener;
+    private Array<String> messages2send = Collections.createArray();
 
     /**
      * Creates new {@link MessageBus} instance.
@@ -195,7 +150,7 @@ public class MessageBusImpl implements MessageBus {
      * Checks if the browser has support for WebSockets.
      *
      * @return <code>true</code> if WebSocket is supported;
-     *         <code>false</code> if it's not
+     * <code>false</code> if it's not
      */
     private boolean isSupported() {
         return WebSocket.isSupported();
@@ -374,12 +329,15 @@ public class MessageBusImpl implements MessageBus {
      *         e.g.: WebSocket is not supported by browser, WebSocket connection is not opened
      */
     private void send(String message) throws WebSocketException {
-        checkWebSocketConnectionState();
-
+//        checkWebSocketConnectionState();
+        if (getReadyState() != ReadyState.OPEN) {
+            messages2send.add(message);
+            return;
+        }
         try {
             ws.send(message);
         } catch (JavaScriptException e) {
-            throw new WebSocketException(e.getMessage());
+            throw new WebSocketException(e.getMessage(), e);
         }
     }
 
@@ -535,5 +493,59 @@ public class MessageBusImpl implements MessageBus {
         if (getReadyState() != ReadyState.OPEN) {
             throw new WebSocketException("WebSocket is not opened.");
         }
+    }
+
+    private class WsListener implements ConnectionOpenedHandler, ConnectionClosedHandler, ConnectionErrorHandler {
+
+        @Override
+        public void onClose(final WebSocketClosedEvent event) {
+            heartbeatTimer.cancel();
+            frequentlyReconnectionTimer.scheduleRepeating(FREQUENTLY_RECONNECTION_PERIOD);
+            connectionClosedHandlers.dispatch(new ListenerManager.Dispatcher<ConnectionClosedHandler>() {
+                @Override
+                public void dispatch(ConnectionClosedHandler listener) {
+                    listener.onClose(event);
+                }
+            });
+        }
+
+        @Override
+        public void onError() {
+            connectionErrorHandlers.dispatch(new ListenerManager.Dispatcher<ConnectionErrorHandler>() {
+                @Override
+                public void dispatch(ConnectionErrorHandler listener) {
+                    listener.onError();
+                }
+            });
+        }
+
+        @Override
+        public void onOpen() {
+            // If the any timer has been started then stop it.
+            if (frequentlyReconnectionAttemptsCounter > 0)
+                frequentlyReconnectionTimer.cancel();
+            if (seldomReconnectionAttemptsCounter > 0)
+                seldomReconnectionTimer.cancel();
+
+            frequentlyReconnectionAttemptsCounter = 0;
+            seldomReconnectionAttemptsCounter = 0;
+            heartbeatTimer.scheduleRepeating(HEARTBEAT_PERIOD);
+            connectionOpenedHandlers.dispatch(new ListenerManager.Dispatcher<ConnectionOpenedHandler>() {
+                @Override
+                public void dispatch(ConnectionOpenedHandler listener) {
+                    listener.onOpen();
+                }
+            });
+
+            try {
+                for (String message : messages2send.asIterable()) {
+                    send(message);
+                }
+                messages2send.clear();
+            } catch (WebSocketException e) {
+                Log.error(MessageBusImpl.class, e);
+            }
+        }
+
     }
 }
