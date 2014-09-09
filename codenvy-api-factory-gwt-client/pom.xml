@@ -37,6 +37,16 @@
         </dependency>
         <dependency>
             <groupId>com.codenvy.platform-api-gwt-client</groupId>
+            <artifactId>codenvy-api-project-gwt-client</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.codenvy.platform-api-gwt-client</groupId>
+            <artifactId>codenvy-api-workspace-gwt-client</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.codenvy.platform-api-gwt-client</groupId>
             <artifactId>codenvy-gwt-client-commons</artifactId>
             <version>${project.version}</version>
         </dependency>
@@ -64,7 +74,6 @@
                 <groupId>com.codenvy.platform-api</groupId>
                 <artifactId>codenvy-dto-maven-plugin</artifactId>
                 <version>${codenvy.platform-api.version}</version>
-
                 <executions>
                     <execution>
                         <id>generate-client-dto</id>
@@ -82,7 +91,6 @@
                         </configuration>
                     </execution>
                 </executions>
-
                 <dependencies>
                     <dependency>
                         <groupId>com.codenvy.platform-api</groupId>
@@ -95,9 +103,7 @@
                         <version>${project.version}</version>
                     </dependency>
                 </dependencies>
-
             </plugin>
-
             <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <executions>
