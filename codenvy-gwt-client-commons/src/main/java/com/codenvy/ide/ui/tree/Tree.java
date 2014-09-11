@@ -14,10 +14,11 @@
 
 package com.codenvy.ide.ui.tree;
 
+import elemental.dom.Element;
 import elemental.events.Event;
 import elemental.events.EventListener;
+import elemental.events.KeyboardEvent;
 import elemental.events.MouseEvent;
-import elemental.dom.Element;
 import elemental.js.dom.JsElement;
 
 import com.codenvy.ide.collections.Array;
@@ -136,6 +137,8 @@ public class Tree<D> extends UiComponent<Tree.View<D>> implements IsWidget {
         void onRootContextMenu(int mouseX, int mouseY);
 
         void onRootDragDrop(MouseEvent event);
+        
+        void onKeyboard(KeyboardEvent event);
     }
 
     /** A visitor interface to visit nodes of the tree. */
@@ -302,6 +305,7 @@ public class Tree<D> extends UiComponent<Tree.View<D>> implements IsWidget {
             super(Elements.createElement("ul"));
             this.resources = resources;
             this.css = resources.treeCss();
+            getElement().setTabIndex(0);
             getElement().setClassName(resources.treeCss().treeRoot());
             attachEventListeners();
         }
@@ -367,7 +371,17 @@ public class Tree<D> extends UiComponent<Tree.View<D>> implements IsWidget {
                     }
                 }
             }, false);
-
+            
+            getElement().addEventListener(Event.KEYPRESS, new TreeNodeEventListener(false) {
+                @Override
+                public void handleEvent(Event event) {
+                    if (getDelegate() != null) {
+                        getDelegate().onKeyBoard((KeyboardEvent)event);
+                    }
+                }
+                
+            }, false);
+            
             getElement().addEventListener(Event.CONTEXTMENU, new TreeNodeEventListener(false) {
                 @Override
                 public void handleEvent(Event evt) {
@@ -482,6 +496,8 @@ public class Tree<D> extends UiComponent<Tree.View<D>> implements IsWidget {
         public void onRootContextMenu(int mouseX, int mouseY);
 
         public void onRootDragDrop(MouseEvent event);
+        
+        public void onKeyBoard(KeyboardEvent event);
     }
 
     private class DragDropController {
@@ -639,6 +655,13 @@ public class Tree<D> extends UiComponent<Tree.View<D>> implements IsWidget {
         public void onRootDragDrop(MouseEvent event) {
             if (getModel().externalEventDelegate != null) {
                 getModel().externalEventDelegate.onRootDragDrop(event);
+            }
+        }
+
+        @Override
+        public void onKeyBoard(KeyboardEvent event) {
+            if (getModel().externalEventDelegate != null) {
+                getModel().externalEventDelegate.onKeyboard(event);
             }
         }
     };
