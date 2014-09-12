@@ -372,7 +372,7 @@ public class Tree<D> extends UiComponent<Tree.View<D>> implements IsWidget {
                 }
             }, false);
             
-            getElement().addEventListener(Event.KEYPRESS, new TreeNodeEventListener(false) {
+            getElement().addEventListener(Event.KEYUP, new TreeNodeEventListener(false) {
                 @Override
                 public void handleEvent(Event event) {
                     if (getDelegate() != null) {
@@ -1192,7 +1192,7 @@ public class Tree<D> extends UiComponent<Tree.View<D>> implements IsWidget {
         if (widget == null) {
             widget = new HTML();
             Element element = getView().getElement();
-            element.getStyle().setOverflow("auto");
+            //element.getStyle().setOverflow("auto");
             widget.getElement().appendChild((Node)element);
             widget.getElement().getStyle().setOverflow(Style.Overflow.AUTO);
         }
