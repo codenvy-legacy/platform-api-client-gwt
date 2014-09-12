@@ -14,18 +14,18 @@
 
 package com.codenvy.ide.ui.tree;
 
-import elemental.css.CSSStyleDeclaration;
-import elemental.html.DivElement;
-import elemental.dom.Element;
-import elemental.html.SpanElement;
-import elemental.js.html.JsLIElement;
-import elemental.js.html.JsUListElement;
-
 import com.codenvy.ide.ui.tree.Tree.Css;
 import com.codenvy.ide.util.AnimationController;
 import com.codenvy.ide.util.CssUtils;
 import com.codenvy.ide.util.dom.DomUtils;
 import com.codenvy.ide.util.dom.Elements;
+
+import elemental.css.CSSStyleDeclaration;
+import elemental.dom.Element;
+import elemental.html.DivElement;
+import elemental.html.SpanElement;
+import elemental.js.html.JsLIElement;
+import elemental.js.html.JsUListElement;
 
 /**
  * Overlay type for the base element for a Node in the tree.
@@ -105,7 +105,13 @@ public class TreeNodeElement<D> extends JsLIElement {
             Element expandElement = (Element)getNodeBody().getChildren().item(0);
             expandElement.getStyle().setMarginLeft("" + (depth * 16) + "px");
 
-            getChildrenContainer().setAttribute("___depth", "" + (depth + 1));
+            if (! hasChildNodes()) {
+                return;
+            }
+            final JsUListElement childrenContainer = getChildrenContainer();
+            if (childrenContainer != null) {
+                getChildrenContainer().setAttribute("___depth", "" + (depth + 1));
+            }
 
         } catch (Exception e) {
             e.printStackTrace();
