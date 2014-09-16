@@ -13,6 +13,7 @@ package com.codenvy.ide.rest;
 import com.codenvy.ide.collections.Array;
 import com.codenvy.ide.dto.DtoFactory;
 import com.google.inject.Inject;
+import com.google.inject.Singleton;
 
 /**
  * Provides implementations of Unmarshallable instances to
@@ -20,6 +21,7 @@ import com.google.inject.Inject;
  *
  * @author Artem Zatsarynnyy
  */
+@Singleton
 public class DtoUnmarshallerFactory {
     private DtoFactory dtoFactory;
 
@@ -38,7 +40,7 @@ public class DtoUnmarshallerFactory {
      * @see com.codenvy.dto.shared.DTO
      */
     public <T> com.codenvy.ide.rest.Unmarshallable<T> newUnmarshaller(Class<T> dtoType) {
-        return new DtoUnmarshaller<T>(dtoType, dtoFactory);
+        return new DtoUnmarshaller<>(dtoType, dtoFactory);
     }
 
     /**
@@ -51,7 +53,7 @@ public class DtoUnmarshallerFactory {
      * @see com.codenvy.dto.shared.DTO
      */
     public <T> com.codenvy.ide.rest.Unmarshallable<Array<T>> newArrayUnmarshaller(Class<T> dtoType) {
-        return new DtoUnmarshaller<Array<T>>(dtoType, dtoFactory);
+        return new DtoUnmarshaller<>(dtoType, dtoFactory);
     }
 
     /**
@@ -64,7 +66,7 @@ public class DtoUnmarshallerFactory {
      * @see com.codenvy.dto.shared.DTO
      */
     public <T> com.codenvy.ide.websocket.rest.Unmarshallable<T> newWSUnmarshaller(Class<T> dtoType) {
-        return new com.codenvy.ide.websocket.rest.DtoUnmarshaller<T>(dtoType, dtoFactory);
+        return new com.codenvy.ide.websocket.rest.DtoUnmarshaller<>(dtoType, dtoFactory);
     }
 
     /**
@@ -77,6 +79,6 @@ public class DtoUnmarshallerFactory {
      * @see com.codenvy.dto.shared.DTO
      */
     public <T> com.codenvy.ide.websocket.rest.Unmarshallable<Array<T>> newWSArrayUnmarshaller(Class<T> dtoType) {
-        return new com.codenvy.ide.websocket.rest.DtoUnmarshaller<Array<T>>(dtoType, dtoFactory);
+        return new com.codenvy.ide.websocket.rest.DtoUnmarshaller<>(dtoType, dtoFactory);
     }
 }

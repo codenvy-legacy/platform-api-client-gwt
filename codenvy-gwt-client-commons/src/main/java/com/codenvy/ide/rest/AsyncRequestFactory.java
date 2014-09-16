@@ -14,12 +14,14 @@ import com.codenvy.ide.MimeType;
 import com.codenvy.ide.dto.DtoFactory;
 import com.google.gwt.http.client.RequestBuilder;
 import com.google.inject.Inject;
+import com.google.inject.Singleton;
 
 /**
  * Provides implementations of {@link AsyncRequest} instances.
  *
  * @author Artem Zatsarynnyy
  */
+@Singleton
 public class AsyncRequestFactory {
     private static final String DTO_CONTENT_TYPE = MimeType.APPLICATION_JSON;
     private final DtoFactory dtoFactory;

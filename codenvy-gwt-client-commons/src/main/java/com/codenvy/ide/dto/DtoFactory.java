@@ -14,6 +14,7 @@ import com.codenvy.ide.collections.Array;
 import com.codenvy.ide.collections.Collections;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONParser;
+import com.google.inject.Singleton;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -23,8 +24,9 @@ import java.util.Map;
  *
  * @author Artem Zatsarynnyy
  */
+@Singleton
 public class DtoFactory {
-    private final Map<Class<?>, DtoProvider<?>> dtoInterface2Providers = new HashMap<Class<?>, DtoProvider<?>>();
+    private final Map<Class<?>, DtoProvider<?>> dtoInterface2Providers = new HashMap<>();
 
     /**
      * Creates new instance of class which implements specified DTO interface.
