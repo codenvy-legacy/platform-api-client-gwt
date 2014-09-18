@@ -12,6 +12,7 @@ package com.codenvy.ide.dto;
 
 import com.codenvy.ide.collections.Array;
 import com.codenvy.ide.dto.definitions.ComplicatedDto;
+import com.codenvy.ide.dto.definitions.DtoWithDelegate;
 import com.codenvy.ide.dto.definitions.SimpleDto;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONNumber;
@@ -225,5 +226,10 @@ public class ClientDtoTest extends GwtTest {
     private void checkSimpleDto(SimpleDto dto, String expectedName, int expectedId) {
         Assert.assertEquals(dto.getName(), expectedName);
         Assert.assertEquals(dto.getId(), expectedId);
+    }
+
+    @Test
+    public void testDelegate() {
+        Assert.assertEquals(dtoFactory.createDto(DtoWithDelegate.class).withName("TEST").nameWithPrefix("### "), "### TEST");
     }
 }
