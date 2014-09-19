@@ -127,7 +127,8 @@ public interface ProjectServiceClient {
      * @param callback
      *         the callback to use for the response
      */
-    public void createFile(String parentPath, String name, String content, String contentType, AsyncRequestCallback<Void> callback);
+    public void createFile(String parentPath, String name, String content, String contentType,
+                           AsyncRequestCallback<ItemReference> callback);
 
     /**
      * Get file content.
@@ -161,7 +162,7 @@ public interface ProjectServiceClient {
      * @param callback
      *         the callback to use for the response
      */
-    public void createFolder(String path, AsyncRequestCallback<Void> callback);
+    public void createFolder(String path, AsyncRequestCallback<ItemReference> callback);
 
     /**
      * Delete item.
@@ -216,7 +217,7 @@ public interface ProjectServiceClient {
      *
      * @param path
      *         path to the project to import sources
-     *@param force
+     * @param force
      *         set true for force rewrite existed project
      * @param importSourceDescriptor
      *         {@link ImportSourceDescriptor}
