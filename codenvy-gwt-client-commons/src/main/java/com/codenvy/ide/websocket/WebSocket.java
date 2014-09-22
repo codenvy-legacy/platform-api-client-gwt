@@ -128,7 +128,7 @@ public class WebSocket extends JavaScriptObject {
      */
     public final native void setOnCloseHandler(ConnectionClosedHandler handler)
    /*-{
-       this.onclose = $entry(function () {
+       this.onclose = $entry(function (event) {
            var webSocketClosedEventInstance = @com.codenvy.ide.websocket.events.WebSocketClosedEvent::new(ILjava/lang/String;Z)(event
                .code, event.reason, event.wasClean);
            handler.@com.codenvy.ide.websocket.events.ConnectionClosedHandler::onClose(Lcom/codenvy/ide/websocket/events/WebSocketClosedEvent;)(webSocketClosedEventInstance);
