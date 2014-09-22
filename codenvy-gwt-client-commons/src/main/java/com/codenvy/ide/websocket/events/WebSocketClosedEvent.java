@@ -17,10 +17,39 @@ package com.codenvy.ide.websocket.events;
  * @version $Id: WebSocketClosedEvent.java Jun 18, 2012 14:33:50 PM azatsarynnyy $
  */
 public class WebSocketClosedEvent {
+
+    /**
+     * Normal closure; the connection successfully completed whatever purpose for which it was created.
+     */
+    public static final int CLOSE_NORMAL = 1000;
+
+    /**
+     * The endpoint is going away, either because of a server failure or because the browser is navigating away from the page that opened
+     * the connection.
+     */
+    public static final int CLOSE_GOING_AWAY = 1001;
+
+    /**
+     * The endpoint is terminating the connection due to a protocol error.
+     */
+    public static final int CLOSE_PROTOCOL_ERROR = 1002;
+    /**
+     * The connection is being terminated because the endpoint received data of a type it cannot accept (for example, a text-only endpoint
+     * received binary data).
+     */
+    public static final int CLOSE_UNSUPPORTED    = 1003;
+    /**
+     * Indicates that no status code was provided even though one was expected.
+     */
+    public static final int CLOSE_NO_STATUS      = 1005;
+    /**
+     * Reserved. Used to indicate that a connection was closed abnormally (that is, with no close frame being sent) when a status code is
+     * expected.
+     */
+    public static final int CLOSE_ABNORMAL       = 1006;
+
     /**
      * The WebSocket connection close code provided by the server.
-     *
-     * @see https://developer.mozilla.org/en/WebSockets/WebSockets_reference/CloseEvent#Close_codes
      */
     private int code;
 
@@ -61,7 +90,7 @@ public class WebSocketClosedEvent {
      * Checks weather the connection was cleanly closed.
      *
      * @return <code>true</code> when WebSocket connection was cleanly closed;
-     *         <code>false</code> when WebSocket connection was not cleanly closed
+     * <code>false</code> when WebSocket connection was not cleanly closed
      */
     public boolean wasClean() {
         return wasClean;
