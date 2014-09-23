@@ -10,17 +10,17 @@
  *******************************************************************************/
 package com.codenvy.api.project.gwt.client;
 
-import com.codenvy.api.project.shared.dto.*;
+import com.codenvy.api.project.shared.dto.GenerateDescriptor;
+import com.codenvy.api.project.shared.dto.ImportSourceDescriptor;
+import com.codenvy.api.project.shared.dto.ItemReference;
+import com.codenvy.api.project.shared.dto.ProjectDescriptor;
+import com.codenvy.api.project.shared.dto.ProjectReference;
+import com.codenvy.api.project.shared.dto.TreeElement;
 import com.codenvy.ide.MimeType;
 import com.codenvy.ide.collections.Array;
-import com.codenvy.ide.collections.StringMap;
-import com.codenvy.ide.rest.AsyncRequest;
 import com.codenvy.ide.rest.AsyncRequestCallback;
 import com.codenvy.ide.rest.AsyncRequestFactory;
 import com.codenvy.ide.rest.AsyncRequestLoader;
-import com.google.gwt.http.client.RequestBuilder;
-import com.google.gwt.json.client.JSONObject;
-import com.google.gwt.json.client.JSONString;
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
 
@@ -77,21 +77,6 @@ public class ProjectServiceClientImpl implements ProjectServiceClient {
         GET_TREE = restContext + "/project/" + workspaceId + "/tree";
         SEARCH = restContext + "/project/" + workspaceId + "/search";
         SWITCH_VISIBILITY = restContext + "/project/" + workspaceId + "/switch_visibility";
-    }
-
-    private static String stringMapToJson(StringMap<String> map) {
-        String json = "";
-        if (map != null && !map.isEmpty()) {
-            final JSONObject jsonObject = new JSONObject();
-            map.iterate(new StringMap.IterationCallback<String>() {
-                @Override
-                public void onIteration(String key, String value) {
-                    jsonObject.put(key, new JSONString(value));
-                }
-            });
-            json = jsonObject.toString();
-        }
-        return json;
     }
 
     @Override
