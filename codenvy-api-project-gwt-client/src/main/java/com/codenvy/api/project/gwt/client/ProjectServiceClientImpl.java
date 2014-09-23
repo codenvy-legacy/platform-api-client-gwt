@@ -10,11 +10,7 @@
  *******************************************************************************/
 package com.codenvy.api.project.gwt.client;
 
-import com.codenvy.api.project.shared.dto.ImportSourceDescriptor;
-import com.codenvy.api.project.shared.dto.ItemReference;
-import com.codenvy.api.project.shared.dto.ProjectDescriptor;
-import com.codenvy.api.project.shared.dto.ProjectReference;
-import com.codenvy.api.project.shared.dto.TreeElement;
+import com.codenvy.api.project.shared.dto.*;
 import com.codenvy.ide.MimeType;
 import com.codenvy.ide.collections.Array;
 import com.codenvy.ide.collections.StringMap;
@@ -277,15 +273,14 @@ public class ProjectServiceClientImpl implements ProjectServiceClient {
     }
 
     @Override
-    public void generateProject(String path, String generatorName, StringMap<String> options,
+    public void generateProject(String path, GenerateDescriptor generateDescriptor,
                                 AsyncRequestCallback<ProjectDescriptor> callback) {
-        final String requestUrl = GENERATE_PROJECT + normalizePath(path) + "?generator=" + generatorName;
-        //we need to send map, so don't use asyncRequestFactory
-        AsyncRequest.build(RequestBuilder.POST, requestUrl).header(ACCEPT, MimeType.APPLICATION_JSON).
-                header(CONTENTTYPE, MimeType.APPLICATION_JSON)
-                    .loader(loader, "Generating project...")
-                    .data(stringMapToJson(options))
-                    .send(callback);
+        final String requestUrl = GENERATE_PROJECT + normalizePath(path);
+        asyncRequestFactory.createPostRequest(requestUrl, generateDescriptor)
+                           .header(ACCEPT, MimeType.APPLICATION_JSON)
+                           .header(CONTENTTYPE, MimeType.APPLICATION_JSON)
+                           .loader(loader, "Generating project...")
+                           .send(callback);
     }
 
     @Override
