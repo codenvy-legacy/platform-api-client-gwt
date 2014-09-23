@@ -215,9 +215,6 @@
                     <excludes>
                         <!-- Apache license -->
                         <exclude>**/com/codenvy/ide/collections/**</exclude>
-                        <exclude>**/com/codenvy/ide/dto/client/RoutableDtoClientImpl.java</exclude>
-                        <exclude>**/com/codenvy/ide/dto/server/JsonSerializable.java</exclude>
-                        <exclude>**/com/codenvy/ide/dto/server/RoutableDtoServerImpl.java</exclude>
                         <exclude>**/com/codenvy/ide/dto/shared/**</exclude>
                         <exclude>**/com/codenvy/ide/dto/JsonSerializable.java</exclude>
                         <exclude>**/com/codenvy/ide/mvp/**</exclude>
