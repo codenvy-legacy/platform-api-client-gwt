@@ -10,7 +10,7 @@
  *******************************************************************************/
 package com.codenvy.api.user.gwt.client;
 
-import com.codenvy.api.user.shared.dto.User;
+import com.codenvy.api.user.shared.dto.UserDescriptor;
 import com.codenvy.ide.MimeType;
 import com.codenvy.ide.rest.AsyncRequestCallback;
 import com.codenvy.ide.rest.AsyncRequestFactory;
@@ -51,7 +51,7 @@ public class UserServiceClientImpl implements UserServiceClient {
 
     /** {@inheritDoc} */
     @Override
-    public void createUser(@NotNull String token, boolean isTemporary, AsyncRequestCallback<User> callback) {
+    public void createUser(@NotNull String token, boolean isTemporary, AsyncRequestCallback<UserDescriptor> callback) {
         StringBuilder requestUrl = new StringBuilder(CREATE);
         requestUrl.append("?token=").append(token).append("&temporary=").append(isTemporary);
 
@@ -63,7 +63,7 @@ public class UserServiceClientImpl implements UserServiceClient {
 
     /** {@inheritDoc} */
     @Override
-    public void getCurrentUser(AsyncRequestCallback<User> callback) {
+    public void getCurrentUser(AsyncRequestCallback<UserDescriptor> callback) {
 
         asyncRequestFactory.createGetRequest(USER)
                            .header(ACCEPT, MimeType.APPLICATION_JSON)
@@ -85,7 +85,7 @@ public class UserServiceClientImpl implements UserServiceClient {
 
     /** {@inheritDoc} */
     @Override
-    public void getUserById(@NotNull String id, AsyncRequestCallback<User> callback) {
+    public void getUserById(@NotNull String id, AsyncRequestCallback<UserDescriptor> callback) {
         String requestUrl = USER + id;
 
         asyncRequestFactory.createGetRequest(requestUrl)
@@ -96,7 +96,7 @@ public class UserServiceClientImpl implements UserServiceClient {
 
     /** {@inheritDoc} */
     @Override
-    public void getUserByEmail(@NotNull String email, AsyncRequestCallback<User> callback) {
+    public void getUserByEmail(@NotNull String email, AsyncRequestCallback<UserDescriptor> callback) {
         String requestUrl = FIND + "?email=" + email;
 
         asyncRequestFactory.createGetRequest(requestUrl)
