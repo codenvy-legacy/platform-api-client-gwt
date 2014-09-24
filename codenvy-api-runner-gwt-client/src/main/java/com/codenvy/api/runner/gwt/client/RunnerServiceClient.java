@@ -85,14 +85,6 @@ public interface RunnerServiceClient {
     public void getRunners(AsyncRequestCallback<Array<RunnerDescriptor>> callback);
 
     /**
-     * Get resources for user in current workspace.
-     *
-     * @param callback
-     *         the callback to use for the response
-     */
-    public void getResources(AsyncRequestCallback<ResourcesDescriptor> callback);
-
-    /**
      * Get available runners.
      *
      * @param projectName
@@ -101,4 +93,12 @@ public interface RunnerServiceClient {
      *         the callback to use for the response
      */
     public void getRunners(String projectName, AsyncRequestCallback<Array<RunnerDescriptor>> callback);
+
+    /**
+     * Get resources for user in current workspace.
+     *
+     * @param callback
+     *         the callback to use for the response
+     */
+    public void getResources(AsyncRequestCallback<ResourcesDescriptor> callback);
 }
