@@ -91,16 +91,16 @@ public class RunnerServiceClientImpl implements RunnerServiceClient {
 
     /** {@inheritDoc} */
     @Override
-    public void getResources(AsyncRequestCallback<ResourcesDescriptor> callback) {
-        final String requestUrl = baseUrl + "/runner/" + workspaceId + "/resources";
-        asyncRequestFactory.createGetRequest(requestUrl, false).send(callback);
-    }
-
-    /** {@inheritDoc} */
-    @Override
     public void getRunners(String projectName, AsyncRequestCallback<Array<RunnerDescriptor>> callback) {
         final String requestUrl = baseUrl + "/runner/" + workspaceId + "/available";
         final String params = "project=" + projectName;
         asyncRequestFactory.createGetRequest(requestUrl + "?" + params, false).send(callback);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public void getResources(AsyncRequestCallback<ResourcesDescriptor> callback) {
+        final String requestUrl = baseUrl + "/runner/" + workspaceId + "/resources";
+        asyncRequestFactory.createGetRequest(requestUrl, false).send(callback);
     }
 }
