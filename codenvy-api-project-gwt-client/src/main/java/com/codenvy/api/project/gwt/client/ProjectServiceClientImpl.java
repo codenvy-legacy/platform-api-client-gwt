@@ -263,7 +263,6 @@ public class ProjectServiceClientImpl implements ProjectServiceClient {
         final String requestUrl = GENERATE_PROJECT + normalizePath(path);
         asyncRequestFactory.createPostRequest(requestUrl, generateDescriptor)
                            .header(ACCEPT, MimeType.APPLICATION_JSON)
-                           .header(CONTENTTYPE, MimeType.APPLICATION_JSON)
                            .loader(loader, "Generating project...")
                            .send(callback);
     }
