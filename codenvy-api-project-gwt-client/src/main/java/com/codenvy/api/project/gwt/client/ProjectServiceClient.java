@@ -13,6 +13,7 @@ package com.codenvy.api.project.gwt.client;
 import com.codenvy.api.project.shared.dto.GenerateDescriptor;
 import com.codenvy.api.project.shared.dto.ImportSourceDescriptor;
 import com.codenvy.api.project.shared.dto.ItemReference;
+import com.codenvy.api.project.shared.dto.NewProject;
 import com.codenvy.api.project.shared.dto.ProjectDescriptor;
 import com.codenvy.api.project.shared.dto.ProjectReference;
 import com.codenvy.api.project.shared.dto.TreeElement;
@@ -69,12 +70,26 @@ public interface ProjectServiceClient {
      *
      * @param name
      *         name of the project to create
-     * @param descriptor
+     * @param projectDescriptor
+     *         descriptor of the project to create
+     * @param callback
+     *         the callback to use for the response
+     * @deprecated use {@link #createProject(String, NewProject, AsyncRequestCallback)} instead.
+     */
+    @Deprecated
+    public void createProject(String name, ProjectDescriptor projectDescriptor, AsyncRequestCallback<ProjectDescriptor> callback);
+
+    /**
+     * Create project.
+     *
+     * @param name
+     *         name of the project to create
+     * @param newProject
      *         descriptor of the project to create
      * @param callback
      *         the callback to use for the response
      */
-    public void createProject(String name, ProjectDescriptor descriptor, AsyncRequestCallback<ProjectDescriptor> callback);
+    public void createProject(String name, NewProject newProject, AsyncRequestCallback<ProjectDescriptor> callback);
 
     /**
      * Get sub-project.

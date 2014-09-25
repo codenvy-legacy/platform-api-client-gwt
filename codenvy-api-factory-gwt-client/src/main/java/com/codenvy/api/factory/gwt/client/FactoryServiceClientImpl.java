@@ -12,35 +12,27 @@ package com.codenvy.api.factory.gwt.client;
 
 import com.codenvy.api.factory.dto.Factory;
 import com.codenvy.ide.MimeType;
-import com.codenvy.ide.dto.DtoFactory;
 import com.codenvy.ide.rest.AsyncRequestCallback;
 import com.codenvy.ide.rest.AsyncRequestFactory;
 import com.codenvy.ide.rest.HTTPHeader;
 import com.codenvy.ide.util.Config;
-import com.codenvy.ide.websocket.MessageBus;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
 import javax.validation.constraints.NotNull;
 
 /**
-* Implementation of {@link com.codenvy.api.factory.gwt.client.FactoryServiceClient} service.
-*
-* @author Vladyslav Zhukovskii
-*/
+ * Implementation of {@link com.codenvy.api.factory.gwt.client.FactoryServiceClient} service.
+ *
+ * @author Vladyslav Zhukovskii
+ */
 @Singleton
 public class FactoryServiceClientImpl implements FactoryServiceClient {
-    private final DtoFactory dtoFactory;
     private AsyncRequestFactory asyncRequestFactory;
-    private final MessageBus messageBus;
 
     @Inject
-    public FactoryServiceClientImpl(DtoFactory dtoFactory,
-                                    AsyncRequestFactory asyncRequestFactory,
-                                    MessageBus messageBus) {
-        this.dtoFactory = dtoFactory;
+    public FactoryServiceClientImpl(AsyncRequestFactory asyncRequestFactory) {
         this.asyncRequestFactory = asyncRequestFactory;
-        this.messageBus = messageBus;
     }
 
     /** {@inheritDoc} */
@@ -57,14 +49,14 @@ public class FactoryServiceClientImpl implements FactoryServiceClient {
         url.append("legacy=true");
 
         asyncRequestFactory.createGetRequest(url.toString()).header(HTTPHeader.ACCEPT, MimeType.APPLICATION_JSON)
-                .send(callback);
+                           .send(callback);
     }
 
     /** {@inheritDoc} */
     @Override
     public void acceptFactory(@NotNull Factory factory, @NotNull AsyncRequestCallback<Factory> callback) {
 
-       final String requestUrl = "/api/factory-handler/" + Config.getWorkspaceId() + "/accept";
+        final String requestUrl = "/api/factory-handler/" + Config.getWorkspaceId() + "/accept";
 
         asyncRequestFactory.createPostRequest(requestUrl, factory)
                            .header(HTTPHeader.CONTENT_TYPE, MimeType.APPLICATION_JSON)

@@ -13,6 +13,7 @@ package com.codenvy.api.project.gwt.client;
 import com.codenvy.api.project.shared.dto.GenerateDescriptor;
 import com.codenvy.api.project.shared.dto.ImportSourceDescriptor;
 import com.codenvy.api.project.shared.dto.ItemReference;
+import com.codenvy.api.project.shared.dto.NewProject;
 import com.codenvy.api.project.shared.dto.ProjectDescriptor;
 import com.codenvy.api.project.shared.dto.ProjectReference;
 import com.codenvy.api.project.shared.dto.TreeElement;
@@ -25,7 +26,6 @@ import com.google.inject.Inject;
 import com.google.inject.name.Named;
 
 import static com.codenvy.ide.rest.HTTPHeader.ACCEPT;
-import static com.codenvy.ide.rest.HTTPHeader.CONTENTTYPE;
 import static com.codenvy.ide.rest.HTTPHeader.CONTENT_TYPE;
 import static com.google.gwt.http.client.RequestBuilder.DELETE;
 import static com.google.gwt.http.client.RequestBuilder.PUT;
@@ -121,9 +121,19 @@ public class ProjectServiceClientImpl implements ProjectServiceClient {
     }
 
     @Override
-    public void createProject(String name, ProjectDescriptor descriptor, AsyncRequestCallback<ProjectDescriptor> callback) {
+    @Deprecated
+    public void createProject(String name, ProjectDescriptor projectDescriptor, AsyncRequestCallback<ProjectDescriptor> callback) {
         final String requestUrl = PROJECT + "?name=" + name;
-        asyncRequestFactory.createPostRequest(requestUrl, descriptor)
+        asyncRequestFactory.createPostRequest(requestUrl, projectDescriptor)
+                           .header(ACCEPT, MimeType.APPLICATION_JSON)
+                           .loader(loader, "Creating project...")
+                           .send(callback);
+    }
+
+    @Override
+    public void createProject(String name, NewProject newProject, AsyncRequestCallback<ProjectDescriptor> callback) {
+        final String requestUrl = PROJECT + "?name=" + name;
+        asyncRequestFactory.createPostRequest(requestUrl, newProject)
                            .header(ACCEPT, MimeType.APPLICATION_JSON)
                            .loader(loader, "Creating project...")
                            .send(callback);
@@ -249,8 +259,9 @@ public class ProjectServiceClientImpl implements ProjectServiceClient {
                               AsyncRequestCallback<ProjectDescriptor> callback) {
         final StringBuilder requestUrl = new StringBuilder(IMPORT_PROJECT);
         requestUrl.append(normalizePath(path));
-        if (force)
+        if (force) {
             requestUrl.append("?force=true");
+        }
         asyncRequestFactory.createPostRequest(requestUrl.toString(), importSourceDescriptor)
                            .header(ACCEPT, MimeType.APPLICATION_JSON)
                            .loader(loader, "Importing sources into project...")
