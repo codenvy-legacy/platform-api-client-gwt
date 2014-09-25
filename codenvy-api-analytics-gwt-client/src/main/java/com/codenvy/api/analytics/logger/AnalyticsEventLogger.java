@@ -19,34 +19,40 @@ public interface AnalyticsEventLogger {
 
     int MAX_PARAMS_NUMBER      = 3;
     int MAX_PARAM_NAME_LENGTH  = 20;
-    int MAX_PARAM_VALUE_LENGTH = 50;
+    int MAX_PARAM_VALUE_LENGTH = 100;
 
     /**
-     * Logs a client-side IDE event. Also will be logged the current user, workspace and project information.
+     * Logs a client-side IDE event. Also the current user, workspace and project's information will be logged.
      *
-     * @param extensionClass
-     *         it uses to tie event with the extension
-     * @param action
-     *         which action currently being happened, the action length is limited to {@link #MAX_PARAM_VALUE_LENGTH} characters
+     * @param actionClass
+     *         it uses to tie event with the action or extension
+     * @param actionName
+     *         the action name, the name is limited by {@link #MAX_PARAM_VALUE_LENGTH} characters
      * @param additionalParams
      *         any additional parameters to log, not more than {@link #MAX_PARAMS_NUMBER}, every parameter name and its
-     *         value are limited to {@link #MAX_PARAM_NAME_LENGTH} and {@link #MAX_PARAM_VALUE_LENGTH} characters
+     *         value are limited by {@link #MAX_PARAM_NAME_LENGTH} and {@link #MAX_PARAM_VALUE_LENGTH} characters
      *         correspondingly
      */
-    void log(Class<?> extensionClass, String action, Map<String, String> additionalParams);
+    void log(Class<?> actionClass, String actionName, Map<String, String> additionalParams);
 
     /**
      * Logs a client-side IDE event.
      *
      * @see #log(Class, String, java.util.Map)
      */
-    void log(Class<?> extensionClass, String action);
-
+    void log(Class<?> actionClass, String actionName);
 
     /**
-     * Logs a client-side IDE event without reference to an extension.
+     * Logs a client-side IDE event.
      *
      * @see #log(Class, String, java.util.Map)
      */
+    void log(Class<?> actionClass);
+
+    /**
+     * Logs a client-side IDE event without. Method is deprecated and isn't used anymore.
+     * Please uses {@link #log(Class, String)} or {@link #log(Class, String, java.util.Map)}
+     */
+    @Deprecated
     void log(String action);
 }
