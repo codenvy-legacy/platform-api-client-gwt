@@ -16,6 +16,7 @@ import com.codenvy.api.project.shared.dto.ItemReference;
 import com.codenvy.api.project.shared.dto.NewProject;
 import com.codenvy.api.project.shared.dto.ProjectDescriptor;
 import com.codenvy.api.project.shared.dto.ProjectReference;
+import com.codenvy.api.project.shared.dto.ProjectUpdate;
 import com.codenvy.api.project.shared.dto.TreeElement;
 import com.codenvy.ide.MimeType;
 import com.codenvy.ide.collections.Array;
@@ -160,6 +161,16 @@ public class ProjectServiceClientImpl implements ProjectServiceClient {
 
     @Override
     public void updateProject(String path, ProjectDescriptor descriptor, AsyncRequestCallback<ProjectDescriptor> callback) {
+        final String requestUrl = PROJECT + normalizePath(path);
+        asyncRequestFactory.createRequest(PUT, requestUrl, descriptor, false)
+                           .header(CONTENT_TYPE, MimeType.APPLICATION_JSON)
+                           .header(ACCEPT, MimeType.APPLICATION_JSON)
+                           .loader(loader, "Updating project...")
+                           .send(callback);
+    }
+
+    @Override
+    public void updateProject(String path, ProjectUpdate descriptor, AsyncRequestCallback<ProjectDescriptor> callback) {
         final String requestUrl = PROJECT + normalizePath(path);
         asyncRequestFactory.createRequest(PUT, requestUrl, descriptor, false)
                            .header(CONTENT_TYPE, MimeType.APPLICATION_JSON)

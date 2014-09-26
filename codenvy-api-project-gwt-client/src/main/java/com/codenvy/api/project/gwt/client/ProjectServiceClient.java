@@ -16,6 +16,7 @@ import com.codenvy.api.project.shared.dto.ItemReference;
 import com.codenvy.api.project.shared.dto.NewProject;
 import com.codenvy.api.project.shared.dto.ProjectDescriptor;
 import com.codenvy.api.project.shared.dto.ProjectReference;
+import com.codenvy.api.project.shared.dto.ProjectUpdate;
 import com.codenvy.api.project.shared.dto.TreeElement;
 import com.codenvy.ide.collections.Array;
 import com.codenvy.ide.rest.AsyncRequestCallback;
@@ -125,8 +126,21 @@ public interface ProjectServiceClient {
      *         descriptor of the project to update
      * @param callback
      *         the callback to use for the response
+     * @deprecated use {@link #updateProject(String, ProjectUpdate, AsyncRequestCallback)} instead.
      */
     public void updateProject(String path, ProjectDescriptor descriptor, AsyncRequestCallback<ProjectDescriptor> callback);
+
+    /**
+     * Update project.
+     *
+     * @param path
+     *         path to the project to get
+     * @param descriptor
+     *         descriptor of the project to update
+     * @param callback
+     *         the callback to use for the response
+     */
+    public void updateProject(String path, ProjectUpdate descriptor, AsyncRequestCallback<ProjectDescriptor> callback);
 
     /**
      * Create new file in the specified folder.
