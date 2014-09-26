@@ -21,11 +21,12 @@ public interface AnalyticsEventLogger {
     int MAX_PARAM_NAME_LENGTH  = 20;
     int MAX_PARAM_VALUE_LENGTH = 100;
 
+
     /**
      * Logs a client-side IDE event. Also the current user, workspace and project's information will be logged.
      *
-     * @param actionClass
-     *         it uses to tie event with the action or extension
+     * @param action
+     *         any class to log information from
      * @param actionName
      *         the action name, the name is limited by {@link #MAX_PARAM_VALUE_LENGTH} characters
      * @param additionalParams
@@ -33,25 +34,40 @@ public interface AnalyticsEventLogger {
      *         value are limited by {@link #MAX_PARAM_NAME_LENGTH} and {@link #MAX_PARAM_VALUE_LENGTH} characters
      *         correspondingly
      */
-    void log(Class<?> actionClass, String actionName, Map<String, String> additionalParams);
+    void log(Object action, String actionName, Map<String, String> additionalParams);
 
     /**
      * Logs a client-side IDE event.
      *
-     * @see #log(Class, String, java.util.Map)
+     * @see #log(Object, String, java.util.Map)
      */
-    void log(Class<?> actionClass, String actionName);
+    void log(Object action, String actionName);
 
     /**
      * Logs a client-side IDE event.
      *
-     * @see #log(Class, String, java.util.Map)
+     * @see #log(Object, String, java.util.Map)
      */
-    void log(Class<?> actionClass);
+    void log(Object action);
 
     /**
      * Logs a client-side IDE event without. Method is deprecated and isn't used anymore.
-     * Please uses {@link #log(Class, String)} or {@link #log(Class, String, java.util.Map)}
+     * Please uses {@link #log(Object, String, java.util.Map)}
+     */
+    @Deprecated
+    void log(Class<?> actionClass, String actionName, Map<String, String> additionalParams);
+
+    /**
+     * Logs a client-side IDE event without. Method is deprecated and isn't used anymore.
+     * Please uses {@link #log(Object, String)}
+     */
+    @Deprecated
+    void log(Class<?> actionClass, String actionName);
+
+
+    /**
+     * Logs a client-side IDE event without. Method is deprecated and isn't used anymore.
+     * Please uses {@link #log(Object)}}
      */
     @Deprecated
     void log(String action);
