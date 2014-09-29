@@ -1192,7 +1192,6 @@ public class Tree<D> extends UiComponent<Tree.View<D>> implements IsWidget {
         if (widget == null) {
             widget = new HTML();
             Element element = getView().getElement();
-            //element.getStyle().setOverflow("auto");
             widget.getElement().appendChild((Node)element);
             widget.getElement().getStyle().setOverflow(Style.Overflow.AUTO);
         }

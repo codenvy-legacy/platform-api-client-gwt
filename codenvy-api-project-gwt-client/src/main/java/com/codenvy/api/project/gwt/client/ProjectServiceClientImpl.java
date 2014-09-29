@@ -10,27 +10,23 @@
  *******************************************************************************/
 package com.codenvy.api.project.gwt.client;
 
+import com.codenvy.api.project.shared.dto.GenerateDescriptor;
 import com.codenvy.api.project.shared.dto.ImportSourceDescriptor;
 import com.codenvy.api.project.shared.dto.ItemReference;
 import com.codenvy.api.project.shared.dto.NewProject;
 import com.codenvy.api.project.shared.dto.ProjectDescriptor;
 import com.codenvy.api.project.shared.dto.ProjectReference;
+import com.codenvy.api.project.shared.dto.ProjectUpdate;
 import com.codenvy.api.project.shared.dto.TreeElement;
 import com.codenvy.ide.MimeType;
 import com.codenvy.ide.collections.Array;
-import com.codenvy.ide.collections.StringMap;
-import com.codenvy.ide.rest.AsyncRequest;
 import com.codenvy.ide.rest.AsyncRequestCallback;
 import com.codenvy.ide.rest.AsyncRequestFactory;
 import com.codenvy.ide.rest.AsyncRequestLoader;
-import com.google.gwt.http.client.RequestBuilder;
-import com.google.gwt.json.client.JSONObject;
-import com.google.gwt.json.client.JSONString;
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
 
 import static com.codenvy.ide.rest.HTTPHeader.ACCEPT;
-import static com.codenvy.ide.rest.HTTPHeader.CONTENTTYPE;
 import static com.codenvy.ide.rest.HTTPHeader.CONTENT_TYPE;
 import static com.google.gwt.http.client.RequestBuilder.DELETE;
 import static com.google.gwt.http.client.RequestBuilder.PUT;
@@ -84,21 +80,6 @@ public class ProjectServiceClientImpl implements ProjectServiceClient {
         SWITCH_VISIBILITY = restContext + "/project/" + workspaceId + "/switch_visibility";
     }
 
-    private static String stringMapToJson(StringMap<String> map) {
-        String json = "";
-        if (map != null && !map.isEmpty()) {
-            final JSONObject jsonObject = new JSONObject();
-            map.iterate(new StringMap.IterationCallback<String>() {
-                @Override
-                public void onIteration(String key, String value) {
-                    jsonObject.put(key, new JSONString(value));
-                }
-            });
-            json = jsonObject.toString();
-        }
-        return json;
-    }
-
     @Override
     public void getProjects(AsyncRequestCallback<Array<ProjectReference>> callback) {
         final String requestUrl = PROJECT;
@@ -141,9 +122,19 @@ public class ProjectServiceClientImpl implements ProjectServiceClient {
     }
 
     @Override
-    public void createProject(String name, ProjectDescriptor descriptor, AsyncRequestCallback<ProjectDescriptor> callback) {
+    @Deprecated
+    public void createProject(String name, ProjectDescriptor projectDescriptor, AsyncRequestCallback<ProjectDescriptor> callback) {
         final String requestUrl = PROJECT + "?name=" + name;
-        asyncRequestFactory.createPostRequest(requestUrl, descriptor)
+        asyncRequestFactory.createPostRequest(requestUrl, projectDescriptor)
+                           .header(ACCEPT, MimeType.APPLICATION_JSON)
+                           .loader(loader, "Creating project...")
+                           .send(callback);
+    }
+
+    @Override
+    public void createProject(String name, NewProject newProject, AsyncRequestCallback<ProjectDescriptor> callback) {
+        final String requestUrl = PROJECT + "?name=" + name;
+        asyncRequestFactory.createPostRequest(requestUrl, newProject)
                            .header(ACCEPT, MimeType.APPLICATION_JSON)
                            .loader(loader, "Creating project...")
                            .send(callback);
@@ -170,6 +161,16 @@ public class ProjectServiceClientImpl implements ProjectServiceClient {
 
     @Override
     public void updateProject(String path, ProjectDescriptor descriptor, AsyncRequestCallback<ProjectDescriptor> callback) {
+        final String requestUrl = PROJECT + normalizePath(path);
+        asyncRequestFactory.createRequest(PUT, requestUrl, descriptor, false)
+                           .header(CONTENT_TYPE, MimeType.APPLICATION_JSON)
+                           .header(ACCEPT, MimeType.APPLICATION_JSON)
+                           .loader(loader, "Updating project...")
+                           .send(callback);
+    }
+
+    @Override
+    public void updateProject(String path, ProjectUpdate descriptor, AsyncRequestCallback<ProjectDescriptor> callback) {
         final String requestUrl = PROJECT + normalizePath(path);
         asyncRequestFactory.createRequest(PUT, requestUrl, descriptor, false)
                            .header(CONTENT_TYPE, MimeType.APPLICATION_JSON)
@@ -269,8 +270,9 @@ public class ProjectServiceClientImpl implements ProjectServiceClient {
                               AsyncRequestCallback<ProjectDescriptor> callback) {
         final StringBuilder requestUrl = new StringBuilder(IMPORT_PROJECT);
         requestUrl.append(normalizePath(path));
-        if (force)
+        if (force) {
             requestUrl.append("?force=true");
+        }
         asyncRequestFactory.createPostRequest(requestUrl.toString(), importSourceDescriptor)
                            .header(ACCEPT, MimeType.APPLICATION_JSON)
                            .loader(loader, "Importing sources into project...")
@@ -278,15 +280,13 @@ public class ProjectServiceClientImpl implements ProjectServiceClient {
     }
 
     @Override
-    public void generateProject(String path, String generatorName, StringMap<String> options,
+    public void generateProject(String path, GenerateDescriptor generateDescriptor,
                                 AsyncRequestCallback<ProjectDescriptor> callback) {
-        final String requestUrl = GENERATE_PROJECT + normalizePath(path) + "?generator=" + generatorName;
-        //we need to send map, so don't use asyncRequestFactory
-        AsyncRequest.build(RequestBuilder.POST, requestUrl).header(ACCEPT, MimeType.APPLICATION_JSON).
-                header(CONTENTTYPE, MimeType.APPLICATION_JSON)
-                    .loader(loader, "Generating project...")
-                    .data(stringMapToJson(options))
-                    .send(callback);
+        final String requestUrl = GENERATE_PROJECT + normalizePath(path);
+        asyncRequestFactory.createPostRequest(requestUrl, generateDescriptor)
+                           .header(ACCEPT, MimeType.APPLICATION_JSON)
+                           .loader(loader, "Generating project...")
+                           .send(callback);
     }
 
     @Override

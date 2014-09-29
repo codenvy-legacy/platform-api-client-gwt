@@ -10,14 +10,15 @@
  *******************************************************************************/
 package com.codenvy.api.project.gwt.client;
 
+import com.codenvy.api.project.shared.dto.GenerateDescriptor;
 import com.codenvy.api.project.shared.dto.ImportSourceDescriptor;
 import com.codenvy.api.project.shared.dto.ItemReference;
 import com.codenvy.api.project.shared.dto.NewProject;
 import com.codenvy.api.project.shared.dto.ProjectDescriptor;
 import com.codenvy.api.project.shared.dto.ProjectReference;
+import com.codenvy.api.project.shared.dto.ProjectUpdate;
 import com.codenvy.api.project.shared.dto.TreeElement;
 import com.codenvy.ide.collections.Array;
-import com.codenvy.ide.collections.StringMap;
 import com.codenvy.ide.rest.AsyncRequestCallback;
 
 import javax.annotation.Nullable;
@@ -70,12 +71,26 @@ public interface ProjectServiceClient {
      *
      * @param name
      *         name of the project to create
-     * @param descriptor
+     * @param projectDescriptor
+     *         descriptor of the project to create
+     * @param callback
+     *         the callback to use for the response
+     * @deprecated use {@link #createProject(String, NewProject, AsyncRequestCallback)} instead.
+     */
+    @Deprecated
+    public void createProject(String name, ProjectDescriptor projectDescriptor, AsyncRequestCallback<ProjectDescriptor> callback);
+
+    /**
+     * Create project.
+     *
+     * @param name
+     *         name of the project to create
+     * @param newProject
      *         descriptor of the project to create
      * @param callback
      *         the callback to use for the response
      */
-    public void createProject(String name, ProjectDescriptor descriptor, AsyncRequestCallback<ProjectDescriptor> callback);
+    public void createProject(String name, NewProject newProject, AsyncRequestCallback<ProjectDescriptor> callback);
 
     /**
      * Get sub-project.
@@ -111,8 +126,21 @@ public interface ProjectServiceClient {
      *         descriptor of the project to update
      * @param callback
      *         the callback to use for the response
+     * @deprecated use {@link #updateProject(String, ProjectUpdate, AsyncRequestCallback)} instead.
      */
     public void updateProject(String path, ProjectDescriptor descriptor, AsyncRequestCallback<ProjectDescriptor> callback);
+
+    /**
+     * Update project.
+     *
+     * @param path
+     *         path to the project to get
+     * @param descriptor
+     *         descriptor of the project to update
+     * @param callback
+     *         the callback to use for the response
+     */
+    public void updateProject(String path, ProjectUpdate descriptor, AsyncRequestCallback<ProjectDescriptor> callback);
 
     /**
      * Create new file in the specified folder.
@@ -233,14 +261,12 @@ public interface ProjectServiceClient {
      *
      * @param path
      *         path to the project to generate
-     * @param generatorName
-     *         project generator's name
-     * @param options
-     *         additional options for project generator
+     * @param generateDescriptor
+     *         {@link GenerateDescriptor}
      * @param callback
      *         the callback to use for the response
      */
-    public void generateProject(String path, String generatorName, StringMap<String> options,
+    public void generateProject(String path, GenerateDescriptor generateDescriptor,
                                 AsyncRequestCallback<ProjectDescriptor> callback);
 
     /**
