@@ -12,6 +12,7 @@ package com.codenvy.api.project.gwt.client;
 
 import com.codenvy.api.project.shared.dto.ImportSourceDescriptor;
 import com.codenvy.api.project.shared.dto.ItemReference;
+import com.codenvy.api.project.shared.dto.NewProject;
 import com.codenvy.api.project.shared.dto.ProjectDescriptor;
 import com.codenvy.api.project.shared.dto.ProjectReference;
 import com.codenvy.api.project.shared.dto.TreeElement;
@@ -93,12 +94,12 @@ public interface ProjectServiceClient {
      *         path to the parent project
      * @param name
      *         name of the module to create
-     * @param descriptor
+     * @param newProject
      *         descriptor of the project to create
      * @param callback
      *         the callback to use for the response
      */
-    public void createModule(String parentProjectPath, String name, ProjectDescriptor descriptor,
+    public void createModule(String parentProjectPath, String name, NewProject newProject,
                              AsyncRequestCallback<ProjectDescriptor> callback);
 
     /**

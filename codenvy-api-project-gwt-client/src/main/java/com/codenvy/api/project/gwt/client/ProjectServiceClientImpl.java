@@ -12,6 +12,7 @@ package com.codenvy.api.project.gwt.client;
 
 import com.codenvy.api.project.shared.dto.ImportSourceDescriptor;
 import com.codenvy.api.project.shared.dto.ItemReference;
+import com.codenvy.api.project.shared.dto.NewProject;
 import com.codenvy.api.project.shared.dto.ProjectDescriptor;
 import com.codenvy.api.project.shared.dto.ProjectReference;
 import com.codenvy.api.project.shared.dto.TreeElement;
@@ -158,10 +159,10 @@ public class ProjectServiceClientImpl implements ProjectServiceClient {
     }
 
     @Override
-    public void createModule(String parentProjectPath, String name, ProjectDescriptor descriptor,
+    public void createModule(String parentProjectPath, String name, NewProject newProject,
                              AsyncRequestCallback<ProjectDescriptor> callback) {
         final String requestUrl = PROJECT + normalizePath(parentProjectPath) + "?name=" + name;
-        asyncRequestFactory.createPostRequest(requestUrl, descriptor)
+        asyncRequestFactory.createPostRequest(requestUrl, newProject)
                            .header(ACCEPT, MimeType.APPLICATION_JSON)
                            .loader(loader, "Creating module...")
                            .send(callback);
