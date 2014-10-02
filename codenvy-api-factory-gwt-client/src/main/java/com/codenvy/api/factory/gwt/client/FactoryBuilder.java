@@ -38,13 +38,13 @@ public class FactoryBuilder extends NonEncodedFactoryBuilder {
     
     /** {@inheritDoc} */
     @Override
-    protected String safeGwtEncode(String value) {
+    protected String encode(String value) {
         return URL.encode(value);
     }
 
     /** {@inheritDoc} */
     @Override
-    protected String safeGwtToJson(List<Variable> dto) {
+    protected String toJson(List<Variable> dto) {
         return dtoFactory.toJson(Collections.createArray(dto));
     }
 
