@@ -18,7 +18,7 @@ import com.codenvy.ide.rest.AsyncRequestLoader;
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
 
-import javax.validation.constraints.NotNull;
+import javax.annotation.Nonnull;
 
 import static com.codenvy.ide.rest.HTTPHeader.ACCEPT;
 import static com.codenvy.ide.rest.HTTPHeader.CONTENT_TYPE;
@@ -51,7 +51,7 @@ public class UserServiceClientImpl implements UserServiceClient {
 
     /** {@inheritDoc} */
     @Override
-    public void createUser(@NotNull String token, boolean isTemporary, AsyncRequestCallback<UserDescriptor> callback) {
+    public void createUser(@Nonnull String token, boolean isTemporary, AsyncRequestCallback<UserDescriptor> callback) {
         StringBuilder requestUrl = new StringBuilder(CREATE);
         requestUrl.append("?token=").append(token).append("&temporary=").append(isTemporary);
 
@@ -73,7 +73,7 @@ public class UserServiceClientImpl implements UserServiceClient {
 
     /** {@inheritDoc} */
     @Override
-    public void updatePassword(@NotNull String password, AsyncRequestCallback<Void> callback) {
+    public void updatePassword(@Nonnull String password, AsyncRequestCallback<Void> callback) {
         // TODO form parameter
         String requestUrl = PASSWORD + "?password=" + password;
 
@@ -85,7 +85,7 @@ public class UserServiceClientImpl implements UserServiceClient {
 
     /** {@inheritDoc} */
     @Override
-    public void getUserById(@NotNull String id, AsyncRequestCallback<UserDescriptor> callback) {
+    public void getUserById(@Nonnull String id, AsyncRequestCallback<UserDescriptor> callback) {
         String requestUrl = USER + id;
 
         asyncRequestFactory.createGetRequest(requestUrl)
@@ -96,7 +96,7 @@ public class UserServiceClientImpl implements UserServiceClient {
 
     /** {@inheritDoc} */
     @Override
-    public void getUserByEmail(@NotNull String email, AsyncRequestCallback<UserDescriptor> callback) {
+    public void getUserByEmail(@Nonnull String email, AsyncRequestCallback<UserDescriptor> callback) {
         String requestUrl = FIND + "?email=" + email;
 
         asyncRequestFactory.createGetRequest(requestUrl)
@@ -107,7 +107,7 @@ public class UserServiceClientImpl implements UserServiceClient {
 
     /** {@inheritDoc} */
     @Override
-    public void removeUser(@NotNull String id, AsyncRequestCallback<Void> callback) {
+    public void removeUser(@Nonnull String id, AsyncRequestCallback<Void> callback) {
         String requestUrl = USER + id;
 
         asyncRequestFactory.createRequest(DELETE, requestUrl, null, false)

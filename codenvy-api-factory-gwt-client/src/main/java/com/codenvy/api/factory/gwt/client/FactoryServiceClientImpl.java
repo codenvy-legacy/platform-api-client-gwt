@@ -19,7 +19,7 @@ import com.codenvy.ide.util.Config;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
-import javax.validation.constraints.NotNull;
+import javax.annotation.Nonnull;
 
 /**
  * Implementation of {@link com.codenvy.api.factory.gwt.client.FactoryServiceClient} service.
@@ -37,7 +37,7 @@ public class FactoryServiceClientImpl implements FactoryServiceClient {
 
     /** {@inheritDoc} */
     @Override
-    public void getFactory(@NotNull String raw, boolean encoded, @NotNull AsyncRequestCallback<Factory> callback) {
+    public void getFactory(@Nonnull String raw, boolean encoded, @Nonnull AsyncRequestCallback<Factory> callback) {
         StringBuilder url = new StringBuilder("/api/factory");
 
         if (encoded) {
@@ -54,7 +54,7 @@ public class FactoryServiceClientImpl implements FactoryServiceClient {
 
     /** {@inheritDoc} */
     @Override
-    public void acceptFactory(@NotNull Factory factory, @NotNull AsyncRequestCallback<Factory> callback) {
+    public void acceptFactory(@Nonnull Factory factory, @Nonnull AsyncRequestCallback<Factory> callback) {
 
         final String requestUrl = "/api/factory-handler/" + Config.getWorkspaceId() + "/accept";
 

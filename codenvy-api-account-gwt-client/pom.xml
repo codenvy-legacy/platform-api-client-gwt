@@ -26,16 +26,6 @@
     </properties>
     <dependencies>
         <dependency>
-            <groupId>com.codenvy.commons</groupId>
-            <artifactId>codenvy-commons-json</artifactId>
-            <version>${codenvy.commons.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.codenvy.commons</groupId>
-            <artifactId>codenvy-commons-lang</artifactId>
-            <version>${codenvy.commons.version}</version>
-        </dependency>
-        <dependency>
             <groupId>com.codenvy.platform-api</groupId>
             <artifactId>codenvy-api-account</artifactId>
             <version>${codenvy.platform-api.version}</version>
@@ -43,6 +33,11 @@
         <dependency>
             <groupId>com.codenvy.platform-api</groupId>
             <artifactId>codenvy-api-core</artifactId>
+            <version>${codenvy.platform-api.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.codenvy.platform-api</groupId>
+            <artifactId>codenvy-dto</artifactId>
             <version>${codenvy.platform-api.version}</version>
         </dependency>
         <dependency>
@@ -56,10 +51,9 @@
             <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>com.google.gwt</groupId>
-            <artifactId>gwt-dev</artifactId>
-            <version>${com.google.gwt.version}</version>
-            <scope>provided</scope>
+            <groupId>com.google.inject</groupId>
+            <artifactId>guice</artifactId>
+            <version>${com.google.code.guice.version}</version>
         </dependency>
         <dependency>
             <groupId>com.google.gwt</groupId>

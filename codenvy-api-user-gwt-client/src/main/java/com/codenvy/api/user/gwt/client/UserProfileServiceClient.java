@@ -13,7 +13,7 @@ package com.codenvy.api.user.gwt.client;
 import com.codenvy.api.user.shared.dto.ProfileDescriptor;
 import com.codenvy.ide.rest.AsyncRequestCallback;
 
-import javax.validation.constraints.NotNull;
+import javax.annotation.Nonnull;
 import java.util.Map;
 
 /**
@@ -37,7 +37,7 @@ public interface UserProfileServiceClient {
      * @param updates attributes to update
      * @param callback
      */
-    void updateCurrentProfile(@NotNull Map<String, String> updates, AsyncRequestCallback<ProfileDescriptor> callback);
+    void updateCurrentProfile(@Nonnull Map<String, String> updates, AsyncRequestCallback<ProfileDescriptor> callback);
 
     /**
      * Get profile by id.
@@ -45,7 +45,7 @@ public interface UserProfileServiceClient {
      * @param id profile's id
      * @param callback
      */
-    void getProfileById(@NotNull String id, AsyncRequestCallback<ProfileDescriptor> callback);
+    void getProfileById(@Nonnull String id, AsyncRequestCallback<ProfileDescriptor> callback);
 
     /**
      * Update profile.
@@ -54,7 +54,7 @@ public interface UserProfileServiceClient {
      * @param updates attributes to update
      * @param callback
      */
-    void updateProfile(@NotNull String id, Map<String, String> updates, AsyncRequestCallback<ProfileDescriptor> callback);
+    void updateProfile(@Nonnull String id, Map<String, String> updates, AsyncRequestCallback<ProfileDescriptor> callback);
 
     /**
      * Update preferences.
@@ -62,5 +62,5 @@ public interface UserProfileServiceClient {
      * @param prefsToUpdate preferences to update
      * @param callback
      */
-    void updatePreferences(@NotNull Map<String, String> prefsToUpdate, AsyncRequestCallback<ProfileDescriptor> callback);
+    void updatePreferences(@Nonnull Map<String, String> prefsToUpdate, AsyncRequestCallback<ProfileDescriptor> callback);
 }

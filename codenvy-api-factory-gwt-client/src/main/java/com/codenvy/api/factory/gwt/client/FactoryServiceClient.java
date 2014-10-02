@@ -13,7 +13,7 @@ package com.codenvy.api.factory.gwt.client;
 import com.codenvy.api.factory.dto.Factory;
 import com.codenvy.ide.rest.AsyncRequestCallback;
 
-import javax.validation.constraints.NotNull;
+import javax.annotation.Nonnull;
 
 /**
  * Client for IDE3 Factory service.
@@ -31,8 +31,9 @@ public interface FactoryServiceClient {
      *         false
      * @param callback
      *         callback which return valid JSON object of factory or exception if occurred
+     *
      */
-    void getFactory(@NotNull String raw, boolean encoded, @NotNull AsyncRequestCallback<Factory> callback);
+    void getFactory(@Nonnull String raw, boolean encoded, @Nonnull AsyncRequestCallback<Factory> callback);
 
     /**
      * Send valid JSON factory object to server side of IDE3 to accept it. Accepting means
@@ -50,15 +51,12 @@ public interface FactoryServiceClient {
      * @param callback
      *         callback which return valid JSON object of factory or exception if occurred
      */
-    void acceptFactory(@NotNull Factory factory, @NotNull AsyncRequestCallback<Factory> callback);
-
+    void acceptFactory(@Nonnull Factory factory, @Nonnull AsyncRequestCallback<Factory> callback) ;
+    
     /**
-     * @param factoryId
-     *         Factory's id
-     * @param type
-     *         snippent's type (markdown, html, etc)
-     * @param callback
-     *         callback which returns snippet of the factory or exception if occurred
+     * @param factoryId Factory's id
+     * @param type snippent's type (markdown, html, etc)
+     * @param callback callback which returns snippet of the factory or exception if occurred
      */
-    void getFactorySnippet(@NotNull String factoryId, @NotNull String type, @NotNull AsyncRequestCallback<String> callback);
+    void getFactorySnippet(@Nonnull String factoryId, @Nonnull String type, @Nonnull AsyncRequestCallback<String> callback);
 }

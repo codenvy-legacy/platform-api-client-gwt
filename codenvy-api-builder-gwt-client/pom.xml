@@ -31,6 +31,21 @@
             <version>${codenvy.platform-api.version}</version>
         </dependency>
         <dependency>
+            <groupId>com.codenvy.platform-api</groupId>
+            <artifactId>codenvy-api-core</artifactId>
+            <version>${codenvy.platform-api.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.codenvy.platform-api</groupId>
+            <artifactId>codenvy-api-project</artifactId>
+            <version>${codenvy.platform-api.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.codenvy.platform-api</groupId>
+            <artifactId>codenvy-dto</artifactId>
+            <version>${codenvy.platform-api.version}</version>
+        </dependency>
+        <dependency>
             <groupId>com.codenvy.platform-api-gwt-client</groupId>
             <artifactId>codenvy-api-core-gwt-client</artifactId>
             <version>${project.version}</version>
@@ -44,6 +59,11 @@
             <groupId>com.codenvy.platform-api-gwt-client</groupId>
             <artifactId>codenvy-gwt-client-commons</artifactId>
             <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.inject</groupId>
+            <artifactId>guice</artifactId>
+            <version>${com.google.code.guice.version}</version>
         </dependency>
         <dependency>
             <groupId>com.google.gwt</groupId>
