@@ -31,7 +31,6 @@ public interface FactoryServiceClient {
      *         false
      * @param callback
      *         callback which return valid JSON object of factory or exception if occurred
-     *
      */
     void getFactory(@NotNull String raw, boolean encoded, @NotNull AsyncRequestCallback<Factory> callback);
 
@@ -51,12 +50,15 @@ public interface FactoryServiceClient {
      * @param callback
      *         callback which return valid JSON object of factory or exception if occurred
      */
-    void acceptFactory(@NotNull Factory factory, @NotNull AsyncRequestCallback<Factory> callback) ;
-    
+    void acceptFactory(@NotNull Factory factory, @NotNull AsyncRequestCallback<Factory> callback);
+
     /**
-     * @param factoryId Factory's id
-     * @param type snippent's type (markdown, html, etc)
-     * @param callback callback which returns snippet of the factory or exception if occurred
+     * @param factoryId
+     *         Factory's id
+     * @param type
+     *         snippent's type (markdown, html, etc)
+     * @param callback
+     *         callback which returns snippet of the factory or exception if occurred
      */
     void getFactorySnippet(@NotNull String factoryId, @NotNull String type, @NotNull AsyncRequestCallback<String> callback);
 }

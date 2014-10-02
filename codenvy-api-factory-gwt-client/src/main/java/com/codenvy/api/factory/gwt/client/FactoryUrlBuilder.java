@@ -20,22 +20,20 @@ import java.util.List;
 
 /**
  * Is used for converting factory to non encoded url version by using
- * {@link FactoryBuilder#buildNonEncoded(com.codenvy.api.factory.dto.Factory)}
+ * {@link FactoryUrlBuilder#buildNonEncoded(com.codenvy.api.factory.dto.Factory)}
  * Has implementation of GWT specific methods from {@link NonEncodedFactoryBuilder}.
- * 
+ *
  * @author Ann Shumilova
+ * @author Sergii Leschenko
  */
-public class FactoryBuilder extends NonEncodedFactoryBuilder {
-    
+public class FactoryUrlBuilder extends NonEncodedFactoryBuilder {
+
     private final DtoFactory dtoFactory;
-    
-    /**
-     * @param dtoFactory DTO factory
-     */
-    public FactoryBuilder(DtoFactory dtoFactory) {
+
+    public FactoryUrlBuilder(DtoFactory dtoFactory) {
         this.dtoFactory = dtoFactory;
     }
-    
+
     /** {@inheritDoc} */
     @Override
     protected String encode(String value) {
