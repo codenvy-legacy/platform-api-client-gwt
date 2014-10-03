@@ -11,7 +11,6 @@
 package com.codenvy.api.user.gwt.client;
 
 import com.codenvy.api.user.shared.dto.ProfileDescriptor;
-import com.codenvy.ide.MimeType;
 import com.codenvy.ide.dto.DtoFactory;
 import com.codenvy.ide.json.JsonHelper;
 import com.codenvy.ide.rest.AsyncRequestCallback;
@@ -24,6 +23,8 @@ import java.util.Map;
 
 import static com.codenvy.ide.rest.HTTPHeader.ACCEPT;
 import static com.codenvy.ide.rest.HTTPHeader.CONTENT_TYPE;
+import static com.codenvy.ide.MimeType.APPLICATION_JSON;
+
 
 /**
  * Implementation for {@link UserProfileServiceClient}.
@@ -50,11 +51,9 @@ public class UserProfileServiceClientImpl implements UserProfileServiceClient {
 
     /** {@inheritDoc} */
     @Override
-    public void getCurrentProfile(String filter, AsyncRequestCallback<ProfileDescriptor> callback) {
-        String requestUrl = (filter != null && !filter.isEmpty()) ? PROFILE + "?filter=" + filter : PROFILE;
-
-        asyncRequestFactory.createGetRequest(requestUrl)
-                           .header(ACCEPT, MimeType.APPLICATION_JSON)
+    public void getCurrentProfile(AsyncRequestCallback<ProfileDescriptor> callback) {
+        asyncRequestFactory.createGetRequest(PROFILE)
+                           .header(ACCEPT, APPLICATION_JSON)
                            .loader(loader, "Retrieving current user's profile...")
                            .send(callback);
     }
@@ -63,8 +62,8 @@ public class UserProfileServiceClientImpl implements UserProfileServiceClient {
     @Override
     public void updateCurrentProfile(Map<String, String> updates, AsyncRequestCallback<ProfileDescriptor> callback) {
         asyncRequestFactory.createPostRequest(PROFILE, null)
-                           .header(ACCEPT, MimeType.APPLICATION_JSON)
-                           .header(CONTENT_TYPE, MimeType.APPLICATION_JSON)
+                           .header(ACCEPT, APPLICATION_JSON)
+                           .header(CONTENT_TYPE, APPLICATION_JSON)
                            .data(JsonHelper.toJson(updates))
                            .loader(loader, "Updating current user's profile...")
                            .send(callback);
@@ -76,8 +75,17 @@ public class UserProfileServiceClientImpl implements UserProfileServiceClient {
         String requestUrl = PROFILE + id;
 
         asyncRequestFactory.createGetRequest(requestUrl)
-                           .header(ACCEPT, MimeType.APPLICATION_JSON)
+                           .header(ACCEPT, APPLICATION_JSON)
                            .loader(loader, "Getting user's profile...")
+                           .send(callback);
+    }
+
+    @Override
+    public void getPreferences(String filter, AsyncRequestCallback<Map<String, String>> callback) {
+        asyncRequestFactory.createGetRequest(PREFS)
+                           .header(ACCEPT, APPLICATION_JSON)
+                           .header(CONTENT_TYPE, APPLICATION_JSON)
+                           .loader(loader, "Getting user's preferences...")
                            .send(callback);
     }
 
@@ -87,8 +95,8 @@ public class UserProfileServiceClientImpl implements UserProfileServiceClient {
         String requestUrl = PROFILE + id;
 
         asyncRequestFactory.createPostRequest(requestUrl, null)
-                           .header(ACCEPT, MimeType.APPLICATION_JSON)
-                           .header(CONTENT_TYPE, MimeType.APPLICATION_JSON)
+                           .header(ACCEPT, APPLICATION_JSON)
+                           .header(CONTENT_TYPE, APPLICATION_JSON)
                            .data(JsonHelper.toJson(updates))
                            .loader(loader, "Updating user's profile...")
                            .send(callback);
@@ -96,10 +104,14 @@ public class UserProfileServiceClientImpl implements UserProfileServiceClient {
 
     /** {@inheritDoc} */
     @Override
-    public void updatePreferences(Map<String, String> prefsToUpdate, AsyncRequestCallback<ProfileDescriptor> callback) {
-        final String data = JsonHelper.toJson(prefsToUpdate);
-        asyncRequestFactory.createPostRequest(PREFS, null).header(ACCEPT, MimeType.APPLICATION_JSON)
-                           .header(CONTENT_TYPE, MimeType.APPLICATION_JSON).data(data).loader(loader).send(callback);
+    public void updatePreferences(Map<String, String> update, AsyncRequestCallback<ProfileDescriptor> callback) {
+        final String data = JsonHelper.toJson(update);
+        asyncRequestFactory.createPostRequest(PREFS, null)
+                           .header(ACCEPT, APPLICATION_JSON)
+                           .header(CONTENT_TYPE, APPLICATION_JSON)
+                           .data(data)
+                           .loader(loader)
+                           .send(callback);
     }
 
 }

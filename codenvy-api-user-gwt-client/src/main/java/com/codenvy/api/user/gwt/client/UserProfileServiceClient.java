@@ -17,49 +17,55 @@ import javax.annotation.Nonnull;
 import java.util.Map;
 
 /**
- *  GWT Client for User Profile Service.
- * 
+ * GWT Client for User Profile Service.
+ *
  * @author Ann Shumilova
  */
 public interface UserProfileServiceClient {
-    
+
     /**
      * Get current user's profile.
-     * 
-     * @param filter
+     *
      * @param callback
      */
-    void getCurrentProfile(String filter, AsyncRequestCallback<ProfileDescriptor> callback);
-    
+    void getCurrentProfile(AsyncRequestCallback<ProfileDescriptor> callback);
+
     /**
      * Update current user's profile.
-     * 
-     * @param updates attributes to update
+     *
+     * @param updates
+     *         attributes to update
      * @param callback
      */
     void updateCurrentProfile(@Nonnull Map<String, String> updates, AsyncRequestCallback<ProfileDescriptor> callback);
 
     /**
      * Get profile by id.
-     * 
-     * @param id profile's id
+     *
+     * @param id
+     *         profile's id
      * @param callback
      */
     void getProfileById(@Nonnull String id, AsyncRequestCallback<ProfileDescriptor> callback);
 
+    void getPreferences(String filter, AsyncRequestCallback<Map<String, String>> callback);
+
     /**
      * Update profile.
-     * 
-     * @param id profile's id
-     * @param updates attributes to update
+     *
+     * @param id
+     *         profile's id
+     * @param updates
+     *         attributes to update
      * @param callback
      */
     void updateProfile(@Nonnull String id, Map<String, String> updates, AsyncRequestCallback<ProfileDescriptor> callback);
 
     /**
      * Update preferences.
-     * 
-     * @param prefsToUpdate preferences to update
+     *
+     * @param prefsToUpdate
+     *         preferences to update
      * @param callback
      */
     void updatePreferences(@Nonnull Map<String, String> prefsToUpdate, AsyncRequestCallback<ProfileDescriptor> callback);
