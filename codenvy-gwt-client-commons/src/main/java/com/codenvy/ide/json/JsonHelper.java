@@ -48,4 +48,17 @@ public class JsonHelper {
 
         return map;
     }
+
+    /** Returns message or result of it parse if the message is json. */
+    public static String parsingJsonMessage(String parsedMessage) {
+        try {
+            //parsed message
+            JSONValue message = JSONParser.parseStrict(parsedMessage).isObject().get("message");
+            return message.isString().stringValue();
+        } catch (Exception e) {
+            //not found json in message
+            return parsedMessage;
+        }
+    }
+
 }
