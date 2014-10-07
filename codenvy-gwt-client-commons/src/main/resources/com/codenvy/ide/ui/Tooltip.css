@@ -16,14 +16,10 @@
 }
 
 .tooltip {
-    background: -webkit-linear-gradient(top, #515151, #0C0C0C);
-    background: -moz-linear-gradient(top, #515151, #0C0C0C);
-    background: linear-gradient(top, #515151, #0C0C0C);
-    -moz-border-radius: 3px;
-    border-radius: 3px;
+    background-color: tooltipBackgroundColor;
     -moz-box-shadow: 2px 2px 10px #333;
     box-shadow: 2px 2px 10px #333;
-    color: #FFFFFF;
+    color: mainFontColor;
     font-size: 11px;
     padding: 5px 8px;
     display: inline-block;
@@ -49,7 +45,7 @@
 .tooltipBelow > .triangle {
     border-left: 5px solid transparent;
     border-right: 5px solid transparent;
-    border-bottom: 5px solid #515151;
+    border-bottom: 5px solid tooltipBackgroundColor;
     border-top: 0;
     left: 50%;
     top: -5px;
@@ -64,7 +60,7 @@
 .tooltipBelowRightAligned > .triangle {
     border-left: 5px solid transparent;
     border-right: 5px solid transparent;
-    border-bottom: 5px solid #515151;
+    border-bottom: 5px solid tooltipBackgroundColor;
     border-top: 0;
     right: 2px;
     top: -5px;
@@ -78,7 +74,7 @@
 .tooltipAbove > .triangle {
     border-left: 5px solid transparent;
     border-right: 5px solid transparent;
-    border-top: 5px solid #0C0C0C;
+    border-top: 5px solid tooltipBackgroundColor;
     border-bottom: 0;
     left: 50%;
     bottom: -5px;
@@ -92,7 +88,7 @@
 .tooltipRight > .triangle {
     border-top: 5px solid transparent;
     border-bottom: 5px solid transparent;
-    border-right: 5px solid #2E2E2E;
+    border-right: 5px solid tooltipBackgroundColor;
     border-left: 0;
     top: 50%;
     bottom: -5px;
@@ -107,7 +103,7 @@
 .tooltipLeft > .triangle {
     border-top: 5px solid transparent;
     border-bottom: 5px solid transparent;
-    border-left: 5px solid #2E2E2E;
+    border-left: 5px solid tooltipBackgroundColor;
     border-right: 0;
     top: 50%;
     bottom: -5px;
