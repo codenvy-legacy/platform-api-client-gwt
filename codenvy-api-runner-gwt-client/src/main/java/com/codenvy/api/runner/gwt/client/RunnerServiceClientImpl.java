@@ -71,7 +71,7 @@ public class RunnerServiceClientImpl implements RunnerServiceClient {
     @Override
     public void getLogs(Link link, AsyncRequestCallback<String> callback) {
         asyncRequestFactory.createGetRequest(link.getHref())
-                           .loader(loader, "Retrieving logs...")
+                           .loader(loader, "Retrieving logs…")
                            .send(callback);
     }
 
@@ -79,7 +79,7 @@ public class RunnerServiceClientImpl implements RunnerServiceClient {
     @Override
     public void stop(Link link, AsyncRequestCallback<ApplicationProcessDescriptor> callback) {
         asyncRequestFactory.createPostRequest(link.getHref(), null)
-                           .loader(loader, "Stopping an application...")
+                           .loader(loader, "Shutting down runner…")
                            .send(callback);
     }
 
