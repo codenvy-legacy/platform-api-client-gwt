@@ -273,7 +273,7 @@ public class ProjectServiceClientImpl implements ProjectServiceClient {
         if (force) {
             requestUrl.append("?force=true");
         }
-        asyncRequestFactory.createPostRequest(requestUrl.toString(), importSourceDescriptor)
+        asyncRequestFactory.createPostRequest(requestUrl.toString(), importSourceDescriptor, true)
                            .header(ACCEPT, MimeType.APPLICATION_JSON)
                            .loader(loader, "Importing sources into project...")
                            .send(callback);
