@@ -64,6 +64,12 @@ public interface MimeType {
     /** "text/css" */
     final static String TEXT_CSS = "text/css";
 
+    /** "text/x-c" */
+    final static String TEXT_C = "text/x-c";
+
+    /** "text/x-h" */
+    final static String TEXT_H = "text/x-h";
+
     /**
      * temporary  application/x-jaxrs+groovy replaced on application/x-jaxrs-groovy to avoid error of PROPFIND response which returns
      * "application/x-jaxrs groovy
