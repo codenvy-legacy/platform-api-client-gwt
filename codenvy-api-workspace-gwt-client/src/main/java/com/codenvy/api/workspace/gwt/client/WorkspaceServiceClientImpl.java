@@ -12,6 +12,7 @@ package com.codenvy.api.workspace.gwt.client;
 
 import com.codenvy.api.workspace.shared.dto.MemberDescriptor;
 import com.codenvy.api.workspace.shared.dto.WorkspaceDescriptor;
+import com.codenvy.api.workspace.shared.dto.WorkspaceUpdate;
 import com.codenvy.ide.collections.Array;
 import com.codenvy.ide.rest.AsyncRequestCallback;
 import com.codenvy.ide.rest.AsyncRequestFactory;
@@ -21,6 +22,7 @@ import com.google.inject.name.Named;
 
 import static com.codenvy.ide.MimeType.APPLICATION_JSON;
 import static com.codenvy.ide.rest.HTTPHeader.ACCEPT;
+import static com.codenvy.ide.rest.HTTPHeader.CONTENT_TYPE;
 
 /**
  * Implementation for {@link com.codenvy.api.workspace.gwt.client.WorkspaceServiceClient}.
@@ -67,5 +69,15 @@ public class WorkspaceServiceClientImpl implements WorkspaceServiceClient {
                            .loader(loader, "Getting memberships")
                            .header(ACCEPT, APPLICATION_JSON)
                            .send(callback);
+    }
+
+
+    @Override
+    public void update(String wsId, WorkspaceUpdate update, AsyncRequestCallback<WorkspaceDescriptor> callback) {
+        asyncRequestFactory.createPostRequest(restContext + "/workspace/all/" + wsId, update)
+                .loader(loader, "Updating workspace")
+                .header(ACCEPT, APPLICATION_JSON)
+                .header(CONTENT_TYPE, APPLICATION_JSON)
+                .send(callback);
     }
 }

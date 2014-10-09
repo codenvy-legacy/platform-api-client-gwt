@@ -12,6 +12,7 @@ package com.codenvy.api.workspace.gwt.client;
 
 import com.codenvy.api.workspace.shared.dto.MemberDescriptor;
 import com.codenvy.api.workspace.shared.dto.WorkspaceDescriptor;
+import com.codenvy.api.workspace.shared.dto.WorkspaceUpdate;
 import com.codenvy.ide.collections.Array;
 import com.codenvy.ide.rest.AsyncRequestCallback;
 
@@ -43,4 +44,11 @@ public interface WorkspaceServiceClient {
      * @param callback
      */
     public void getMemberships(AsyncRequestCallback<Array<MemberDescriptor>> callback);
+
+    /**
+     * Update workspace
+     *
+     * @param callback
+     */
+    public void update(String wsId, WorkspaceUpdate update, AsyncRequestCallback<WorkspaceDescriptor> callback);
 }
