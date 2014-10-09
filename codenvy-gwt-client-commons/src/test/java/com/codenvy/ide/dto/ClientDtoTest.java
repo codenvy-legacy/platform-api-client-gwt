@@ -53,39 +53,44 @@ public class ClientDtoTest extends GwtTest {
     public void testCreateSimpleDto() throws Exception {
         final String fooString = "Something";
         final int fooId = 1;
+        final String _default = "test_default_keyword";
 
-        SimpleDto dto = dtoFactory.createDto(SimpleDto.class).withName(fooString).withId(fooId);
+        SimpleDto dto = dtoFactory.createDto(SimpleDto.class).withName(fooString).withId(fooId).withDefault(_default);
 
         // Check to make sure things are in a sane state.
-        checkSimpleDto(dto, fooString, fooId);
+        checkSimpleDto(dto, fooString, fooId, _default);
     }
 
     @Test
     public void testSimpleDtoSerializer() throws Exception {
         final String fooString = "Something";
         final int fooId = 1;
+        final String _default = "test_default_keyword";
 
-        SimpleDto dto = dtoFactory.createDto(SimpleDto.class).withName(fooString).withId(fooId);
+        SimpleDto dto = dtoFactory.createDto(SimpleDto.class).withName(fooString).withId(fooId).withDefault(_default);
         final String json = dtoFactory.toJson(dto);
 
         JSONObject jsonObject = JSONParser.parseStrict(json).isObject();
         Assert.assertEquals(jsonObject.get("name").isString().stringValue(), fooString);
         Assert.assertTrue(jsonObject.get("id").isNumber().doubleValue() == fooId);
+        Assert.assertEquals(jsonObject.get("default").isString().stringValue(), _default);
     }
 
     @Test
     public void testSimpleDtoDeserializer() throws Exception {
         final String fooString = "Something";
         final int fooId = 1;
+        final String _default = "test_default_keyword";
 
         JSONObject json = new JSONObject();
         json.put("name", new JSONString(fooString));
         json.put("id", new JSONNumber(fooId));
+        json.put("default", new JSONString(_default));
 
         SimpleDto dto = dtoFactory.createDtoFromJson(json.toString(), SimpleDto.class);
 
         // Check to make sure things are in a sane state.
-        checkSimpleDto(dto, fooString, fooId);
+        checkSimpleDto(dto, fooString, fooId, _default);
     }
 
     @Test
@@ -95,14 +100,18 @@ public class ClientDtoTest extends GwtTest {
         final int fooId_1 = 1;
         final String fooString_2 = "Something 2";
         final int fooId_2 = 2;
+        final String _default_1 = "test_default_keyword_1";
+        final String _default_2 = "test_default_keyword_2";
 
         JSONObject json1 = new JSONObject();
         json1.put("name", new JSONString(fooString_1));
         json1.put("id", new JSONNumber(fooId_1));
+        json1.put("default", new JSONString(_default_1));
 
         JSONObject json2 = new JSONObject();
         json2.put("name", new JSONString(fooString_2));
         json2.put("id", new JSONNumber(fooId_2));
+        json2.put("default", new JSONString(_default_2));
 
         JSONArray jsonArray = new JSONArray();
         jsonArray.set(0, json1);
@@ -113,14 +122,18 @@ public class ClientDtoTest extends GwtTest {
 
         Assert.assertEquals(listDtoFromJson.get(0).getName(), fooString_1);
         Assert.assertEquals(listDtoFromJson.get(0).getId(), fooId_1);
+        Assert.assertEquals(listDtoFromJson.get(0).getDefault(), _default_1);
+
         Assert.assertEquals(listDtoFromJson.get(1).getName(), fooString_2);
         Assert.assertEquals(listDtoFromJson.get(1).getId(), fooId_2);
+        Assert.assertEquals(listDtoFromJson.get(1).getDefault(), _default_2);
     }
 
     @Test
     public void testComplicatedDtoSerializer() throws Exception {
         final String fooString = "Something";
         final int fooId = 1;
+        final String _default = "test_default_keyword";
 
         List<String> listStrings = new ArrayList<>(2);
         listStrings.add("Something 1");
@@ -129,7 +142,7 @@ public class ClientDtoTest extends GwtTest {
         ComplicatedDto.SimpleEnum simpleEnum = ComplicatedDto.SimpleEnum.ONE;
 
         // Assume that SimpleDto works. Use it to test nested objects
-        SimpleDto simpleDto = dtoFactory.createDto(SimpleDto.class).withName(fooString).withId(fooId);
+        SimpleDto simpleDto = dtoFactory.createDto(SimpleDto.class).withName(fooString).withId(fooId).withDefault(_default);
 
         Map<String, SimpleDto> mapDtos = new HashMap<>(1);
         mapDtos.put(fooString, simpleDto);
@@ -165,12 +178,14 @@ public class ClientDtoTest extends GwtTest {
         JSONObject value = jsonMap.get(fooString).isObject();
         Assert.assertEquals(value.get("name").isString().stringValue(), fooString);
         Assert.assertTrue(value.get("id").isNumber().doubleValue() == fooId);
+        Assert.assertEquals(value.get("default").isString().stringValue(), _default);
 
         Assert.assertTrue(jsonObject.containsKey("simpleDtos"));
         JSONArray simpleDtos = jsonObject.get("simpleDtos").isArray();
         JSONObject simpleDtoJsonObject = simpleDtos.get(0).isObject();
         Assert.assertEquals(simpleDtoJsonObject.get("name").isString().stringValue(), fooString);
         Assert.assertTrue(simpleDtoJsonObject.get("id").isNumber().doubleValue() == fooId);
+        Assert.assertEquals(value.get("default").isString().stringValue(), _default);
 
         Assert.assertTrue(jsonObject.containsKey("arrayOfArrayOfEnum"));
         JSONArray arrayOfArrayOfEnum = jsonObject.get("arrayOfArrayOfEnum").isArray().get(0).isArray();
@@ -183,6 +198,7 @@ public class ClientDtoTest extends GwtTest {
     public void testComplicatedDtoDeserializer() throws Exception {
         final String fooString = "Something";
         final int fooId = 1;
+        final String _default = "test_default_keyword";
 
         JSONArray jsonArray = new JSONArray();
         jsonArray.set(0, new JSONString(fooString));
@@ -190,6 +206,7 @@ public class ClientDtoTest extends GwtTest {
         JSONObject simpleDtoJsonObject = new JSONObject();
         simpleDtoJsonObject.put("name", new JSONString(fooString));
         simpleDtoJsonObject.put("id", new JSONNumber(fooId));
+        simpleDtoJsonObject.put("default", new JSONString(_default));
 
         JSONObject jsonMap = new JSONObject();
         jsonMap.put(fooString, simpleDtoJsonObject);
@@ -216,16 +233,17 @@ public class ClientDtoTest extends GwtTest {
 
         Assert.assertEquals(complicatedDto.getStrings().get(0), fooString);
         Assert.assertEquals(complicatedDto.getSimpleEnum(), ComplicatedDto.SimpleEnum.ONE);
-        checkSimpleDto(complicatedDto.getMap().get(fooString), fooString, fooId);
-        checkSimpleDto(complicatedDto.getSimpleDtos().get(0), fooString, fooId);
+        checkSimpleDto(complicatedDto.getMap().get(fooString), fooString, fooId, _default);
+        checkSimpleDto(complicatedDto.getSimpleDtos().get(0), fooString, fooId, _default);
         Assert.assertEquals(complicatedDto.getArrayOfArrayOfEnum().get(0).get(0), ComplicatedDto.SimpleEnum.ONE);
         Assert.assertEquals(complicatedDto.getArrayOfArrayOfEnum().get(0).get(1), ComplicatedDto.SimpleEnum.TWO);
         Assert.assertEquals(complicatedDto.getArrayOfArrayOfEnum().get(0).get(2), ComplicatedDto.SimpleEnum.THREE);
     }
 
-    private void checkSimpleDto(SimpleDto dto, String expectedName, int expectedId) {
+    private void checkSimpleDto(SimpleDto dto, String expectedName, int expectedId, String expectedDefault) {
         Assert.assertEquals(dto.getName(), expectedName);
         Assert.assertEquals(dto.getId(), expectedId);
+        Assert.assertEquals(dto.getDefault(), expectedDefault);
     }
 
     @Test
