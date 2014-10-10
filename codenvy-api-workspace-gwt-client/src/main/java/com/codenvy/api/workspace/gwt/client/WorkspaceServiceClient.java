@@ -16,6 +16,8 @@ import com.codenvy.api.workspace.shared.dto.WorkspaceUpdate;
 import com.codenvy.ide.collections.Array;
 import com.codenvy.ide.rest.AsyncRequestCallback;
 
+import java.util.Map;
+
 /**
  * GWT Client for Workspace Service.
  *
@@ -51,4 +53,9 @@ public interface WorkspaceServiceClient {
      * @param callback
      */
     public void update(String wsId, WorkspaceUpdate update, AsyncRequestCallback<WorkspaceDescriptor> callback);
+
+    /**
+     * Update attributes of current workspace
+     */
+    public void updateAttributes(Map<String, String> attributes, AsyncRequestCallback<WorkspaceDescriptor> callback);
 }
