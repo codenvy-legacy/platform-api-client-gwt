@@ -17,6 +17,7 @@ import com.codenvy.api.project.shared.dto.NewProject;
 import com.codenvy.api.project.shared.dto.ProjectDescriptor;
 import com.codenvy.api.project.shared.dto.ProjectReference;
 import com.codenvy.api.project.shared.dto.ProjectUpdate;
+import com.codenvy.api.project.shared.dto.RunnerEnvironmentTree;
 import com.codenvy.api.project.shared.dto.TreeElement;
 import com.codenvy.ide.collections.Array;
 import com.codenvy.ide.rest.AsyncRequestCallback;
@@ -312,4 +313,14 @@ public interface ProjectServiceClient {
      *         the callback to use for the response
      */
     public void switchVisibility(String path, String visibility, AsyncRequestCallback<Void> callback);
+
+    /**
+     * Get available project-scoped runner environments.
+     *
+     * @param path
+     *         path to the project
+     * @param callback
+     *         the callback to use for the response
+     */
+    public void getRunnerEnvironments(String path, AsyncRequestCallback<RunnerEnvironmentTree> callback);
 }

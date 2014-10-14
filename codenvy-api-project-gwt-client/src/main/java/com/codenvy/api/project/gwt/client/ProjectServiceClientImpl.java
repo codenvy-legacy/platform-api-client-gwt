@@ -17,6 +17,7 @@ import com.codenvy.api.project.shared.dto.NewProject;
 import com.codenvy.api.project.shared.dto.ProjectDescriptor;
 import com.codenvy.api.project.shared.dto.ProjectReference;
 import com.codenvy.api.project.shared.dto.ProjectUpdate;
+import com.codenvy.api.project.shared.dto.RunnerEnvironmentTree;
 import com.codenvy.api.project.shared.dto.TreeElement;
 import com.codenvy.ide.MimeType;
 import com.codenvy.ide.collections.Array;
@@ -53,6 +54,7 @@ public class ProjectServiceClientImpl implements ProjectServiceClient {
     private final String              GET_TREE;
     private final String              SEARCH;
     private final String              SWITCH_VISIBILITY;
+    private final String              ENVIRONMENTS;
     private final AsyncRequestLoader  loader;
     private final AsyncRequestFactory asyncRequestFactory;
 
@@ -78,6 +80,7 @@ public class ProjectServiceClientImpl implements ProjectServiceClient {
         GET_TREE = restContext + "/project/" + workspaceId + "/tree";
         SEARCH = restContext + "/project/" + workspaceId + "/search";
         SWITCH_VISIBILITY = restContext + "/project/" + workspaceId + "/switch_visibility";
+        ENVIRONMENTS = restContext + "/project/" + workspaceId + "/environments";
     }
 
     @Override
@@ -338,7 +341,16 @@ public class ProjectServiceClientImpl implements ProjectServiceClient {
         asyncRequestFactory.createPostRequest(requestUrl, null)
                            .loader(loader, "Switching visibility...")
                            .send(callback);
+    }
 
+    /** {@inheritDoc} */
+    @Override
+    public void getRunnerEnvironments(String path, AsyncRequestCallback<RunnerEnvironmentTree> callback) {
+        final String requestUrl = ENVIRONMENTS + normalizePath(path);
+        asyncRequestFactory.createGetRequest(requestUrl)
+                           .header(ACCEPT, MimeType.APPLICATION_JSON)
+                           .loader(loader, "Getting project-scoped runner environments...")
+                           .send(callback);
     }
 
     /**
