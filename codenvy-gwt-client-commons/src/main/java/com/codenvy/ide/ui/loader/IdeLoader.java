@@ -88,6 +88,10 @@ public class IdeLoader implements AsyncRequestLoader {
             container.add(grid);
             this.add(container);
             this.ensureDebugId("loader");
+
+            setGlassEnabled(true);
+            getGlassElement().getStyle().setZIndex(9999998);
+            getElement().getStyle().setZIndex(9999999);
         }
 
         public void setMessage(String message) {
