@@ -80,7 +80,7 @@ public class ProjectServiceClientImpl implements ProjectServiceClient {
         GET_TREE = restContext + "/project/" + workspaceId + "/tree";
         SEARCH = restContext + "/project/" + workspaceId + "/search";
         SWITCH_VISIBILITY = restContext + "/project/" + workspaceId + "/switch_visibility";
-        ENVIRONMENTS = restContext + "/project/" + workspaceId + "/environments";
+        ENVIRONMENTS = restContext + "/project/" + workspaceId + "/runner_environments";
     }
 
     @Override
