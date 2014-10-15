@@ -11,13 +11,13 @@
 package com.codenvy.api.project.gwt.client;
 
 import com.codenvy.api.project.shared.dto.GenerateDescriptor;
-import com.codenvy.api.project.shared.dto.ImportSourceDescriptor;
 import com.codenvy.api.project.shared.dto.ItemReference;
 import com.codenvy.api.project.shared.dto.NewProject;
 import com.codenvy.api.project.shared.dto.ProjectDescriptor;
 import com.codenvy.api.project.shared.dto.ProjectReference;
 import com.codenvy.api.project.shared.dto.ProjectUpdate;
 import com.codenvy.api.project.shared.dto.RunnerEnvironmentTree;
+import com.codenvy.api.project.shared.dto.Source;
 import com.codenvy.api.project.shared.dto.TreeElement;
 import com.codenvy.ide.collections.Array;
 import com.codenvy.ide.rest.AsyncRequestCallback;
@@ -249,13 +249,12 @@ public interface ProjectServiceClient {
      *         path to the project to import sources
      * @param force
      *         set true for force rewrite existed project
-     * @param importSourceDescriptor
-     *         {@link ImportSourceDescriptor}
+     * @param source
+     *         {@link Source}
      * @param callback
      *         the callback to use for the response
      */
-    public void importProject(String path, boolean force, ImportSourceDescriptor importSourceDescriptor,
-                              AsyncRequestCallback<ProjectDescriptor> callback);
+    public void importProject(String path, boolean force, Source source, AsyncRequestCallback<ProjectDescriptor> callback);
 
     /**
      * Generate project.
@@ -267,8 +266,7 @@ public interface ProjectServiceClient {
      * @param callback
      *         the callback to use for the response
      */
-    public void generateProject(String path, GenerateDescriptor generateDescriptor,
-                                AsyncRequestCallback<ProjectDescriptor> callback);
+    public void generateProject(String path, GenerateDescriptor generateDescriptor, AsyncRequestCallback<ProjectDescriptor> callback);
 
     /**
      * Get children for the specified path.

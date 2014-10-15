@@ -11,13 +11,13 @@
 package com.codenvy.api.project.gwt.client;
 
 import com.codenvy.api.project.shared.dto.GenerateDescriptor;
-import com.codenvy.api.project.shared.dto.ImportSourceDescriptor;
 import com.codenvy.api.project.shared.dto.ItemReference;
 import com.codenvy.api.project.shared.dto.NewProject;
 import com.codenvy.api.project.shared.dto.ProjectDescriptor;
 import com.codenvy.api.project.shared.dto.ProjectReference;
 import com.codenvy.api.project.shared.dto.ProjectUpdate;
 import com.codenvy.api.project.shared.dto.RunnerEnvironmentTree;
+import com.codenvy.api.project.shared.dto.Source;
 import com.codenvy.api.project.shared.dto.TreeElement;
 import com.codenvy.ide.MimeType;
 import com.codenvy.ide.collections.Array;
@@ -269,14 +269,13 @@ public class ProjectServiceClientImpl implements ProjectServiceClient {
     }
 
     @Override
-    public void importProject(String path, boolean force, ImportSourceDescriptor importSourceDescriptor,
-                              AsyncRequestCallback<ProjectDescriptor> callback) {
+    public void importProject(String path, boolean force, Source source, AsyncRequestCallback<ProjectDescriptor> callback) {
         final StringBuilder requestUrl = new StringBuilder(IMPORT_PROJECT);
         requestUrl.append(normalizePath(path));
         if (force) {
             requestUrl.append("?force=true");
         }
-        asyncRequestFactory.createPostRequest(requestUrl.toString(), importSourceDescriptor, true)
+        asyncRequestFactory.createPostRequest(requestUrl.toString(), source, true)
                            .header(ACCEPT, MimeType.APPLICATION_JSON)
                            .loader(loader, "Importing sources into project...")
                            .send(callback);
