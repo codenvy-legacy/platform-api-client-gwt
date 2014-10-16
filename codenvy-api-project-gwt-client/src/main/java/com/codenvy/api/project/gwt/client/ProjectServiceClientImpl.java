@@ -282,6 +282,21 @@ public class ProjectServiceClientImpl implements ProjectServiceClient {
     }
 
     @Override
+    public void importProject(String path, boolean force, String visibility, Source source,
+                              AsyncRequestCallback<ProjectDescriptor> callback) {
+        final StringBuilder requestUrl = new StringBuilder(IMPORT_PROJECT);
+        requestUrl.append(normalizePath(path));
+        requestUrl.append("?visibility=").append(visibility);
+        if (force) {
+            requestUrl.append("&force=true");
+        }
+        asyncRequestFactory.createPostRequest(requestUrl.toString(), source, true)
+                           .header(ACCEPT, MimeType.APPLICATION_JSON)
+                           .loader(loader, "Importing sources into project...")
+                           .send(callback);
+    }
+
+    @Override
     public void generateProject(String path, GenerateDescriptor generateDescriptor,
                                 AsyncRequestCallback<ProjectDescriptor> callback) {
         final String requestUrl = GENERATE_PROJECT + normalizePath(path);

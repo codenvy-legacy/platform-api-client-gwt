@@ -257,6 +257,23 @@ public interface ProjectServiceClient {
     public void importProject(String path, boolean force, Source source, AsyncRequestCallback<ProjectDescriptor> callback);
 
     /**
+     * Import sources into project.
+     *
+     * @param path
+     *         path to the project to import sources
+     * @param force
+     *         set true for force rewrite existed project
+     * @param visibility
+     *         visibility for project
+     * @param source
+     *         {@link Source}
+     * @param callback
+     *         the callback to use for the response
+     */
+    public void importProject(String path, boolean force, String visibility, Source source,
+                              AsyncRequestCallback<ProjectDescriptor> callback);
+
+    /**
      * Generate project.
      *
      * @param path
