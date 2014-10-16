@@ -15,7 +15,6 @@ import com.codenvy.ide.MimeType;
 import com.codenvy.ide.rest.AsyncRequestCallback;
 import com.codenvy.ide.rest.AsyncRequestFactory;
 import com.codenvy.ide.rest.HTTPHeader;
-import com.codenvy.ide.util.Config;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
@@ -49,18 +48,6 @@ public class FactoryServiceClientImpl implements FactoryServiceClient {
         url.append("legacy=true");
 
         asyncRequestFactory.createGetRequest(url.toString()).header(HTTPHeader.ACCEPT, MimeType.APPLICATION_JSON)
-                           .send(callback);
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public void acceptFactory(@Nonnull Factory factory, @Nonnull AsyncRequestCallback<Factory> callback) {
-
-        final String requestUrl = "/api/factory-handler/" + Config.getWorkspaceId() + "/accept";
-
-        asyncRequestFactory.createPostRequest(requestUrl, factory)
-                           .header(HTTPHeader.CONTENT_TYPE, MimeType.APPLICATION_JSON)
-                           .header(HTTPHeader.ACCEPT, MimeType.APPLICATION_JSON)
                            .send(callback);
     }
 

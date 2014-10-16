@@ -34,24 +34,6 @@ public interface FactoryServiceClient {
      *
      */
     void getFactory(@Nonnull String raw, boolean encoded, @Nonnull AsyncRequestCallback<Factory> callback);
-
-    /**
-     * Send valid JSON factory object to server side of IDE3 to accept it. Accepting means
-     * <ul>
-     * <li>create empty project directory;</li>
-     * <li>perform clone project from git repository;</li>
-     * <li>checkout to commit id or branch;</li>
-     * <li>replacing variables;</li>
-     * <li>erasing git information(if need).</li>
-     * </ul>
-     * If accepting was successful factory object return back to user(it may be transformed, e.g. project name parameter changed).
-     *
-     * @param factory
-     *         JSON factory object to accept
-     * @param callback
-     *         callback which return valid JSON object of factory or exception if occurred
-     */
-    void acceptFactory(@Nonnull Factory factory, @Nonnull AsyncRequestCallback<Factory> callback) ;
     
     /**
      * @param factoryId Factory's id
