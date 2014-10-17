@@ -90,6 +90,7 @@ public class IdeLoader implements AsyncRequestLoader {
             this.ensureDebugId("loader");
 
             setGlassEnabled(true);
+            getGlassElement().getStyle().setOpacity(0.1);
             getGlassElement().getStyle().setZIndex(9999998);
             getElement().getStyle().setZIndex(9999999);
         }
