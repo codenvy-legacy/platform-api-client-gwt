@@ -11,6 +11,7 @@
 package com.codenvy.api.project.gwt.client;
 
 import com.codenvy.api.project.shared.dto.GenerateDescriptor;
+import com.codenvy.api.project.shared.dto.ImportProject;
 import com.codenvy.api.project.shared.dto.ItemReference;
 import com.codenvy.api.project.shared.dto.NewProject;
 import com.codenvy.api.project.shared.dto.ProjectDescriptor;
@@ -269,13 +270,13 @@ public class ProjectServiceClientImpl implements ProjectServiceClient {
     }
 
     @Override
-    public void importProject(String path, boolean force, Source source, AsyncRequestCallback<ProjectDescriptor> callback) {
+    public void importProject(String path, boolean force, ImportProject importProject, AsyncRequestCallback<ProjectDescriptor> callback) {
         final StringBuilder requestUrl = new StringBuilder(IMPORT_PROJECT);
         requestUrl.append(normalizePath(path));
         if (force) {
             requestUrl.append("?force=true");
         }
-        asyncRequestFactory.createPostRequest(requestUrl.toString(), source, true)
+        asyncRequestFactory.createPostRequest(requestUrl.toString(), importProject, true)
                            .header(ACCEPT, MimeType.APPLICATION_JSON)
                            .loader(loader, "Importing sources into project...")
                            .send(callback);

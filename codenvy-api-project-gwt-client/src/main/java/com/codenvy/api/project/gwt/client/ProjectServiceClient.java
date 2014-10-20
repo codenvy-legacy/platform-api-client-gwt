@@ -11,6 +11,7 @@
 package com.codenvy.api.project.gwt.client;
 
 import com.codenvy.api.project.shared.dto.GenerateDescriptor;
+import com.codenvy.api.project.shared.dto.ImportProject;
 import com.codenvy.api.project.shared.dto.ItemReference;
 import com.codenvy.api.project.shared.dto.NewProject;
 import com.codenvy.api.project.shared.dto.ProjectDescriptor;
@@ -249,12 +250,27 @@ public interface ProjectServiceClient {
      *         path to the project to import sources
      * @param force
      *         set true for force rewrite existed project
-     * @param source
-     *         {@link Source}
+     * @param importProject
+     *         {@link ImportProject}
      * @param callback
      *         the callback to use for the response
      */
-    public void importProject(String path, boolean force, Source source, AsyncRequestCallback<ProjectDescriptor> callback);
+    public void importProject(String path, boolean force, ImportProject importProject, AsyncRequestCallback<ProjectDescriptor> callback);
+
+
+//    /**
+//     * Import sources into project.
+//     *
+//     * @param path
+//     *         path to the project to import sources
+//     * @param force
+//     *         set true for force rewrite existed project
+//     * @param importProject
+//     *         {@link ImportProject}
+//     * @param callback
+//     *         the callback to use for the response
+//     */
+//    public void importProject(String path, boolean force, Source importProject, AsyncRequestCallback<ProjectDescriptor> callback);
 
     /**
      * Generate project.
