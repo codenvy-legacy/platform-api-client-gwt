@@ -11,7 +11,7 @@
 package com.codenvy.api.factory.gwt.client;
 
 import com.codenvy.api.factory.NonEncodedFactoryBuilder;
-import com.codenvy.api.factory.dto.Variable;
+import com.codenvy.api.vfs.shared.dto.ReplacementSet;
 import com.codenvy.ide.collections.Collections;
 import com.codenvy.ide.dto.DtoFactory;
 import com.google.gwt.http.client.URL;
@@ -42,7 +42,7 @@ public class FactoryUrlBuilder extends NonEncodedFactoryBuilder {
 
     /** {@inheritDoc} */
     @Override
-    protected String toJson(List<Variable> dto) {
+    protected String toJson(List<ReplacementSet> dto) {
         return dtoFactory.toJson(Collections.createArray(dto));
     }
 
