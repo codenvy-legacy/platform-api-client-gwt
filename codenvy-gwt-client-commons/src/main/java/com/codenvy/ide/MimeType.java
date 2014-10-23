@@ -70,6 +70,9 @@ public interface MimeType {
     /** "text/x-h" */
     final static String TEXT_H = "text/x-h";
 
+    /** "text/x-markdown" */
+    final static String TEXT_MARKDOWN = "text/x-markdown";
+
     /**
      * temporary  application/x-jaxrs+groovy replaced on application/x-jaxrs-groovy to avoid error of PROPFIND response which returns
      * "application/x-jaxrs groovy
@@ -125,19 +128,19 @@ public interface MimeType {
 
     /** text/yaml */
     final static String TEXT_YAML = "text/yaml";
-    
+
     /** Image types */
     String IMAGE_BMP = "image/bmp";
-    
+
     String IMAGE_GIF = "image/gif";
-    
+
     String IMAGE_X_ICON = "image/x-icon";
-    
+
     String IMAGE_JPEG = "image/jpeg";
-    
+
     String IMAGE_PNG = "image/png";
-    
+
     String IMAGE_SVG_XML = "image/svg+xml";
-    
-    
+
+
 }
