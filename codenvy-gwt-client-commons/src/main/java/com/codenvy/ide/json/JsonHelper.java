@@ -42,7 +42,11 @@ public class JsonHelper {
         JSONObject jsonObj = parsed.isObject();
         if (jsonObj != null) {
             for (String key : jsonObj.keySet()) {
-                map.put(key, jsonObj.get(key).toString());
+                JSONValue jsonValue = jsonObj.get(key);
+                JSONString jsonString = jsonValue.isString();
+                // if the json value is a string, set the unescaped value, else set the json representation of the value
+                String stringValue = (jsonString == null) ? jsonValue.toString() : jsonString.stringValue();
+                map.put(key, stringValue);
             }
         }
 
