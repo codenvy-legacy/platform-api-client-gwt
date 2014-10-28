@@ -54,7 +54,7 @@ public class JsonHelper {
     }
 
     /** Returns message or result of it parse if the message is json. */
-    public static String parsingJsonMessage(String parsedMessage) {
+    public static String parseJsonMessage(String parsedMessage) {
         try {
             //parsed message
             JSONValue message = JSONParser.parseStrict(parsedMessage).isObject().get("message");
