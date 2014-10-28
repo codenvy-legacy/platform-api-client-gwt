@@ -11,6 +11,7 @@
 package com.codenvy.ide.rest;
 
 import com.codenvy.ide.MimeType;
+import com.codenvy.ide.collections.Array;
 import com.codenvy.ide.dto.DtoFactory;
 import com.google.gwt.http.client.RequestBuilder;
 import com.google.inject.Inject;
@@ -61,9 +62,9 @@ public class AsyncRequestFactory {
      * @param url
      *         request URL
      * @param dtoData
-     *         the DTO to send as body of the request. Must implement {@code com.codenvy.dto.shared.DTO} interface. May be {@code null}.
+     *         the DTO to send as body of the request. Must implement {@link com.codenvy.ide.dto.JsonSerializable} interface. May be {@code
+     *         null}.
      * @return new {@link AsyncRequest} instance to send POST request
-     * @see com.codenvy.dto.shared.DTO
      */
     public AsyncRequest createPostRequest(String url, Object dtoData) {
         return createPostRequest(url, dtoData, false);
@@ -74,15 +75,45 @@ public class AsyncRequestFactory {
      *
      * @param url
      *         request URL
+     * @param dtoArray
+     *         the array of DTO to send as body of the request. Must contain objects that implement {@link
+     *         com.codenvy.ide.dto.JsonSerializable} interface. May be {@code null}.
+     * @return new {@link AsyncRequest} instance to send POST request
+     */
+    public AsyncRequest createPostRequest(String url, Array<Object> dtoArray) {
+        return createPostRequest(url, dtoArray, false);
+    }
+
+    /**
+     * Creates new POST request to the specified {@code url} with the provided {@code data}.
+     *
+     * @param url
+     *         request URL
      * @param dtoData
-     *         the DTO to send as body of the request. Must implement {@code com.codenvy.dto.shared.DTO} interface. May be {@code null}.
+     *         the DTO to send as body of the request. Must implement {@link com.codenvy.ide.dto.JsonSerializable} interface. May be {@code
+     *         null}.
      * @param async
      *         if <b>true</b> - request will be sent in asynchronous mode
      * @return new {@link AsyncRequest} instance to send POST request
-     * @see com.codenvy.dto.shared.DTO
      */
     public AsyncRequest createPostRequest(String url, Object dtoData, boolean async) {
         return createRequest(RequestBuilder.POST, url, dtoData, async);
+    }
+
+    /**
+     * Creates new POST request to the specified {@code url} with the provided {@code data}.
+     *
+     * @param url
+     *         request URL
+     * @param dtoArray
+     *         the array of DTO to send as body of the request. Must contain objects that implement {@link
+     *         com.codenvy.ide.dto.JsonSerializable} interface. May be {@code null}.
+     * @param async
+     *         if <b>true</b> - request will be sent in asynchronous mode
+     * @return new {@link AsyncRequest} instance to send POST request
+     */
+    public AsyncRequest createPostRequest(String url, Array<Object> dtoArray, boolean async) {
+        return createRequest(RequestBuilder.POST, url, dtoArray, async);
     }
 
     /**
@@ -93,16 +124,56 @@ public class AsyncRequestFactory {
      * @param url
      *         request URL
      * @param dtoBody
-     *         the DTO to send as body of the request. Must implement {@code com.codenvy.dto.shared.DTO} interface. May be {@code null}.
+     *         the DTO to send as body of the request. Must implement {@link com.codenvy.ide.dto.JsonSerializable} interface. May be {@code
+     *         null}.
      * @param async
      *         if <b>true</b> - request will be sent in asynchronous mode
      * @return new {@link AsyncRequest} instance to send POST request
-     * @see com.codenvy.dto.shared.DTO
      */
     public AsyncRequest createRequest(RequestBuilder.Method method, String url, Object dtoBody, boolean async) {
+        return doCreateRequest(method, url, dtoBody, async);
+    }
+
+    /**
+     * Creates new HTTP request to the specified {@code url}.
+     *
+     * @param method
+     *         request method
+     * @param url
+     *         request URL
+     * @param dtoBody
+     *         the DTO to send as body of the request. Must implement {@link com.codenvy.ide.dto.JsonSerializable} interface. May be {@code
+     *         null}.
+     * @param async
+     *         if <b>true</b> - request will be sent in asynchronous mode
+     * @return new {@link AsyncRequest} instance to send POST request
+     */
+    public AsyncRequest createRequest(RequestBuilder.Method method, String url, Array<Object> dtoBody, boolean async) {
+        return doCreateRequest(method, url, dtoBody, async);
+    }
+
+    /**
+     * Creates new HTTP request to the specified {@code url}.
+     *
+     * @param method
+     *         request method
+     * @param url
+     *         request URL
+     * @param dtoBody
+     *         the DTO to send as body of the request. Must implement {@link com.codenvy.ide.dto.JsonSerializable} interface or contain
+     *         objects that implement it. May be {@code null}.
+     * @param async
+     *         if <b>true</b> - request will be sent in asynchronous mode
+     * @return new {@link AsyncRequest} instance to send POST request
+     */
+    private AsyncRequest doCreateRequest(RequestBuilder.Method method, String url, Object dtoBody, boolean async) {
         AsyncRequest asyncRequest = new AsyncRequest(method, url, async);
         if (dtoBody != null) {
-            asyncRequest.data(dtoFactory.toJson(dtoBody));
+            if (dtoBody instanceof Array) {
+                asyncRequest.data(dtoFactory.toJson((Array)dtoBody));
+            } else {
+                asyncRequest.data(dtoFactory.toJson(dtoBody));
+            }
             asyncRequest.header(HTTPHeader.CONTENT_TYPE, DTO_CONTENT_TYPE);
         }
         return asyncRequest;
