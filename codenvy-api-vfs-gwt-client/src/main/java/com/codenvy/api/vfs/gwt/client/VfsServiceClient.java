@@ -11,19 +11,24 @@
 package com.codenvy.api.vfs.gwt.client;
 
 import com.codenvy.api.project.shared.dto.ProjectDescriptor;
+import com.codenvy.api.vfs.shared.dto.Item;
 import com.codenvy.api.vfs.shared.dto.ReplacementSet;
 import com.codenvy.ide.collections.Array;
 import com.codenvy.ide.rest.AsyncRequestCallback;
 
-import javax.validation.constraints.NotNull;
+import javax.annotation.Nonnull;
 
 /**
  * GWT Client for VFS Service.
  *
  * @author Sergii Leschenko
+ * @author Artem Zatsarynnyy
  */
 public interface VfsServiceClient {
-    public void replaceInCurrentWorkspace(@NotNull ProjectDescriptor project,
+    public void replaceInCurrentWorkspace(@Nonnull ProjectDescriptor project,
                                           Array<ReplacementSet> replacementSets,
                                           AsyncRequestCallback<Void> callback);
+
+    public void getItemByPath(@Nonnull String path,
+                              AsyncRequestCallback<Item> callback);
 }

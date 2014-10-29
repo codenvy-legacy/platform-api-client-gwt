@@ -11,27 +11,32 @@
 package com.codenvy.api.vfs.gwt.client;
 
 import com.codenvy.api.project.shared.dto.ProjectDescriptor;
+import com.codenvy.api.vfs.shared.dto.Item;
 import com.codenvy.api.vfs.shared.dto.ReplacementSet;
-import com.codenvy.ide.MimeType;
 import com.codenvy.ide.collections.Array;
 import com.codenvy.ide.rest.AsyncRequestCallback;
 import com.codenvy.ide.rest.AsyncRequestFactory;
 import com.codenvy.ide.rest.AsyncRequestLoader;
-import com.codenvy.ide.rest.HTTPHeader;
 import com.google.gwt.http.client.RequestBuilder;
 import com.google.inject.name.Named;
 
+import javax.annotation.Nonnull;
 import javax.inject.Inject;
-import javax.validation.constraints.NotNull;
+
+import static com.codenvy.ide.MimeType.APPLICATION_JSON;
+import static com.codenvy.ide.rest.HTTPHeader.ACCEPT;
+import static com.codenvy.ide.rest.HTTPHeader.CONTENT_TYPE;
 
 /**
  * Implementation for {@link com.codenvy.api.vfs.gwt.client.VfsServiceClient}.
  *
  * @author Sergii Leschenko
+ * @author Artem Zatsarynnyy
  */
 public class VfsServiceClientImpl implements VfsServiceClient {
     private final String VFS;
     private final String FIND_REPLACE;
+    private final String GET_ITEM_BY_PATH;
 
     private final AsyncRequestLoader  loader;
     private final AsyncRequestFactory asyncRequestFactory;
@@ -46,16 +51,27 @@ public class VfsServiceClientImpl implements VfsServiceClient {
 
         VFS = restContext + "/vfs/" + workspaceId + "/v2";
         FIND_REPLACE = VFS + "/replace";
+        GET_ITEM_BY_PATH = VFS + "/itembypath";
     }
 
     @Override
-    public void replaceInCurrentWorkspace(@NotNull ProjectDescriptor project,
+    public void replaceInCurrentWorkspace(@Nonnull ProjectDescriptor project,
                                           Array<ReplacementSet> replacementSets,
                                           AsyncRequestCallback<Void> callback) {
         String path = FIND_REPLACE + normalizePath(project.getPath());
 
         asyncRequestFactory.createRequest(RequestBuilder.POST, path, replacementSets, false)
-                           .header(HTTPHeader.CONTENT_TYPE, MimeType.APPLICATION_JSON)
+                           .header(CONTENT_TYPE, APPLICATION_JSON)
+                           .loader(loader)
+                           .send(callback);
+    }
+
+    @Override
+    public void getItemByPath(@Nonnull String path, AsyncRequestCallback<Item> callback) {
+        final String url = GET_ITEM_BY_PATH + normalizePath(path);
+
+        asyncRequestFactory.createGetRequest(url)
+                           .header(ACCEPT, APPLICATION_JSON)
                            .loader(loader)
                            .send(callback);
     }
