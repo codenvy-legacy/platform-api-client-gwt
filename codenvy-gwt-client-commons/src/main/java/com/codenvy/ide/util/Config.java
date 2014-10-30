@@ -33,9 +33,9 @@ public class Config {
      * @return
      */
     public static native String getContext() /*-{
-        try {
+        if ($wnd.IDE && $wnd.IDE.config) {
             return $wnd.IDE.config.context;
-        } catch (e) {
+        } else {
             return null;
         }
     }-*/;
@@ -47,9 +47,9 @@ public class Config {
      * @return
      */
     public static native String getWorkspaceName() /*-{
-        try {
+        if ($wnd.IDE && $wnd.IDE.config) {
             return $wnd.IDE.config.workspaceName;
-        } catch (e) {
+        } else {
             return null;
         }
     }-*/;
@@ -61,9 +61,9 @@ public class Config {
      * @return
      */
     public static native String getWorkspaceId() /*-{
-        try {
+        if ($wnd.IDE && $wnd.IDE.config) {
             return $wnd.IDE.config.workspaceId;
-        } catch (e) {
+        } else {
             return null;
         }
     }-*/;
@@ -75,29 +75,31 @@ public class Config {
      * @return
      */
     public static native String getProjectName() /*-{
-        try {
+        if ($wnd.IDE && $wnd.IDE.config) {
             return $wnd.IDE.config.projectName;
-        } catch (e) {
+        } else {
             return null;
         }
     }-*/;
 
 
     public static native String getStartupParams() /*-{
-        try {
+        if ($wnd.IDE && $wnd.IDE.config && $wnd.IDE.config.startupParams) {
+            // remove leading question marks
             while ($wnd.IDE.config.startupParams.indexOf("?") == 0) {
                 $wnd.IDE.config.startupParams = $wnd.IDE.config.startupParams.substring(1);
             }
 
             return $wnd.IDE.config.startupParams;
-        } catch (e) {
+        } else {
+            return null;
         }
-        return null;
     }-*/;
 
 
     public static native String getStartupParam(String name) /*-{
-        try {
+        if ($wnd.IDE && $wnd.IDE.config && $wnd.IDE.config.startupParams) {
+            // remove leading question marks
             while ($wnd.IDE.config.startupParams.indexOf("?") == 0) {
                 $wnd.IDE.config.startupParams = $wnd.IDE.config.startupParams.substring(1);
             }
@@ -109,7 +111,6 @@ public class Config {
                     return decodeURIComponent(pair[1]);
                 }
             }
-        } catch (e) {
         }
         return null;
     }-*/;
