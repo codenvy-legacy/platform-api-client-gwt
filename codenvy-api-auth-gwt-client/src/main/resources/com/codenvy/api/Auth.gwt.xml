@@ -14,7 +14,6 @@
 <module>
     <inherits name='com.google.gwt.user.User'/>
     <inherits name="com.google.gwt.json.JSON"/>
-    <inherits name="com.codenvy.ide.Commons"/>
-    <source path='project/gwt'/>
-    <source path='project/shared'/>
+    <source path='auth/shared'/>
+    <source path='auth/gwt'/>
 </module>
