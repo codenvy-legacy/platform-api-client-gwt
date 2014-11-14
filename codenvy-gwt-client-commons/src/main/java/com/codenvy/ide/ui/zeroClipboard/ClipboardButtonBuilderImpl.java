@@ -1,0 +1,191 @@
+/*******************************************************************************
+ * Copyright (c) 2012-2014 Codenvy, S.A.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *   Codenvy, S.A. - initial API and implementation
+ *******************************************************************************/
+package com.codenvy.ide.ui.zeroClipboard;
+
+import com.codenvy.ide.MimeType;
+import com.google.gwt.dom.client.Element;
+import com.google.gwt.user.client.ui.Widget;
+import com.google.inject.Inject;
+
+import org.vectomatic.dom.svg.ui.SVGImage;
+
+import javax.annotation.Nonnull;
+
+/**
+ * Implementation of ClipboardButtonBuilder is able to create "copy to clipboard" or "select button"
+ * according to state of ZeroClipboard library.
+ *
+ * @author Oleksii Orel
+ */
+public class ClipboardButtonBuilderImpl implements ClipboardButtonBuilder {
+
+    private final ZeroClipboardResources res;
+    private       Widget                 resourceWidget;
+    private       Widget                 parentWidget;
+    private       SVGImage               svgImage;
+    private       String                 mimeType;
+    private       String                 promptReadyToCopy;
+    private       String                 promptAfterCopy;
+    private       String                 promptCopyError;
+    private       String                 promptReadyToSelect;
+
+
+    @Inject
+    public ClipboardButtonBuilderImpl(ZeroClipboardResources res, ZeroClipboardConstant locale) {
+        this.res = res;
+        promptReadyToCopy = locale.promptReadyToCopy();
+        promptAfterCopy = locale.promptAfterCopy();
+        promptCopyError = locale.promptCopyError();
+        promptReadyToSelect = locale.promptReadyToSelect();
+        mimeType = MimeType.TEXT_PLAIN;
+    }
+
+    @Override
+    public ClipboardButtonBuilder withResourceWidget(Widget resourceWidget) {
+        this.resourceWidget = resourceWidget;
+        return this;
+    }
+
+    @Override
+    public ClipboardButtonBuilder withParentWidget(Widget parentWidget) {
+        this.parentWidget = parentWidget;
+        return this;
+    }
+
+    @Override
+    public ClipboardButtonBuilder withSvgImage(@Nonnull SVGImage svgImage) {
+        this.svgImage = svgImage;
+        return this;
+    }
+
+    @Override
+    public ClipboardButtonBuilder withMimeType(@Nonnull String mimeType) {
+        this.mimeType = mimeType;
+        return this;
+    }
+
+    @Override
+    public ClipboardButtonBuilder withPromptReadyToCopy(@Nonnull String promptReadyToCopy) {
+        this.promptReadyToCopy = promptReadyToCopy;
+        return this;
+    }
+
+    @Override
+    public ClipboardButtonBuilder withPromptAfterCopy(@Nonnull String promptAfterCopy) {
+        this.promptAfterCopy = promptAfterCopy;
+        return this;
+    }
+
+    @Override
+    public ClipboardButtonBuilder withPromptCopyError(@Nonnull String promptCopyError) {
+        this.promptCopyError = promptCopyError;
+        return this;
+    }
+
+    @Override
+    public ClipboardButtonBuilder withPromptReadyToSelect(@Nonnull String promptReadyToSelect) {
+        this.promptReadyToSelect = promptReadyToSelect;
+        return this;
+    }
+
+    @Override
+    public Element build() {
+        Element button = null;
+        if (resourceWidget != null) {
+            Element buttonImage =  svgImage != null ? svgImage.getElement() : new SVGImage(res.clipboard()).getElement();
+            button = buildCopyToClipboardButton(resourceWidget.getElement(),
+                                                buttonImage,
+                                                res.clipboardCss().clipboardButton(),
+                                                mimeType,
+                                                promptReadyToCopy,
+                                                promptAfterCopy,
+                                                promptCopyError,
+                                                promptReadyToSelect);
+            append(button);
+        }
+        return button;
+    }
+
+    /**
+     * Append to parentWidget as a child element.
+     *
+     * @param element
+     */
+    void append(Element element) {
+        if (parentWidget == null && (resourceWidget == null || resourceWidget.getParent() == null)) {
+            return;
+        }
+        Widget parent = parentWidget != null ? parentWidget : resourceWidget.getParent();
+        parent.getElement().appendChild(element);
+    }
+
+    /**
+     * Build ZeroClipboard button.
+     *
+     * @param textBox
+     * @param image
+     * @param className
+     * @param readyCopyPrompt
+     * @param afterCopyPrompt
+     * @param copyErrorPrompt
+     * @param readySelectPrompt
+     */
+    private native Element buildCopyToClipboardButton(Element textBox, Element image, String className,
+                                                      String mimeType, String readyCopyPrompt, String afterCopyPrompt,
+                                                      String copyErrorPrompt, String readySelectPrompt) /*-{
+        var button = document.createElement('div');
+        var tooltip = document.createElement('span');
+        button.setAttribute('class', className);
+        button.appendChild(image);
+        button.appendChild(tooltip);
+        if (typeof $wnd.ZeroClipboard !== 'undefined') {
+            button.onmouseout = function () {
+                button.setAttribute('class', className);
+            }
+            var client = new $wnd.ZeroClipboard(button);
+            client.on('ready', function (event) {
+                tooltip.innerHTML = readyCopyPrompt;
+                client.on('copy', function (event) {
+                    var data;
+                    if (mimeType == 'text/plain') {
+                        data = textBox.value;
+                    } else {
+                        data = textBox.innerHTML;
+                    }
+                    event.clipboardData.setData(mimeType, data);
+                });
+                client.on('aftercopy', function (event) {
+                    tooltip.innerHTML = afterCopyPrompt;
+                    client.unclip();
+                    setTimeout(function () {
+                        client.clip(button);
+                        tooltip.innerHTML = readyCopyPrompt;
+                    }, 3000);
+                });
+            });
+            client.on('error', function (event) {
+                console.log('ZeroClipboard error of type "' + event.name + '": ' + event.message);
+                tooltip.innerHTML = copyErrorPrompt;
+                ZeroClipboard.destroy();
+                setTimeout(function () {
+                    tooltip.innerHTML = readyCopyPrompt;
+                }, 5000);
+            });
+        }
+        else {
+            tooltip.innerHTML = readySelectPrompt;
+            button.onclick = function () {
+                textBox.select();
+            };
+        }
+        return button;
+    }-*/;
+}

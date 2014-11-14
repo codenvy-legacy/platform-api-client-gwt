@@ -130,17 +130,15 @@ public interface MimeType {
     final static String TEXT_YAML = "text/yaml";
 
     /** Image types */
-    String IMAGE_BMP = "image/bmp";
+    final static String IMAGE_BMP = "image/bmp";
 
-    String IMAGE_GIF = "image/gif";
+    final static String IMAGE_GIF = "image/gif";
 
-    String IMAGE_X_ICON = "image/x-icon";
+    final static String IMAGE_X_ICON = "image/x-icon";
 
-    String IMAGE_JPEG = "image/jpeg";
+    final static String IMAGE_JPEG = "image/jpeg";
 
-    String IMAGE_PNG = "image/png";
+    final static String IMAGE_PNG = "image/png";
 
-    String IMAGE_SVG_XML = "image/svg+xml";
-
-
+    final static String IMAGE_SVG_XML = "image/svg+xml";
 }
