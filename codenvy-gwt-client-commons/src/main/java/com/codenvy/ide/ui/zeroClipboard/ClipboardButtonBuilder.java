@@ -31,7 +31,7 @@ public interface ClipboardButtonBuilder {
      *         data resource widget
      *
      */
-    ClipboardButtonBuilder withResourceWidget(Widget resourceWidget);
+    ClipboardButtonBuilder withResourceWidget(@Nonnull Widget resourceWidget);
 
     /**
      * Return builder.
@@ -40,7 +40,7 @@ public interface ClipboardButtonBuilder {
      *         parent widget for clipboard button
      *
      */
-    ClipboardButtonBuilder withParentWidget(Widget parentWidget);
+    ClipboardButtonBuilder withParentWidget(@Nonnull Widget parentWidget);
 
     /**
      * Return builder.
@@ -48,7 +48,7 @@ public interface ClipboardButtonBuilder {
      * @param svgImage
      *         image for copy to clipboard button
      */
-    ClipboardButtonBuilder withSvgImage(SVGImage svgImage);
+    ClipboardButtonBuilder withSvgImage(@Nonnull SVGImage svgImage);
 
 
     /**
@@ -57,7 +57,7 @@ public interface ClipboardButtonBuilder {
      * @param mimeType
      *         mime type for copy to clipboard content
      */
-    ClipboardButtonBuilder withMimeType(String mimeType);
+    ClipboardButtonBuilder withMimeType(@Nonnull String mimeType);
 
 
     /**
@@ -66,7 +66,7 @@ public interface ClipboardButtonBuilder {
      * @param promptReadyToCopy
      *         ready to copy prompt
      */
-    ClipboardButtonBuilder withPromptReadyToCopy(String promptReadyToCopy);
+    ClipboardButtonBuilder withPromptReadyToCopy(@Nonnull String promptReadyToCopy);
 
 
     /**
@@ -75,7 +75,7 @@ public interface ClipboardButtonBuilder {
      * @param promptAfterCopy
      *         after copy prompt
      */
-    ClipboardButtonBuilder withPromptAfterCopy(String promptAfterCopy);
+    ClipboardButtonBuilder withPromptAfterCopy(@Nonnull String promptAfterCopy);
 
 
     /**
@@ -84,7 +84,7 @@ public interface ClipboardButtonBuilder {
      * @param promptCopyError
      *         copy to clipboard error prompt
      */
-    ClipboardButtonBuilder withPromptCopyError(String promptCopyError);
+    ClipboardButtonBuilder withPromptCopyError(@Nonnull String promptCopyError);
 
 
     /**
@@ -93,11 +93,12 @@ public interface ClipboardButtonBuilder {
      * @param promptReadyToSelect
      *          ready to select prompt
      */
-    ClipboardButtonBuilder  withPromptReadyToSelect(String promptReadyToSelect);
+    ClipboardButtonBuilder  withPromptReadyToSelect(@Nonnull String promptReadyToSelect);
 
 
     /**
-     * Return Element of the built clipboard button.
+     * Return Element of the built clipboard button. Adds the Element to the parent Widget.
+     * If the parent is not defined - adds Element to the parent of resource Widget
      */
     Element build();
 

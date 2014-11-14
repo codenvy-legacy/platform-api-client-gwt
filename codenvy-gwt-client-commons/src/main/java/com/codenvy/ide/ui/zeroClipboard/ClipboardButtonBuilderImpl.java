@@ -119,7 +119,7 @@ public class ClipboardButtonBuilderImpl implements ClipboardButtonBuilder {
      *
      * @param element
      */
-    void append(Element element) {
+    private void append(Element element) {
         if (parentWidget == null && (resourceWidget == null || resourceWidget.getParent() == null)) {
             return;
         }
