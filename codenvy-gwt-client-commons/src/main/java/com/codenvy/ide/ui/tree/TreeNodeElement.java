@@ -84,6 +84,7 @@ public class TreeNodeElement<D> extends JsLIElement {
                         SpanElement nodeContent = nodeRenderer.renderNodeContents(data);
                         Elements.addClassName(css.treeNodeLabel(), nodeContent);
                         nodeBody.appendChild(nodeContent);
+                        nodeBody.setId(nodeContent.getInnerText().trim());
 
                 // Attach the Tree node children.
                 treeNode.ensureChildrenContainer(dataAdapter, css);
