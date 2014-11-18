@@ -55,4 +55,16 @@ public class Log {
         return delegate.isLoggingEnabled();
     }
 
+    /**
+     * Logs to browser's console.
+     *
+     * @param msg message to print
+     */
+//    public static final native void trace(String msg) /*-{
+//        console.log(msg);
+//    }-*/;
+
+    public static void trace(String msg) {
+    }
+
 }
