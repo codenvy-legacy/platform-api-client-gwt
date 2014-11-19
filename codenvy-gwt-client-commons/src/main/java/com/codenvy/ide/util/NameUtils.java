@@ -22,7 +22,7 @@ import com.google.gwt.regexp.shared.RegExp;
 public class NameUtils {
     private static RegExp FILE_NAME    = RegExp.compile("^[A-Za-z0-9_\\-\\.]+$");
     private static RegExp FOLDER_NAME  = RegExp.compile("^[A-Za-z0-9_\\-\\.]+$");
-    private static RegExp PROJECT_NAME = RegExp.compile("^[A-Za-z0-9_\\-]+$");
+    private static RegExp PROJECT_NAME = RegExp.compile("^[A-Za-z0-9_\\-\\.]+$");
 
     private NameUtils() {
     }
