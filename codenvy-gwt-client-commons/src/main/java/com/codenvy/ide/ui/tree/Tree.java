@@ -528,6 +528,9 @@ public class Tree<D> extends UiComponent<Tree.View<D>> implements IsWidget {
             TreeNodeElement<D> node =
                     (TreeNodeElement<D>)CssUtils.getAncestorOrSelfWithClassName((Element)evt.getTarget(), css.treeNode());
             D newTargetData = node != null ? dataAdapter.getDragDropTarget(node.getData()) : rootData;
+            if (newTargetData == null) {
+                return;
+            }
             TreeNodeElement<D> newTargetNode = dataAdapter.getRenderedTreeNode(newTargetData);
 
             String type = evt.getType();
