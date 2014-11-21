@@ -11,7 +11,6 @@
 package com.codenvy.api.user.gwt.client;
 
 import com.codenvy.api.user.shared.dto.ProfileDescriptor;
-import com.codenvy.ide.dto.DtoFactory;
 import com.codenvy.ide.json.JsonHelper;
 import com.codenvy.ide.rest.AsyncRequestCallback;
 import com.codenvy.ide.rest.AsyncRequestFactory;
@@ -21,10 +20,9 @@ import com.google.inject.name.Named;
 
 import java.util.Map;
 
+import static com.codenvy.ide.MimeType.APPLICATION_JSON;
 import static com.codenvy.ide.rest.HTTPHeader.ACCEPT;
 import static com.codenvy.ide.rest.HTTPHeader.CONTENT_TYPE;
-import static com.codenvy.ide.MimeType.APPLICATION_JSON;
-
 
 /**
  * Implementation for {@link UserProfileServiceClient}.
@@ -36,15 +34,13 @@ public class UserProfileServiceClientImpl implements UserProfileServiceClient {
     private final String              PREFS;
     private final AsyncRequestLoader  loader;
     private final AsyncRequestFactory asyncRequestFactory;
-    private final DtoFactory          dtoFactory;
 
     @Inject
     protected UserProfileServiceClientImpl(@Named("restContext") String restContext,
                                            AsyncRequestLoader loader,
-                                           AsyncRequestFactory asyncRequestFactory, DtoFactory dtoFactory) {
+                                           AsyncRequestFactory asyncRequestFactory) {
         this.loader = loader;
         this.asyncRequestFactory = asyncRequestFactory;
-        this.dtoFactory = dtoFactory;
         PROFILE = restContext + "/profile/";
         PREFS = PROFILE + "prefs";
     }
