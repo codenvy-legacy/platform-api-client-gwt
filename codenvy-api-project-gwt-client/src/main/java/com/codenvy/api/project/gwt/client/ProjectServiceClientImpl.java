@@ -125,16 +125,6 @@ public class ProjectServiceClientImpl implements ProjectServiceClient {
     }
 
     @Override
-    @Deprecated
-    public void createProject(String name, ProjectDescriptor projectDescriptor, AsyncRequestCallback<ProjectDescriptor> callback) {
-        final String requestUrl = PROJECT + "?name=" + name;
-        asyncRequestFactory.createPostRequest(requestUrl, projectDescriptor)
-                           .header(ACCEPT, MimeType.APPLICATION_JSON)
-                           .loader(loader, "Creating project...")
-                           .send(callback);
-    }
-
-    @Override
     public void createProject(String name, NewProject newProject, AsyncRequestCallback<ProjectDescriptor> callback) {
         final String requestUrl = PROJECT + "?name=" + name;
         asyncRequestFactory.createPostRequest(requestUrl, newProject)

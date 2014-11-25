@@ -18,7 +18,6 @@ import com.codenvy.api.project.shared.dto.ProjectDescriptor;
 import com.codenvy.api.project.shared.dto.ProjectReference;
 import com.codenvy.api.project.shared.dto.ProjectUpdate;
 import com.codenvy.api.project.shared.dto.RunnerEnvironmentTree;
-import com.codenvy.api.project.shared.dto.Source;
 import com.codenvy.api.project.shared.dto.TreeElement;
 import com.codenvy.ide.collections.Array;
 import com.codenvy.ide.rest.AsyncRequestCallback;
@@ -67,20 +66,6 @@ public interface ProjectServiceClient {
      *         the callback to use for the response
      */
     public void getProject(String path, AsyncRequestCallback<ProjectDescriptor> callback);
-
-    /**
-     * Create project.
-     *
-     * @param name
-     *         name of the project to create
-     * @param projectDescriptor
-     *         descriptor of the project to create
-     * @param callback
-     *         the callback to use for the response
-     * @deprecated use {@link #createProject(String, NewProject, AsyncRequestCallback)} instead.
-     */
-    @Deprecated
-    public void createProject(String name, ProjectDescriptor projectDescriptor, AsyncRequestCallback<ProjectDescriptor> callback);
 
     /**
      * Create project.
@@ -256,21 +241,6 @@ public interface ProjectServiceClient {
      *         the callback to use for the response
      */
     public void importProject(String path, boolean force, ImportProject importProject, AsyncRequestCallback<ProjectDescriptor> callback);
-
-
-//    /**
-//     * Import sources into project.
-//     *
-//     * @param path
-//     *         path to the project to import sources
-//     * @param force
-//     *         set true for force rewrite existed project
-//     * @param importProject
-//     *         {@link ImportProject}
-//     * @param callback
-//     *         the callback to use for the response
-//     */
-//    public void importProject(String path, boolean force, Source importProject, AsyncRequestCallback<ProjectDescriptor> callback);
 
     /**
      * Generate project.
