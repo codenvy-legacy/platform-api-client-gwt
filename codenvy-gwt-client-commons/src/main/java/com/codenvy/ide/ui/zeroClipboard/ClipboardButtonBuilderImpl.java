@@ -100,7 +100,7 @@ public class ClipboardButtonBuilderImpl implements ClipboardButtonBuilder {
     public Element build() {
         Element button = null;
         if (resourceWidget != null) {
-            Element buttonImage =  svgImage != null ? svgImage.getElement() : new SVGImage(res.clipboard()).getElement();
+            Element buttonImage = svgImage != null ? svgImage.getElement() : new SVGImage(res.clipboard()).getElement();
             button = buildCopyToClipboardButton(resourceWidget.getElement(),
                                                 buttonImage,
                                                 res.clipboardCss().clipboardButton(),
@@ -155,8 +155,11 @@ public class ClipboardButtonBuilderImpl implements ClipboardButtonBuilder {
                 tooltip.innerHTML = readyCopyPrompt;
                 client.on('copy', function (event) {
                     var data;
-                    if (mimeType == 'text/plain') {
+                    if (mimeType === 'text/plain') {
                         data = textBox.value;
+                        if (data == '') {
+                            data = textBox.innerText;
+                        }
                     } else {
                         data = textBox.innerHTML;
                     }
@@ -183,7 +186,14 @@ public class ClipboardButtonBuilderImpl implements ClipboardButtonBuilder {
         else {
             tooltip.innerHTML = readySelectPrompt;
             button.onclick = function () {
-                textBox.select();
+                if (typeof textBox.select !== 'undefined') {
+                    textBox.select();
+                } else if ($wnd.getSelection()) {
+                    var range = document.createRange();
+                    range.selectNodeContents(textBox);
+                    $wnd.getSelection().removeAllRanges();
+                    $wnd.getSelection().addRange(range);
+                }
             };
         }
         return button;
