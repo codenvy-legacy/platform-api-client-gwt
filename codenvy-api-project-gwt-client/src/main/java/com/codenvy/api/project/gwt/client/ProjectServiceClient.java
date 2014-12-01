@@ -10,7 +10,6 @@
  *******************************************************************************/
 package com.codenvy.api.project.gwt.client;
 
-import com.codenvy.api.project.shared.dto.GenerateDescriptor;
 import com.codenvy.api.project.shared.dto.ImportProject;
 import com.codenvy.api.project.shared.dto.ItemReference;
 import com.codenvy.api.project.shared.dto.NewProject;
@@ -18,7 +17,6 @@ import com.codenvy.api.project.shared.dto.ProjectDescriptor;
 import com.codenvy.api.project.shared.dto.ProjectReference;
 import com.codenvy.api.project.shared.dto.ProjectUpdate;
 import com.codenvy.api.project.shared.dto.RunnerEnvironmentTree;
-import com.codenvy.api.project.shared.dto.Source;
 import com.codenvy.api.project.shared.dto.TreeElement;
 import com.codenvy.ide.collections.Array;
 import com.codenvy.ide.rest.AsyncRequestCallback;
@@ -271,18 +269,6 @@ public interface ProjectServiceClient {
 //     *         the callback to use for the response
 //     */
 //    public void importProject(String path, boolean force, Source importProject, AsyncRequestCallback<ProjectDescriptor> callback);
-
-    /**
-     * Generate project.
-     *
-     * @param path
-     *         path to the project to generate
-     * @param generateDescriptor
-     *         {@link GenerateDescriptor}
-     * @param callback
-     *         the callback to use for the response
-     */
-    public void generateProject(String path, GenerateDescriptor generateDescriptor, AsyncRequestCallback<ProjectDescriptor> callback);
 
     /**
      * Get children for the specified path.
