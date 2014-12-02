@@ -10,7 +10,6 @@
  *******************************************************************************/
 package com.codenvy.api.project.gwt.client;
 
-import com.codenvy.api.project.shared.dto.GenerateDescriptor;
 import com.codenvy.api.project.shared.dto.ImportProject;
 import com.codenvy.api.project.shared.dto.ItemReference;
 import com.codenvy.api.project.shared.dto.NewProject;
@@ -49,7 +48,6 @@ public class ProjectServiceClientImpl implements ProjectServiceClient {
     private final String              MOVE;
     private final String              RENAME;
     private final String              IMPORT_PROJECT;
-    private final String              GENERATE_PROJECT;
     private final String              GET_CHILDREN;
     private final String              GET_TREE;
     private final String              SEARCH;
@@ -75,7 +73,6 @@ public class ProjectServiceClientImpl implements ProjectServiceClient {
         MOVE = restContext + "/project/" + workspaceId + "/move";
         RENAME = restContext + "/project/" + workspaceId + "/rename";
         IMPORT_PROJECT = restContext + "/project/" + workspaceId + "/import";
-        GENERATE_PROJECT = restContext + "/project/" + workspaceId + "/generate";
         GET_CHILDREN = restContext + "/project/" + workspaceId + "/children";
         GET_TREE = restContext + "/project/" + workspaceId + "/tree";
         SEARCH = restContext + "/project/" + workspaceId + "/search";
@@ -267,16 +264,6 @@ public class ProjectServiceClientImpl implements ProjectServiceClient {
         asyncRequestFactory.createPostRequest(requestUrl.toString(), importProject, true)
                            .header(ACCEPT, MimeType.APPLICATION_JSON)
                            .loader(loader, "Importing sources into project...")
-                           .send(callback);
-    }
-
-    @Override
-    public void generateProject(String path, GenerateDescriptor generateDescriptor,
-                                AsyncRequestCallback<ProjectDescriptor> callback) {
-        final String requestUrl = GENERATE_PROJECT + normalizePath(path);
-        asyncRequestFactory.createPostRequest(requestUrl, generateDescriptor)
-                           .header(ACCEPT, MimeType.APPLICATION_JSON)
-                           .loader(loader, "Generating project...")
                            .send(callback);
     }
 
