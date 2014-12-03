@@ -48,7 +48,7 @@ public interface UserProfileServiceClient {
      */
     void getProfileById(@Nonnull String id, AsyncRequestCallback<ProfileDescriptor> callback);
 
-    void getPreferences(String filter, AsyncRequestCallback<Map<String, String>> callback);
+    void getPreferences(AsyncRequestCallback<Map<String, String>> callback);
 
     /**
      * Update profile.
