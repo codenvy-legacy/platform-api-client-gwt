@@ -15,4 +15,5 @@
     <inherits name="com.google.gwt.user.User"/>
     <inherits name="com.google.gwt.json.JSON"/>
     <source path="analytics/client"/>
+    <source path="analytics/shared"/>
 </module>
