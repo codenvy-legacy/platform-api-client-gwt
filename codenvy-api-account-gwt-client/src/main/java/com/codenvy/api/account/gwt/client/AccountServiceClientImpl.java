@@ -44,6 +44,16 @@ public class AccountServiceClientImpl implements AccountServiceClient {
                            .send(callback);
     }
 
+    @Override
+    public void getSubscriptionByServiceId(String accountId,
+                                           String serviceId,
+                                           AsyncRequestCallback<Array<SubscriptionDescriptor>> callback) {
+        final String requestUrl = "/api/account/" + accountId + "/subscriptions?service=" + serviceId;
+        asyncRequestFactory.createGetRequest(requestUrl)
+                           .header(HTTPHeader.ACCEPT, MimeType.APPLICATION_JSON)
+                           .send(callback);
+    }
+
     /** {@inheritDoc} */
     @Override
     public void getMemberships(AsyncRequestCallback<Array<MemberDescriptor>> callback) {

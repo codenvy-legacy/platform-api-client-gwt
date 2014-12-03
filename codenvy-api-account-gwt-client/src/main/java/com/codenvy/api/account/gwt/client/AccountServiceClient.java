@@ -42,7 +42,7 @@ public interface AccountServiceClient {
     void getMemberships(AsyncRequestCallback<Array<MemberDescriptor>> callback);
 
     /**
-     * Get all subscriptions for .
+     * Get subscriptions of specified account.
      *
      * @param accountId
      *         id of account
@@ -50,4 +50,16 @@ public interface AccountServiceClient {
      *         the callback to use for the response
      */
     void getSubscriptions(String accountId, AsyncRequestCallback<Array<SubscriptionDescriptor>> callback);
+
+    /**
+     * Get subscription with specified id of specified account.
+     *
+     * @param accountId
+     *         id of account
+     * @param serviceId
+     *         id of service
+     * @param callback
+     *         the callback to use for the response
+     */
+    void getSubscriptionByServiceId(String accountId, String serviceId, AsyncRequestCallback<Array<SubscriptionDescriptor>> callback);
 }
