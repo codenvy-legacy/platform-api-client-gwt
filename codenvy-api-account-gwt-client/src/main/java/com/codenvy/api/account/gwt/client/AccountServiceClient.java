@@ -16,6 +16,8 @@ import com.codenvy.api.account.shared.dto.SubscriptionDescriptor;
 import com.codenvy.ide.collections.Array;
 import com.codenvy.ide.rest.AsyncRequestCallback;
 
+import javax.annotation.Nonnull;
+
 /**
  * Client for IDE3 Subscription service.
  *
@@ -31,7 +33,7 @@ public interface AccountServiceClient {
      * @param callback
      *         the callback to use for the response
      */
-    void getAccountById(String accountId, AsyncRequestCallback<AccountDescriptor> callback);
+    void getAccountById(@Nonnull String accountId, AsyncRequestCallback<AccountDescriptor> callback);
 
     /**
      * Get memberships for current user
@@ -49,7 +51,7 @@ public interface AccountServiceClient {
      * @param callback
      *         the callback to use for the response
      */
-    void getSubscriptions(String accountId, AsyncRequestCallback<Array<SubscriptionDescriptor>> callback);
+    void getSubscriptions(@Nonnull String accountId, AsyncRequestCallback<Array<SubscriptionDescriptor>> callback);
 
     /**
      * Get subscription with specified id of specified account.
@@ -61,5 +63,7 @@ public interface AccountServiceClient {
      * @param callback
      *         the callback to use for the response
      */
-    void getSubscriptionByServiceId(String accountId, String serviceId, AsyncRequestCallback<Array<SubscriptionDescriptor>> callback);
+    void getSubscriptionByServiceId(@Nonnull String accountId,
+                                    @Nonnull String serviceId,
+                                    AsyncRequestCallback<Array<SubscriptionDescriptor>> callback);
 }
