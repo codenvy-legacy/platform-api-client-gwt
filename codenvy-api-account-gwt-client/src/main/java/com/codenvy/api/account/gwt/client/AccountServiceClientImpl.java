@@ -21,6 +21,8 @@ import com.codenvy.ide.rest.HTTPHeader;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
+import javax.annotation.Nonnull;
+
 /**
  * Implementation of {@link AccountServiceClient} service.
  *
@@ -37,8 +39,18 @@ public class AccountServiceClientImpl implements AccountServiceClient {
 
     /** {@inheritDoc} */
     @Override
-    public void getSubscriptions(String accountId, AsyncRequestCallback<Array<SubscriptionDescriptor>> callback) {
+    public void getSubscriptions(@Nonnull String accountId, AsyncRequestCallback<Array<SubscriptionDescriptor>> callback) {
         final String requestUrl = "/api/account/" + accountId + "/subscriptions";
+        asyncRequestFactory.createGetRequest(requestUrl)
+                           .header(HTTPHeader.ACCEPT, MimeType.APPLICATION_JSON)
+                           .send(callback);
+    }
+
+    @Override
+    public void getSubscriptionByServiceId(@Nonnull String accountId,
+                                           @Nonnull String serviceId,
+                                           AsyncRequestCallback<Array<SubscriptionDescriptor>> callback) {
+        final String requestUrl = "/api/account/" + accountId + "/subscriptions?service=" + serviceId;
         asyncRequestFactory.createGetRequest(requestUrl)
                            .header(HTTPHeader.ACCEPT, MimeType.APPLICATION_JSON)
                            .send(callback);
@@ -55,7 +67,7 @@ public class AccountServiceClientImpl implements AccountServiceClient {
 
     /** {@inheritDoc} */
     @Override
-    public void getAccountById(String accountId, AsyncRequestCallback<AccountDescriptor> callback) {
+    public void getAccountById(@Nonnull String accountId, AsyncRequestCallback<AccountDescriptor> callback) {
         final String requestUrl = "/api/account/" + accountId;
         asyncRequestFactory.createGetRequest(requestUrl)
                            .header(HTTPHeader.ACCEPT, MimeType.APPLICATION_JSON)
