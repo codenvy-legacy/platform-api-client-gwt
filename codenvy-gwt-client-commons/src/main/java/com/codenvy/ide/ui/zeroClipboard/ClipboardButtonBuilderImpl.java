@@ -24,6 +24,7 @@ import javax.annotation.Nonnull;
  * according to state of ZeroClipboard library.
  *
  * @author Oleksii Orel
+ * @author Kevin Pollet
  */
 public class ClipboardButtonBuilderImpl implements ClipboardButtonBuilder {
 
@@ -147,9 +148,6 @@ public class ClipboardButtonBuilderImpl implements ClipboardButtonBuilder {
         button.appendChild(image);
         button.appendChild(tooltip);
         if (typeof $wnd.ZeroClipboard !== 'undefined') {
-            button.onmouseout = function () {
-                button.setAttribute('class', className);
-            }
             var client = new $wnd.ZeroClipboard(button);
             client.on('ready', function (event) {
                 tooltip.innerHTML = readyCopyPrompt;
@@ -157,7 +155,7 @@ public class ClipboardButtonBuilderImpl implements ClipboardButtonBuilder {
                     var data;
                     if (mimeType === 'text/plain') {
                         data = textBox.value;
-                        if (data == '') {
+                        if (!data) {
                             data = textBox.innerText;
                         }
                     } else {
