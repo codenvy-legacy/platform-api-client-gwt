@@ -11,7 +11,7 @@
       Codenvy, S.A. - initial API and implementation
 
 -->
-<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <artifactId>maven-depmgt-pom</artifactId>
@@ -20,7 +20,7 @@
     </parent>
     <groupId>com.codenvy.platform-api-gwt-client</groupId>
     <artifactId>codenvy-platform-api-gwt-client-parent</artifactId>
-    <version>0.16.0-SNAPSHOT</version>
+    <version>0.16.0</version>
     <packaging>pom</packaging>
     <name>Codenvy Platform API :: GWT Client :: Parent</name>
     <modules>
@@ -40,7 +40,7 @@
     <scm>
         <connection>scm:git:git@github.com:codenvy/platform-api-gwt-client.git</connection>
         <developerConnection>scm:git:git@github.com:codenvy/platform-api-gwt-client.git</developerConnection>
-        <tag>HEAD</tag>
+        <tag>0.16.0</tag>
         <url>https://fisheye.codenvycorp.com/browse/platform-api-gwt-client</url>
     </scm>
     <properties>
