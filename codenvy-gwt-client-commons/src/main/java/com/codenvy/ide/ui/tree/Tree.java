@@ -15,12 +15,6 @@
 package com.codenvy.ide.ui.tree;
 
 import com.codenvy.ide.util.browser.BrowserUtils;
-import com.codenvy.ide.util.loging.Log;
-import com.google.gwt.core.client.GWT;
-import com.google.gwt.dom.client.Document;
-import com.google.gwt.event.dom.client.DoubleClickEvent;
-import com.google.gwt.user.client.Window;
-import elemental.client.Browser;
 import elemental.dom.Element;
 import elemental.events.Event;
 import elemental.events.EventListener;
