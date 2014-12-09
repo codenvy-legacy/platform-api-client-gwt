@@ -14,6 +14,13 @@
 
 package com.codenvy.ide.ui.tree;
 
+import com.codenvy.ide.util.browser.BrowserUtils;
+import com.codenvy.ide.util.loging.Log;
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.dom.client.Document;
+import com.google.gwt.event.dom.client.DoubleClickEvent;
+import com.google.gwt.user.client.Window;
+import elemental.client.Browser;
 import elemental.dom.Element;
 import elemental.events.Event;
 import elemental.events.EventListener;
@@ -89,6 +96,8 @@ public class Tree<D> extends UiComponent<Tree.View<D>> implements IsWidget {
         return new Tree<NodeData>(view, model);
     }
 
+    private static boolean thisIsTablet = false;
+
 
     /** Css selectors applied to DOM elements in the tree. */
     public interface Css extends CssResource {
@@ -137,7 +146,7 @@ public class Tree<D> extends UiComponent<Tree.View<D>> implements IsWidget {
         void onRootContextMenu(int mouseX, int mouseY);
 
         void onRootDragDrop(MouseEvent event);
-        
+
         void onKeyboard(KeyboardEvent event);
     }
 
@@ -255,12 +264,18 @@ public class Tree<D> extends UiComponent<Tree.View<D>> implements IsWidget {
                 } else {
                     Element treeNodeBody = CssUtils.getAncestorOrSelfWithClassName(eventTarget, css.treeNodeBody());
                     if (treeNodeBody != null) {
-
+                        //this code emulate double click for tablets
                         if (Event.CLICK.equals(evt.getType())) {
                             double currentClickMs = Duration.currentTimeMillis();
                             if (currentClickMs - previousClickMs < MouseGestureListener.MAX_CLICK_TIMEOUT_MS
-                                && treeNodeBody.equals(previousClickTreeNodeBody)) {
-                                // Swallow double, triple, etc. clicks on an item's label
+                                    && treeNodeBody.equals(previousClickTreeNodeBody)) {
+
+                                if (BrowserUtils.isAndroid() || BrowserUtils.isIPad() ||
+                                        BrowserUtils.isIphone()) {
+                                    evt.stopPropagation();
+                                    evt.preventDefault();
+                                    doActionsForDoubleClick(treeNodeBody, evt);
+                                }
                                 return;
                             } else {
                                 this.previousClickMs = currentClickMs;
@@ -271,6 +286,22 @@ public class Tree<D> extends UiComponent<Tree.View<D>> implements IsWidget {
                         onTreeNodeBodyChildEvent(evt, treeNodeBody);
                     } else {
                         onOtherEvent(evt);
+                    }
+                }
+            }
+
+            private void  doActionsForDoubleClick(Element treeNodeBody, Object evt) {
+                SignalEvent signalEvent = SignalEventImpl.create((com.google.gwt.user.client.Event) evt, true);
+                // Select the node.
+                dispatchNodeSelectedEvent(treeNodeBody, signalEvent, css);
+
+                // Don't dispatch a node action if there is a modifier key depressed.
+                if (!(signalEvent.getCommandKey() || signalEvent.getShiftKey())) {
+                    dispatchNodeActionEvent(treeNodeBody, css);
+
+                    TreeNodeElement<D> node = getTreeNodeFromTreeNodeBody(treeNodeBody, css);
+                    if (node.hasChildrenContainer()) {
+                        dispatchExpansionEvent(node, css);
                     }
                 }
             }
@@ -371,7 +402,7 @@ public class Tree<D> extends UiComponent<Tree.View<D>> implements IsWidget {
                     }
                 }
             }, false);
-            
+
             getElement().addEventListener(Event.KEYUP, new TreeNodeEventListener(false) {
                 @Override
                 public void handleEvent(Event event) {
@@ -379,9 +410,9 @@ public class Tree<D> extends UiComponent<Tree.View<D>> implements IsWidget {
                         getDelegate().onKeyBoard((KeyboardEvent)event);
                     }
                 }
-                
+
             }, false);
-            
+
             getElement().addEventListener(Event.CONTEXTMENU, new TreeNodeEventListener(false) {
                 @Override
                 public void handleEvent(Event evt) {
@@ -470,7 +501,7 @@ public class Tree<D> extends UiComponent<Tree.View<D>> implements IsWidget {
             TreeNodeElement<D> treeNode = ((JsElement)treeNodeBody.getParentElement()).<TreeNodeElement<D>>cast();
 
             assert (CssUtils.containsClassName(treeNode, css.treeNode())) : "Unexpected element when looking for tree node: "
-                                                                            + treeNode.toString();
+                    + treeNode.toString();
 
             return treeNode;
         }
@@ -496,7 +527,7 @@ public class Tree<D> extends UiComponent<Tree.View<D>> implements IsWidget {
         public void onRootContextMenu(int mouseX, int mouseY);
 
         public void onRootDragDrop(MouseEvent event);
-        
+
         public void onKeyBoard(KeyboardEvent event);
     }
 
@@ -724,7 +755,7 @@ public class Tree<D> extends UiComponent<Tree.View<D>> implements IsWidget {
      */
     public TreeNodeElement<D> createNode(D nodeData) {
         return TreeNodeElement.create(nodeData, getModel().dataAdapter, getModel().nodeRenderer,
-                                      getModel().resources.treeCss());
+                getModel().resources.treeCss());
     }
 
     /** @see: {@link #expandNode(TreeNodeElement, boolean, boolean)}. */

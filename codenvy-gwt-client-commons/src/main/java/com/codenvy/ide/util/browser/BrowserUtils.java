@@ -54,6 +54,18 @@ public abstract class BrowserUtils {
         return Window.Navigator.getUserAgent().contains(" CrOS ");
     }
 
+    public static boolean isIPad() {
+        return Window.Navigator.getAppVersion().contains("iPad");
+    }
+
+    public static boolean isIphone() {
+        return Window.Navigator.getAppVersion().contains("iPhone");
+    }
+
+    public static boolean isAndroid() {
+        return Window.Navigator.getAppVersion().contains("Android");
+    }
+
     public static boolean hasUrlParameter(String parameter) {
         return Window.Location.getParameter(parameter) != null;
     }
