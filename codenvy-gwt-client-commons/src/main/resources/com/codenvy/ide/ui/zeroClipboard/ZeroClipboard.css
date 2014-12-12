@@ -15,7 +15,6 @@
 }
 
 .clipboardButton {
-    display: inline-block;
     width: 19px;
     height: 21px;
     padding: 0;
@@ -23,7 +22,8 @@
     background: none;
     color: inherit;
     cursor: pointer;
-    visibility: visible;
+    position: relative;
+    display: inline-block;
 }
 
 .clipboardButton svg {
@@ -32,35 +32,33 @@
 }
 
 .clipboardButton span {
-    visibility: hidden;
-    position: relative;
+    display: none;
+    position: absolute;
     cursor: default;
-    top: 12px;
+    top: 28px;
+    left: 0;
     padding: 8px;
     font-size: 8pt;
     font-weight: normal;
     white-space: nowrap;
     background: #202020;
     font-family: mainFontFamily;
-    border-radius: 0;
-    -moz-border-radius: 0;
-    -webkit-border-radius: 0;
+    z-index: 7;
 }
 
 .clipboardButton span:after {
     content: "";
     width: 0;
     height: 0;
-    border-width: 9px;
-    border-style: solid;
-    border-color: transparent transparent #232323 transparent;
+    border: 9px solid;
+    border-color: transparent transparent #202020 transparent;
     position: absolute;
     top: -15px;
     left: 1px;
 }
 
 div.clipboardButton {
-    margin: 1px 0px 0px 0px;
+    margin: 1px 0 0 0;
 }
 
 div.clipboardButton:hover,
@@ -72,5 +70,5 @@ div.clipboardButton.zeroclipboard-is-hover {
 .clipboardButton.zeroclipboard-is-hover span,
 .clipboardButton:hover span:after,
 .clipboardButton.zeroclipboard-is-hover span:after {
-    visibility: visible;
+    display: inline;
 }
