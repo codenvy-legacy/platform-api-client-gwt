@@ -79,7 +79,16 @@ public class KeyCodeMap {
     public static final int PAGE_DOWN             = UNICODE_PRIVATE_START + 9;
     public static final int MAC_META              = UNICODE_PRIVATE_START + 10;
     public static final int F1                    = UNICODE_PRIVATE_START + 11;
+    public static final int F2                    = F1 + 1;
+    public static final int F3                    = F1 + 2;
     public static final int F4                    = F1 + 3;
+    public static final int F5                    = F1 + 4;
+    public static final int F6                    = F1 + 5;
+    public static final int F7                    = F1 + 6;
+    public static final int F8                    = F1 + 7;
+    public static final int F9                    = F1 + 8;
+    public static final int F10                    = F1 + 9;
+    public static final int F11                    = F1 + 10;
     public static final int F12                   = F1 + 11;
 
     /** Bind browser field events */
@@ -220,5 +229,38 @@ public class KeyCodeMap {
         }
         // everything else is printable
         return true;
+    }
+
+    /**
+     * Returns a String describing the keyCode, such as "HOME", "F1" or "A".
+     *
+     * @return a string containing a text description for a physical key,
+     *         identified by its keyCode
+     */
+    public static String getKeyText(int keyCode){
+        if((keyCode >='0' && keyCode<='9') ||
+           (keyCode >='A' && keyCode<='Z') ||
+           (keyCode >='a' && keyCode<='z')) {
+            return String.valueOf((char)keyCode);
+        }
+        switch (keyCode){
+            case F1: return "F1";
+            case F2: return "F2";
+            case F3: return "F3";
+            case F4: return "F4";
+            case F5: return "F5";
+            case F6: return "F6";
+            case F7: return "F7";
+            case F8: return "F8";
+            case F9: return "F9";
+            case F10: return "F10";
+            case F11: return "F11";
+            case F12: return "F12";
+            case INSERT: return "Insert";
+            case ENTER: return "Enter";
+            //todo add others keys
+        }
+
+        return "";
     }
 }

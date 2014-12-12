@@ -33,7 +33,7 @@ public class KeyMapUtil {
         String acceleratorText = "";
         int modifiers = accelerator.getModifiers();
         final int code = accelerator.getCharCode();
-        String keyText = String.valueOf((char)accelerator.getCharCode());
+        String keyText = KeyCodeMap.getKeyText(code);
         if (StringUtils.isUpperCase((char)accelerator.getCharCode())) {
             modifiers |= ModifierKeys.SHIFT;
         }
