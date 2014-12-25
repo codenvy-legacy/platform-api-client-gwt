@@ -15,8 +15,8 @@ import com.codenvy.ide.util.StringUtils;
 import com.codenvy.ide.util.browser.UserAgent;
 
 /**
- * @author <a href="mailto:evidolob@codenvy.com">Evgen Vidolob</a>
- * @version $Id:
+ * @author Evgen Vidolob
+ *
  */
 public class KeyMapUtil {
     public static String getShortcutText(CharCodeWithModifiers shortcut) {
@@ -30,6 +30,9 @@ public class KeyMapUtil {
 
     public static String getKeystrokeText(CharCodeWithModifiers accelerator) {
         if (accelerator == null) return "";
+        if(UserAgent.isMac()){
+            return MackeyMapUtil.getKeyStrokeText(accelerator);
+        }
         String acceleratorText = "";
         int modifiers = accelerator.getModifiers();
         final int code = accelerator.getCharCode();
