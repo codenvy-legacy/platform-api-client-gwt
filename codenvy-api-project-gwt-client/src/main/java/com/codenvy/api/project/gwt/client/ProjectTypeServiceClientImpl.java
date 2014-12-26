@@ -10,7 +10,7 @@
  *******************************************************************************/
 package com.codenvy.api.project.gwt.client;
 
-import com.codenvy.api.project.shared.dto.ProjectTypeDescriptor;
+import com.codenvy.api.project.shared.dto.ProjectTypeDefinition;
 import com.codenvy.ide.collections.Array;
 import com.codenvy.ide.rest.AsyncRequestCallback;
 import com.codenvy.ide.rest.AsyncRequestFactory;
@@ -42,7 +42,7 @@ public class ProjectTypeServiceClientImpl implements ProjectTypeServiceClient {
     }
 
     @Override
-    public void getProjectTypes(AsyncRequestCallback<Array<ProjectTypeDescriptor>> callback) {
+    public void getProjectTypes(AsyncRequestCallback<Array<ProjectTypeDefinition>> callback) {
         final String requestUrl = restContext + GET_DESCRIPTIONS;
         asyncRequestFactory.createGetRequest(requestUrl).header(ACCEPT, APPLICATION_JSON).loader(loader).send(callback);
     }

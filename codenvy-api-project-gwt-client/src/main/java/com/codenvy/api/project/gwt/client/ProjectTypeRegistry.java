@@ -10,22 +10,20 @@
  *******************************************************************************/
 package com.codenvy.api.project.gwt.client;
 
-import com.codenvy.api.project.server.type.ProjectType2;
 import com.codenvy.api.project.shared.dto.ProjectTypeDefinition;
-import com.codenvy.ide.collections.Array;
-import com.codenvy.ide.rest.AsyncRequestCallback;
+
+import javax.annotation.Nonnull;
+import java.util.List;
 
 /**
- * Client for Project Type Description service.
- *
- * @author Artem Zatsarynnyy
+ * @author Vitaly Parfonov
  */
-public interface ProjectTypeServiceClient {
-    /**
-     * Get information about all registered project types
-     *
-     * @param callback
-     *         the callback to use for the response
-     */
-    public void getProjectTypes(AsyncRequestCallback<Array<ProjectTypeDefinition>> callback);
+public interface ProjectTypeRegistry {
+    void setProjectTypes(@Nonnull List<ProjectTypeDefinition> projectTypes);
+
+    ProjectTypeDefinition getProjectType(@Nonnull String id);
+
+    List<ProjectTypeDefinition> getProjectTypes();
+
+    void register(ProjectTypeDefinition projectType);
 }
