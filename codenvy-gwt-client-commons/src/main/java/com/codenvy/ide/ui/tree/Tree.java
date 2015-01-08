@@ -16,6 +16,7 @@ package com.codenvy.ide.ui.tree;
 
 import com.codenvy.ide.util.browser.BrowserUtils;
 import elemental.dom.Element;
+import elemental.dom.NodeList;
 import elemental.events.Event;
 import elemental.events.EventListener;
 import elemental.events.KeyboardEvent;
@@ -397,14 +398,13 @@ public class Tree<D> extends UiComponent<Tree.View<D>> implements IsWidget {
                 }
             }, false);
 
-            getElement().addEventListener(Event.KEYUP, new TreeNodeEventListener(false) {
+            getElement().addEventListener(Event.KEYDOWN, new TreeNodeEventListener(false) {
                 @Override
                 public void handleEvent(Event event) {
                     if (getDelegate() != null) {
                         getDelegate().onKeyBoard((KeyboardEvent)event);
                     }
                 }
-
             }, false);
 
             getElement().addEventListener(Event.CONTEXTMENU, new TreeNodeEventListener(false) {
@@ -688,7 +688,35 @@ public class Tree<D> extends UiComponent<Tree.View<D>> implements IsWidget {
 
         @Override
         public void onKeyBoard(KeyboardEvent event) {
-            if (getModel().externalEventDelegate != null) {
+            if (event.getKeyCode() == KeyboardEvent.KeyCode.UP) {
+                //event.stopPropagation(); event.preventDefault();
+                upArrowPressed();
+
+            } else if (event.getKeyCode() == KeyboardEvent.KeyCode.DOWN) {
+                event.stopPropagation(); event.preventDefault();
+                downArrowPressed();
+
+            } else if (event.getKeyCode() == KeyboardEvent.KeyCode.HOME) {
+                event.stopPropagation(); event.preventDefault();
+                homePressed();
+
+            } else if (event.getKeyCode() == KeyboardEvent.KeyCode.END) {
+                event.stopPropagation(); event.preventDefault();
+                endPressed();
+
+            } else if (event.getKeyCode() == KeyboardEvent.KeyCode.ENTER) {
+                //tree.getSelectionModel().getSelectedNodes().get(0);
+                enterPressed(event);
+
+            } else if (event.getKeyCode() == KeyboardEvent.KeyCode.RIGHT) {
+                event.stopPropagation(); event.preventDefault();
+                rightArrowPressed();
+
+            } else if (event.getKeyCode() == KeyboardEvent.KeyCode.LEFT) {
+                event.stopPropagation(); event.preventDefault();
+                leftArrowPressed();
+
+            } else if (getModel().externalEventDelegate != null) {
                 getModel().externalEventDelegate.onKeyboard(event);
             }
         }
@@ -1047,9 +1075,156 @@ public class Tree<D> extends UiComponent<Tree.View<D>> implements IsWidget {
         getModel().externalEventDelegate = externalEventDelegate;
     }
 
-    private boolean expandPathRecursive(D expandedParentNode, Array<String> pathToExpand,
-                                        boolean dispatchNodeExpanded) {
+    private Array<TreeNodeElement<D>> getVisibleTreeNodes(TreeNodeElement<D> node) {
+        Array<TreeNodeElement<D>> nodes = Collections.createArray();
+        nodes.add(node);
 
+        if (node.isOpen() && node.hasChildNodes()) {
+            NodeList children = node.getChildrenContainer().getChildNodes();
+            for (int ci = 0; ci < children.getLength(); ci++) {
+                TreeNodeElement<D> child = (TreeNodeElement<D>)children.item(ci);
+                nodes.addAll(getVisibleTreeNodes(child));
+            }
+        }
+
+        return nodes;
+    }
+
+    private Array<TreeNodeElement<D>> getVisibleTreeNodes() {
+        D project = getModel().dataAdapter.getChildren(getModel().getRoot()).get(0);
+        TreeNodeElement<D> projectTreeNode = getModel().dataAdapter.getRenderedTreeNode(project);
+        return getVisibleTreeNodes(projectTreeNode);
+    }
+
+    public void upArrowPressed() {
+        if (getModel().getRoot() == null ||
+            getSelectionModel().getSelectedNodes().isEmpty() ||
+            getModel().dataAdapter.getChildren(getModel().getRoot()).isEmpty()) {
+            return;
+        }
+
+        D selected = getSelectionModel().getSelectedNodes().get(0);
+        TreeNodeElement<D> selectedTreeNodeElement = getModel().dataAdapter.getRenderedTreeNode(selected);
+
+        Array<TreeNodeElement<D>> visibleTreeNodes = getVisibleTreeNodes();
+        for (int i = 0; i < visibleTreeNodes.size(); i++) {
+            TreeNodeElement<D> treeNode = visibleTreeNodes.get(i);
+            if (treeNode == selectedTreeNodeElement) {
+                if (i > 0) {
+                    selectSingleNode(visibleTreeNodes.get(i - 1), false);
+                }
+                return;
+            }
+        }
+    }
+
+    public void downArrowPressed() {
+        if (getModel().getRoot() == null ||
+            getSelectionModel().getSelectedNodes().isEmpty() ||
+            getModel().dataAdapter.getChildren(getModel().getRoot()).isEmpty()) {
+            return;
+        }
+
+        D selected = getSelectionModel().getSelectedNodes().get(0);
+        TreeNodeElement<D> selectedTreeNodeElement = getModel().dataAdapter.getRenderedTreeNode(selected);
+
+        Array<TreeNodeElement<D>> visibleTreeNodes = getVisibleTreeNodes();
+        for (int i = 0; i < visibleTreeNodes.size(); i++) {
+            TreeNodeElement<D> treeNode = visibleTreeNodes.get(i);
+            if (treeNode == selectedTreeNodeElement) {
+                if (i < visibleTreeNodes.size() - 1) {
+                    selectSingleNode(visibleTreeNodes.get(i + 1), false);
+                }
+                return;
+            }
+        }
+    }
+
+    public void homePressed() {
+        if (getModel().getRoot() == null ||
+            getSelectionModel().getSelectedNodes().isEmpty() ||
+            getModel().dataAdapter.getChildren(getModel().getRoot()).isEmpty()) {
+            return;
+        }
+
+        D project = getModel().dataAdapter.getChildren(getModel().getRoot()).get(0);
+        TreeNodeElement<D> projectTreeNode = getModel().dataAdapter.getRenderedTreeNode(project);
+        selectSingleNode(projectTreeNode, false);
+    }
+
+    public void endPressed() {
+        if (getModel().getRoot() == null ||
+            getSelectionModel().getSelectedNodes().isEmpty() ||
+            getModel().dataAdapter.getChildren(getModel().getRoot()).isEmpty()) {
+            return;
+        }
+
+        Array<TreeNodeElement<D>> visibleTreeNodes = getVisibleTreeNodes();
+        selectSingleNode(visibleTreeNodes.get(visibleTreeNodes.size() - 1), false);
+    }
+
+    /**
+     * Handles pressing the Enter button.
+     * Expands or collapses a folder or opens a file.
+     */
+    public void enterPressed(KeyboardEvent event) {
+        if (getModel().getRoot() == null ||
+            getSelectionModel().getSelectedNodes().isEmpty() ||
+            getModel().dataAdapter.getChildren(getModel().getRoot()).isEmpty()) {
+            return;
+        }
+
+        D selected = getSelectionModel().getSelectedNodes().get(0);
+        TreeNodeElement<D> selectedTreeNodeElement = getModel().dataAdapter.getRenderedTreeNode(selected);
+
+        if (selectedTreeNodeElement.hasChildrenContainer()) {
+            if (selectedTreeNodeElement.isOpen()) {
+                closeNode(selectedTreeNodeElement, true);
+            } else {
+                // Open the folder
+                expandNode(selectedTreeNodeElement, true, true);
+            }
+        } else {
+            if (getModel().externalEventDelegate != null) {
+                getModel().externalEventDelegate.onKeyboard(event);
+            }
+        }
+    }
+
+    /**
+     * Handles pressing the Right arrow button.
+     * Does nothing when user selected a file. Expands a folder if the user has selected one.
+     * Selects the first child if the folder is already selected and expanded.
+     */
+    public void rightArrowPressed() {
+        if (getModel().getRoot() == null ||
+            getSelectionModel().getSelectedNodes().isEmpty() ||
+            getModel().dataAdapter.getChildren(getModel().getRoot()).isEmpty()) {
+            return;
+        }
+
+        D selected = getSelectionModel().getSelectedNodes().get(0);
+        TreeNodeElement<D> selectedTreeNodeElement = getModel().dataAdapter.getRenderedTreeNode(selected);
+
+        if (selectedTreeNodeElement.hasChildrenContainer()) {
+            if (selectedTreeNodeElement.isOpen()) {
+                // Select the first child
+                NodeList children = selectedTreeNodeElement.getChildrenContainer().getChildNodes();
+                if (children.getLength() > 0) {
+                    TreeNodeElement<D> firstChild = (TreeNodeElement<D>)children.item(0);
+                    selectSingleNode(firstChild, false);
+                }
+            } else {
+                // Open the folder
+                expandNode(selectedTreeNodeElement, true, true);
+            }
+        }
+    }
+
+    public void leftArrowPressed() {
+    }
+
+    private boolean expandPathRecursive(D expandedParentNode, Array<String> pathToExpand, boolean dispatchNodeExpanded) {
         if (expandedParentNode == null) {
             return false;
         }
@@ -1148,7 +1323,6 @@ public class Tree<D> extends UiComponent<Tree.View<D>> implements IsWidget {
      *         iteration callback
      */
     public static <D> void iterateDfs(D rootData, NodeDataAdapter<D> dataAdapter, Visitor<D> callback) {
-
         Array<D> nodes = Collections.createArray();
         nodes.add(rootData);
 
