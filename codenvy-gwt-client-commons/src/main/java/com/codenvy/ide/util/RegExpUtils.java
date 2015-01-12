@@ -23,7 +23,6 @@ public class RegExpUtils {
 
     private static final RegExp regexpEscape         = RegExp.compile("[.*?$^+|()\\[\\]{}\\\\]", "g");
     private static final RegExp regexpWildcardEscape = RegExp.compile("[.$^+|()\\[\\]{}\\\\]", "g");
-    private static final RegExp latinAndDigits       = RegExp.compile("^[a-zA-Z0-9]+$");
 
     /**
      * Escapes all regexp special characters in a string .+?*|()[]{}\
@@ -174,12 +173,5 @@ public class RegExpUtils {
     public static boolean resetAndTest(RegExp regexp, String input) {
         regexp.setLastIndex(0);
         return regexp.test(input);
-    }
-
-    /**
-     * Check if input contains only latin and/or digits only
-     */
-    public static boolean isLatinAndDigitsOnly(String input) {
-        return latinAndDigits.test(input);
     }
 }
