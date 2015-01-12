@@ -35,6 +35,7 @@ import com.codenvy.ide.util.dom.MouseGestureListener;
 import com.codenvy.ide.util.input.SignalEvent;
 import com.codenvy.ide.util.input.SignalEventImpl;
 import com.google.gwt.core.client.Duration;
+import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.core.client.Scheduler.ScheduledCommand;
 import com.google.gwt.dom.client.Node;
@@ -689,31 +690,46 @@ public class Tree<D> extends UiComponent<Tree.View<D>> implements IsWidget {
         @Override
         public void onKeyBoard(KeyboardEvent event) {
             if (event.getKeyCode() == KeyboardEvent.KeyCode.UP) {
-                //event.stopPropagation(); event.preventDefault();
+                event.stopPropagation();
+                event.preventDefault();
                 upArrowPressed();
 
             } else if (event.getKeyCode() == KeyboardEvent.KeyCode.DOWN) {
-                event.stopPropagation(); event.preventDefault();
+                event.stopPropagation();
+                event.preventDefault();
                 downArrowPressed();
 
             } else if (event.getKeyCode() == KeyboardEvent.KeyCode.HOME) {
-                event.stopPropagation(); event.preventDefault();
+                event.stopPropagation();
+                event.preventDefault();
                 homePressed();
 
             } else if (event.getKeyCode() == KeyboardEvent.KeyCode.END) {
-                event.stopPropagation(); event.preventDefault();
+                event.stopPropagation();
+                event.preventDefault();
                 endPressed();
 
+            } else if (event.getKeyCode() == KeyboardEvent.KeyCode.PAGE_UP) {
+                event.stopPropagation();
+                event.preventDefault();
+                pageUpPressed();
+
+            } else if (event.getKeyCode() == KeyboardEvent.KeyCode.PAGE_DOWN) {
+                event.stopPropagation();
+                event.preventDefault();
+                pageDownPressed();
+
             } else if (event.getKeyCode() == KeyboardEvent.KeyCode.ENTER) {
-                //tree.getSelectionModel().getSelectedNodes().get(0);
                 enterPressed(event);
 
             } else if (event.getKeyCode() == KeyboardEvent.KeyCode.RIGHT) {
-                event.stopPropagation(); event.preventDefault();
+                event.stopPropagation();
+                event.preventDefault();
                 rightArrowPressed();
 
             } else if (event.getKeyCode() == KeyboardEvent.KeyCode.LEFT) {
-                event.stopPropagation(); event.preventDefault();
+                event.stopPropagation();
+                event.preventDefault();
                 leftArrowPressed();
 
             } else if (getModel().externalEventDelegate != null) {
@@ -760,11 +776,13 @@ public class Tree<D> extends UiComponent<Tree.View<D>> implements IsWidget {
 
     private void selectSingleNode(TreeNodeElement<D> renderedNode, boolean dispatchNodeAction) {
         getModel().selectionModel.selectSingleNode(renderedNode.getData());
+        scrollToSelectedElement();
         maybeNotifyNodeActionExternal(renderedNode, dispatchNodeAction);
     }
 
     private void selectNode(D node, SignalEvent event, boolean dispatchNodeSelected) {
         getModel().selectionModel.selectNode(node, event);
+        scrollToSelectedElement();
         if (dispatchNodeSelected && getModel().externalEventDelegate != null) {
             TreeNodeElement<D> renderedNode = getModel().dataAdapter.getRenderedTreeNode(node);
             getModel().externalEventDelegate.onNodeSelected(renderedNode, event);
@@ -772,12 +790,45 @@ public class Tree<D> extends UiComponent<Tree.View<D>> implements IsWidget {
     }
 
     /**
+     * Scrolls tree to selected element.
+     */
+    private void scrollToSelectedElement() {
+        if (!getSelectionModel().getSelectedNodes().isEmpty()) {
+            D selected = getSelectionModel().getSelectedNodes().get(0);
+            TreeNodeElement<D> selectedTreeNodeElement = getModel().dataAdapter.getRenderedTreeNode(selected);
+            scrollToElement(asWidget().getElement(), selectedTreeNodeElement.getFirstChild());
+        }
+    }
+
+    /**
+     * Scrolls tree to specified row.
+     *
+     * @param tree tree element
+     * @param element row element
+     */
+    private native void scrollToElement(JavaScriptObject tree, JavaScriptObject element) /*-{
+        var maxTop = tree.getBoundingClientRect().top + tree.clientHeight;
+        var elemTop = element.getBoundingClientRect().top;
+        var elemHeight = element.getBoundingClientRect().height;
+
+        if (elemTop + elemHeight > maxTop) {
+            var diffHeight = elemTop + elemHeight - maxTop;
+            tree.scrollTop += diffHeight;
+            return;
+        }
+
+        if (element.getBoundingClientRect().top < tree.getBoundingClientRect().top) {
+            tree.scrollTop -= tree.getBoundingClientRect().top - element.getBoundingClientRect().top;
+        }
+    }-*/;
+
+    /**
      * Creates a {@link TreeNodeElement}. This does NOT attach said node to the
      * tree. You have to do that manually with {@link TreeNodeElement#addChild}.
      */
     public TreeNodeElement<D> createNode(D nodeData) {
         return TreeNodeElement.create(nodeData, getModel().dataAdapter, getModel().nodeRenderer,
-                getModel().resources.treeCss());
+                                      getModel().resources.treeCss());
     }
 
     /** @see: {@link #expandNode(TreeNodeElement, boolean, boolean)}. */
@@ -1090,12 +1141,20 @@ public class Tree<D> extends UiComponent<Tree.View<D>> implements IsWidget {
         return nodes;
     }
 
+    /**
+     * Gather all visible nodes of the tree.
+     *
+     * @return array containing all visible nodes of the tree
+     */
     private Array<TreeNodeElement<D>> getVisibleTreeNodes() {
         D project = getModel().dataAdapter.getChildren(getModel().getRoot()).get(0);
         TreeNodeElement<D> projectTreeNode = getModel().dataAdapter.getRenderedTreeNode(project);
         return getVisibleTreeNodes(projectTreeNode);
     }
 
+    /**
+     * Handles pressing Up arrow button.
+     */
     public void upArrowPressed() {
         if (getModel().getRoot() == null ||
             getSelectionModel().getSelectedNodes().isEmpty() ||
@@ -1118,6 +1177,9 @@ public class Tree<D> extends UiComponent<Tree.View<D>> implements IsWidget {
         }
     }
 
+    /**
+     * Handles pressing Down arrow button.
+     */
     public void downArrowPressed() {
         if (getModel().getRoot() == null ||
             getSelectionModel().getSelectedNodes().isEmpty() ||
@@ -1140,6 +1202,9 @@ public class Tree<D> extends UiComponent<Tree.View<D>> implements IsWidget {
         }
     }
 
+    /**
+     * Selects the root element when pressing HOME button.
+     */
     public void homePressed() {
         if (getModel().getRoot() == null ||
             getSelectionModel().getSelectedNodes().isEmpty() ||
@@ -1152,6 +1217,9 @@ public class Tree<D> extends UiComponent<Tree.View<D>> implements IsWidget {
         selectSingleNode(projectTreeNode, false);
     }
 
+    /**
+     * Selects last element when pressing END button.
+     */
     public void endPressed() {
         if (getModel().getRoot() == null ||
             getSelectionModel().getSelectedNodes().isEmpty() ||
@@ -1161,6 +1229,82 @@ public class Tree<D> extends UiComponent<Tree.View<D>> implements IsWidget {
 
         Array<TreeNodeElement<D>> visibleTreeNodes = getVisibleTreeNodes();
         selectSingleNode(visibleTreeNodes.get(visibleTreeNodes.size() - 1), false);
+    }
+
+    /**
+     * Handles the pressing Page Up button.
+     */
+    public void pageUpPressed() {
+        if (getModel().getRoot() == null ||
+            getSelectionModel().getSelectedNodes().isEmpty() ||
+            getModel().dataAdapter.getChildren(getModel().getRoot()).isEmpty()) {
+            return;
+        }
+
+        D selected = getSelectionModel().getSelectedNodes().get(0);
+        TreeNodeElement<D> selectedTreeNodeElement = getModel().dataAdapter.getRenderedTreeNode(selected);
+        int rowHeight = selectedTreeNodeElement.getSelectionElement().getOffsetHeight();
+
+        int index = -1;
+        Array<TreeNodeElement<D>> visibleTreeNodes = getVisibleTreeNodes();
+        for (int i = 0; i < visibleTreeNodes.size(); i++) {
+            TreeNodeElement<D> treeNode = visibleTreeNodes.get(i);
+            if (treeNode == selectedTreeNodeElement) {
+                index = i;
+                break;
+            }
+        }
+
+        if (index <= 0) {
+            return;
+        }
+
+        int visibleAreaHeight = asWidget().getElement().getClientHeight();
+        int visibleRows = visibleAreaHeight / rowHeight;
+
+        if (index > visibleRows) {
+            selectSingleNode(visibleTreeNodes.get(index - visibleRows), false);
+        } else {
+            selectSingleNode(visibleTreeNodes.get(0), false);
+        }
+    }
+
+    /**
+     * Handles the pressing Page Up button.
+     */
+    public void pageDownPressed() {
+        if (getModel().getRoot() == null ||
+            getSelectionModel().getSelectedNodes().isEmpty() ||
+            getModel().dataAdapter.getChildren(getModel().getRoot()).isEmpty()) {
+            return;
+        }
+
+        D selected = getSelectionModel().getSelectedNodes().get(0);
+        TreeNodeElement<D> selectedTreeNodeElement = getModel().dataAdapter.getRenderedTreeNode(selected);
+        int rowHeight = selectedTreeNodeElement.getSelectionElement().getOffsetHeight();
+
+        int index = -1;
+        Array<TreeNodeElement<D>> visibleTreeNodes = getVisibleTreeNodes();
+        for (int i = 0; i < visibleTreeNodes.size(); i++) {
+            TreeNodeElement<D> treeNode = visibleTreeNodes.get(i);
+            if (treeNode == selectedTreeNodeElement) {
+                index = i;
+                break;
+            }
+        }
+
+        if (index < 0) {
+            return;
+        }
+
+        int visibleAreaHeight = asWidget().getElement().getClientHeight();
+        int visibleRows = visibleAreaHeight / rowHeight;
+
+        if (index + visibleRows < visibleTreeNodes.size()) {
+            selectSingleNode(visibleTreeNodes.get(index + visibleRows), false);
+        } else {
+            selectSingleNode(visibleTreeNodes.get(visibleTreeNodes.size() - 1), false);
+        }
     }
 
     /**
@@ -1221,7 +1365,31 @@ public class Tree<D> extends UiComponent<Tree.View<D>> implements IsWidget {
         }
     }
 
+    /**
+     * Handles pressing the Left arrow button.
+     * Closes the folder if it's selected and opened, otherwise selects parent.
+     */
     public void leftArrowPressed() {
+        if (getModel().getRoot() == null ||
+            getSelectionModel().getSelectedNodes().isEmpty() ||
+            getModel().dataAdapter.getChildren(getModel().getRoot()).isEmpty()) {
+            return;
+        }
+
+        D selected = getSelectionModel().getSelectedNodes().get(0);
+        TreeNodeElement<D> selectedTreeNodeElement = getModel().dataAdapter.getRenderedTreeNode(selected);
+
+        if (selectedTreeNodeElement.isOpen()) {
+            closeNode(selectedTreeNodeElement, true);
+        } else {
+            D project = getModel().dataAdapter.getChildren(getModel().getRoot()).get(0);
+            TreeNodeElement<D> projectTreeNode = getModel().dataAdapter.getRenderedTreeNode(project);
+
+            if (selectedTreeNodeElement != projectTreeNode) {
+                TreeNodeElement<D> parentTreeNode = (TreeNodeElement<D>)selectedTreeNodeElement.getParentElement().getParentElement();
+                selectSingleNode(parentTreeNode, true);
+            }
+        }
     }
 
     private boolean expandPathRecursive(D expandedParentNode, Array<String> pathToExpand, boolean dispatchNodeExpanded) {
