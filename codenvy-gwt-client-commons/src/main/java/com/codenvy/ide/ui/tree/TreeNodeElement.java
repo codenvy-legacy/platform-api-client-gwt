@@ -206,9 +206,19 @@ public class TreeNodeElement<D> extends JsLIElement {
         }
     }
 
+//    /** Sets whether or not this node has the selected styling applied. */
+//    public final void setSelected(boolean isSelected, Tree.Css css) {
+//        CssUtils.setClassNameEnabled(getSelectionElement(), css.selected(), isSelected);
+//    }
+
     /** Sets whether or not this node has the selected styling applied. */
-    public final void setSelected(boolean isSelected, Tree.Css css) {
-        CssUtils.setClassNameEnabled(getSelectionElement(), css.selected(), isSelected);
+    public final void setSelected(boolean selected, boolean active, Tree.Css css) {
+        Elements.removeClassName(css.selected(), getSelectionElement());
+        Elements.removeClassName(css.selectedInactive(), getSelectionElement());
+
+        if (selected) {
+            Elements.addClassName(active ? css.selected() : css.selectedInactive(), getSelectionElement());
+        }
     }
 
     /** Sets whether or not this node is the active drop target. */

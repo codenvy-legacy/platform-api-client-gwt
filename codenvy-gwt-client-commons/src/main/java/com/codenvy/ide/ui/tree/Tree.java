@@ -113,6 +113,8 @@ public class Tree<D> extends UiComponent<Tree.View<D>> implements IsWidget {
 
         String selected();
 
+        String selectedInactive();
+
         String treeNode();
 
         String treeNodeBody();
@@ -343,11 +345,12 @@ public class Tree<D> extends UiComponent<Tree.View<D>> implements IsWidget {
             // preventDefault() actions, but this badly affected the inline editing
             // experience inside the Tree (e.g. debugger's RemoteObjectTree).
 
-            getElement().addEventListener(Event.CLICK, new TreeNodeEventListener(true) {
+            // Ok. Currently RemoteObjectTree doesn't exist anymore. So, the event can be changed on MOUSEDOWN.
+
+            getElement().addEventListener(Event.MOUSEDOWN, new TreeNodeEventListener(true) {
                 @Override
                 protected void onTreeNodeBodyChildEvent(Event evt, Element treeNodeBody) {
                     SignalEvent signalEvent = SignalEventImpl.create((com.google.gwt.user.client.Event)evt, true);
-
                     // Select the node.
                     dispatchNodeSelectedEvent(treeNodeBody, signalEvent, css);
                 }
@@ -447,6 +450,24 @@ public class Tree<D> extends UiComponent<Tree.View<D>> implements IsWidget {
             getElement().addEventListener(Event.DRAGENTER, dragDropEventListener, false);
             getElement().addEventListener(Event.DRAGLEAVE, dragDropEventListener, false);
             getElement().addEventListener(Event.DRAGSTART, dragDropEventListener, false);
+
+            getElement().addEventListener(Event.FOCUS, new EventListener() {
+                @Override
+                public void handleEvent(Event event) {
+                    if (getDelegate() != null) {
+                        getDelegate().onFocus(event);
+                    }
+                }
+            }, false);
+
+            getElement().addEventListener(Event.BLUR, new EventListener() {
+                @Override
+                public void handleEvent(Event event) {
+                    if (getDelegate() != null) {
+                        getDelegate().onBlur(event);
+                    }
+                }
+            }, false);
         }
 
         private void dispatchContextMenuEvent(int mouseX, int mouseY, Element treeNodeBody, Css css) {
@@ -507,23 +528,27 @@ public class Tree<D> extends UiComponent<Tree.View<D>> implements IsWidget {
      * dispatched synchronously in our DOM event handlers.
      */
     private interface ViewEvents<D> {
-        public void onNodeAction(TreeNodeElement<D> node);
+        void onNodeAction(TreeNodeElement<D> node);
 
-        public void onNodeClosed(TreeNodeElement<D> node);
+        void onNodeClosed(TreeNodeElement<D> node);
 
-        public void onNodeContextMenu(int mouseX, int mouseY, TreeNodeElement<D> node);
+        void onNodeContextMenu(int mouseX, int mouseY, TreeNodeElement<D> node);
 
-        public void onDragDropEvent(MouseEvent event);
+        void onDragDropEvent(MouseEvent event);
 
-        public void onNodeExpanded(TreeNodeElement<D> node);
+        void onNodeExpanded(TreeNodeElement<D> node);
 
-        public void onNodeSelected(TreeNodeElement<D> node, SignalEvent event);
+        void onNodeSelected(TreeNodeElement<D> node, SignalEvent event);
 
-        public void onRootContextMenu(int mouseX, int mouseY);
+        void onRootContextMenu(int mouseX, int mouseY);
 
-        public void onRootDragDrop(MouseEvent event);
+        void onRootDragDrop(MouseEvent event);
 
-        public void onKeyBoard(KeyboardEvent event);
+        void onKeyBoard(KeyboardEvent event);
+
+        void onFocus(Event event);
+
+        void onBlur(Event event);
     }
 
     private class DragDropController {
@@ -649,10 +674,10 @@ public class Tree<D> extends UiComponent<Tree.View<D>> implements IsWidget {
 
         @Override
         public void onNodeContextMenu(int mouseX, int mouseY, TreeNodeElement<D> node) {
-
-            // We want to select the node if it isn't already selected.
+            // Select the node the first
             getModel().selectionModel.contextSelect(node.getData());
 
+            // Display context menu
             if (getModel().externalEventDelegate != null) {
                 getModel().externalEventDelegate.onNodeContextMenu(mouseX, mouseY, node);
             }
@@ -670,6 +695,7 @@ public class Tree<D> extends UiComponent<Tree.View<D>> implements IsWidget {
 
         @Override
         public void onNodeSelected(TreeNodeElement<D> node, SignalEvent event) {
+            getSelectionModel().setTreeActive(true);
             selectNode(node.getData(), event, true);
         }
 
@@ -736,6 +762,17 @@ public class Tree<D> extends UiComponent<Tree.View<D>> implements IsWidget {
                 getModel().externalEventDelegate.onKeyboard(event);
             }
         }
+
+        @Override
+        public void onFocus(Event event) {
+            getSelectionModel().updateSelection(true);
+        }
+
+        @Override
+        public void onBlur(Event event) {
+            getSelectionModel().updateSelection(false);
+        }
+
     };
 
     private static final int HOVER_TO_EXPAND_DELAY_MS = 500;
@@ -1518,8 +1555,6 @@ public class Tree<D> extends UiComponent<Tree.View<D>> implements IsWidget {
             getModel().externalEventDelegate.onNodeAction(renderedNode);
         }
     }
-
-
 
     private void renderRecursive(Element parentContainer, D nodeData, int depth) {
         NodeDataAdapter<D> dataAdapter = getModel().dataAdapter;
