@@ -62,8 +62,7 @@ public class SelectionModel<D> {
             int insertionIndex = getInsertionIndex(nodeData);
             insertAndSelectNode(nodeData, insertionIndex, true);
             return true;
-        }IDEUI-4 [UX] Make possible to navigate in Project Explorer using the keyboard keys
-
+        }
 
         return false;
     }
