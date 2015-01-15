@@ -102,9 +102,4 @@ public interface NodeDataAdapter<D> {
      */
     Array<String> getNodePath(D data);
 
-    /**
-     * Looks up a node underneath the specified root using the specified relative
-     * path.
-     */
-    D getNodeByPath(D root, Array<String> relativeNodePath);
 }

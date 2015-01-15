@@ -1130,27 +1130,27 @@ public class Tree<D> extends UiComponent<Tree.View<D>> implements IsWidget {
             expandedPaths.clear();
         }
 
-        // TODO: Be more surgical about restoring the selection model. We
-        // are currently recomputing all selected nodes.
-        Array<Array<String>> selectedPaths = getModel().selectionModel.computeSelectedPaths();
-        restoreSelectionModel(selectedPaths);
+//        // TODO: Be more surgical about restoring the selection model. We
+//        // are currently recomputing all selected nodes.
+//        Array<Array<String>> selectedPaths = getModel().selectionModel.computeSelectedPaths();
+//        restoreSelectionModel(selectedPaths);
 
         return expandedPaths;
     }
 
-    /**
-     * Populates the selection model from a list of selected paths if they
-     * resolve to nodes in the data model.
-     */
-    private void restoreSelectionModel(Array<Array<String>> selectedPaths) {
-        getModel().selectionModel.clearSelections();
-        for (int i = 0, n = selectedPaths.size(); i < n; i++) {
-            D node = getModel().dataAdapter.getNodeByPath(getModel().root, selectedPaths.get(i));
-            if (node != null) {
-                selectNode(node, null, true);
-            }
-        }
-    }
+//    /**
+//     * Populates the selection model from a list of selected paths if they
+//     * resolve to nodes in the data model.
+//     */
+//    private void restoreSelectionModel(Array<Array<String>> selectedPaths) {
+//        getModel().selectionModel.clearSelections();
+//        for (int i = 0, n = selectedPaths.size(); i < n; i++) {
+//            D node = getModel().dataAdapter.getNodeByPath(getModel().root, selectedPaths.get(i));
+//            if (node != null) {
+//                selectNode(node, null, true);
+//            }
+//        }
+//    }
 
     /**
      * Receive callbacks for node expansion and node selection.
@@ -1184,9 +1184,13 @@ public class Tree<D> extends UiComponent<Tree.View<D>> implements IsWidget {
      * @return array containing all visible nodes of the tree
      */
     private Array<TreeNodeElement<D>> getVisibleTreeNodes() {
-        D project = getModel().dataAdapter.getChildren(getModel().getRoot()).get(0);
-        TreeNodeElement<D> projectTreeNode = getModel().dataAdapter.getRenderedTreeNode(project);
-        return getVisibleTreeNodes(projectTreeNode);
+        Array<TreeNodeElement<D>> nodes = Collections.createArray();
+        Array<D> rootItems = getModel().dataAdapter.getChildren(getModel().getRoot());
+        for (int i = 0; i < rootItems.size(); i++) {
+            TreeNodeElement<D> rootTreeNode = getModel().dataAdapter.getRenderedTreeNode(rootItems.get(i));
+            nodes.addAll(getVisibleTreeNodes(rootTreeNode));
+        }
+        return nodes;
     }
 
     /**
