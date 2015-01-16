@@ -336,9 +336,8 @@ public class SelectionModel<D> {
     private void visuallySelect(D nodeData, boolean isSelected) {
         TreeNodeElement<D> renderedNode = dataAdapter.getRenderedTreeNode(nodeData);
         if (renderedNode != null) {
-            renderedNode.setSelected(isSelected, css);
-//            renderedNode.getSelectionElement().getStyle().setVisibility("hidden");
-//            renderedNode.getSelectionElement().getStyle().setVisibility("visible");
+//            renderedNode.setSelected(isSelected, css);
+            renderedNode.setSelected(isSelected, active, css);
         }
     }
 
@@ -347,4 +346,37 @@ public class SelectionModel<D> {
             visuallySelect(nodeDatas.get(i), isSelected);
         }
     }
+
+    /**
+     * Indicates whether tree has focus or not.
+     * Is used for changing highlighting of selected nodes.
+     */
+    private boolean active = false;
+
+    /**
+     * Sets new tree state
+     *
+     * @param active active or not
+     */
+    public void setTreeActive(boolean active) {
+        this.active = active;
+    }
+
+    /**
+     * Sets new tree state and updates the selection.
+     *
+     * @param active active or not
+     */
+    public void updateSelection(boolean active) {
+        this.active = active;
+
+        for (int i = 0, n = selectedNodes.size(); i < n; i++) {
+            D nodeData = selectedNodes.get(i);
+            TreeNodeElement<D> renderedNode = dataAdapter.getRenderedTreeNode(nodeData);
+            if (renderedNode != null) {
+                renderedNode.setSelected(true, active, css);
+            }
+        }
+    }
+
 }

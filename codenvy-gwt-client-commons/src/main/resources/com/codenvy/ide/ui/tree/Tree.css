@@ -111,6 +111,10 @@
     background-color: selectionBackground ! important;
 }
 
+.selectedInactive {
+    background-color: #132D41 ! important;
+}
+
 .isDropTarget {
     background-color: #dfdfdf;
     margin: -2px;
