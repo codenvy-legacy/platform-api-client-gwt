@@ -10,21 +10,26 @@
  *******************************************************************************/
 package com.codenvy.api.project.gwt.client;
 
-import com.codenvy.api.project.shared.dto.ProjectTypeDefinition;
+import com.codenvy.api.project.shared.dto.ProjectTemplateDescriptor;
 import com.codenvy.ide.collections.Array;
-import com.codenvy.ide.rest.AsyncRequestCallback;
+
+import javax.annotation.Nonnull;
 
 /**
- * Client for Project Type service.
+ * Registry for {@link ProjectTemplateDescriptor}s.
  *
  * @author Artem Zatsarynnyy
  */
-public interface ProjectTypeServiceClient {
+public interface ProjectTemplateRegistry {
     /**
-     * Get information about all registered project types.
+     * Register the specified {@code descriptor}.
      *
-     * @param callback
-     *         the callback to use for the response
+     * @param descriptor
+     *         template descriptor to register
      */
-    void getProjectTypes(AsyncRequestCallback<Array<ProjectTypeDefinition>> callback);
+    void register(@Nonnull ProjectTemplateDescriptor descriptor);
+
+    /** Get all {@link ProjectTemplateDescriptor}s for the specified {@code projectTypeId}. */
+    @Nonnull
+    Array<ProjectTemplateDescriptor> getTemplateDescriptors(@Nonnull String projectTypeId);
 }

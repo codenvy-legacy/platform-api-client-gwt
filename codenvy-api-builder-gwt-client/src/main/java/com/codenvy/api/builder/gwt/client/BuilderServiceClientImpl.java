@@ -99,7 +99,7 @@ public class BuilderServiceClientImpl implements BuilderServiceClient {
 
     /** {@inheritDoc} */
     @Override
-    public void getRegisteredServers(String workspaceId, AsyncRequestCallback<Array<BuilderDescriptor>> callback) {
+    public void getRegisteredServers(AsyncRequestCallback<Array<BuilderDescriptor>> callback) {
         final String requestUrl = baseUrl + "/builders";
         asyncRequestFactory.createGetRequest(requestUrl).loader(loader)
                            .header(HTTPHeader.CONTENT_TYPE, MimeType.APPLICATION_JSON)
