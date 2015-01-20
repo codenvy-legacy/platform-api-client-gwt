@@ -16,6 +16,7 @@ package com.codenvy.ide.ui.tree;
 
 import com.codenvy.ide.util.browser.BrowserUtils;
 import elemental.dom.Element;
+import elemental.dom.NodeList;
 import elemental.events.Event;
 import elemental.events.EventListener;
 import elemental.events.KeyboardEvent;
@@ -34,6 +35,7 @@ import com.codenvy.ide.util.dom.MouseGestureListener;
 import com.codenvy.ide.util.input.SignalEvent;
 import com.codenvy.ide.util.input.SignalEventImpl;
 import com.google.gwt.core.client.Duration;
+import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.core.client.Scheduler.ScheduledCommand;
 import com.google.gwt.dom.client.Node;
@@ -110,6 +112,8 @@ public class Tree<D> extends UiComponent<Tree.View<D>> implements IsWidget {
         String openedIcon();
 
         String selected();
+
+        String selectedInactive();
 
         String treeNode();
 
@@ -341,11 +345,12 @@ public class Tree<D> extends UiComponent<Tree.View<D>> implements IsWidget {
             // preventDefault() actions, but this badly affected the inline editing
             // experience inside the Tree (e.g. debugger's RemoteObjectTree).
 
-            getElement().addEventListener(Event.CLICK, new TreeNodeEventListener(true) {
+            // Ok. Currently RemoteObjectTree doesn't exist anymore. So, the event can be changed on MOUSEDOWN.
+
+            getElement().addEventListener(Event.MOUSEDOWN, new TreeNodeEventListener(true) {
                 @Override
                 protected void onTreeNodeBodyChildEvent(Event evt, Element treeNodeBody) {
                     SignalEvent signalEvent = SignalEventImpl.create((com.google.gwt.user.client.Event)evt, true);
-
                     // Select the node.
                     dispatchNodeSelectedEvent(treeNodeBody, signalEvent, css);
                 }
@@ -397,14 +402,13 @@ public class Tree<D> extends UiComponent<Tree.View<D>> implements IsWidget {
                 }
             }, false);
 
-            getElement().addEventListener(Event.KEYUP, new TreeNodeEventListener(false) {
+            getElement().addEventListener(Event.KEYDOWN, new TreeNodeEventListener(false) {
                 @Override
                 public void handleEvent(Event event) {
                     if (getDelegate() != null) {
                         getDelegate().onKeyBoard((KeyboardEvent)event);
                     }
                 }
-
             }, false);
 
             getElement().addEventListener(Event.CONTEXTMENU, new TreeNodeEventListener(false) {
@@ -446,6 +450,24 @@ public class Tree<D> extends UiComponent<Tree.View<D>> implements IsWidget {
             getElement().addEventListener(Event.DRAGENTER, dragDropEventListener, false);
             getElement().addEventListener(Event.DRAGLEAVE, dragDropEventListener, false);
             getElement().addEventListener(Event.DRAGSTART, dragDropEventListener, false);
+
+            getElement().addEventListener(Event.FOCUS, new EventListener() {
+                @Override
+                public void handleEvent(Event event) {
+                    if (getDelegate() != null) {
+                        getDelegate().onFocus(event);
+                    }
+                }
+            }, false);
+
+            getElement().addEventListener(Event.BLUR, new EventListener() {
+                @Override
+                public void handleEvent(Event event) {
+                    if (getDelegate() != null) {
+                        getDelegate().onBlur(event);
+                    }
+                }
+            }, false);
         }
 
         private void dispatchContextMenuEvent(int mouseX, int mouseY, Element treeNodeBody, Css css) {
@@ -506,23 +528,27 @@ public class Tree<D> extends UiComponent<Tree.View<D>> implements IsWidget {
      * dispatched synchronously in our DOM event handlers.
      */
     private interface ViewEvents<D> {
-        public void onNodeAction(TreeNodeElement<D> node);
+        void onNodeAction(TreeNodeElement<D> node);
 
-        public void onNodeClosed(TreeNodeElement<D> node);
+        void onNodeClosed(TreeNodeElement<D> node);
 
-        public void onNodeContextMenu(int mouseX, int mouseY, TreeNodeElement<D> node);
+        void onNodeContextMenu(int mouseX, int mouseY, TreeNodeElement<D> node);
 
-        public void onDragDropEvent(MouseEvent event);
+        void onDragDropEvent(MouseEvent event);
 
-        public void onNodeExpanded(TreeNodeElement<D> node);
+        void onNodeExpanded(TreeNodeElement<D> node);
 
-        public void onNodeSelected(TreeNodeElement<D> node, SignalEvent event);
+        void onNodeSelected(TreeNodeElement<D> node, SignalEvent event);
 
-        public void onRootContextMenu(int mouseX, int mouseY);
+        void onRootContextMenu(int mouseX, int mouseY);
 
-        public void onRootDragDrop(MouseEvent event);
+        void onRootDragDrop(MouseEvent event);
 
-        public void onKeyBoard(KeyboardEvent event);
+        void onKeyBoard(KeyboardEvent event);
+
+        void onFocus(Event event);
+
+        void onBlur(Event event);
     }
 
     private class DragDropController {
@@ -648,10 +674,10 @@ public class Tree<D> extends UiComponent<Tree.View<D>> implements IsWidget {
 
         @Override
         public void onNodeContextMenu(int mouseX, int mouseY, TreeNodeElement<D> node) {
-
-            // We want to select the node if it isn't already selected.
+            // Select the node the first
             getModel().selectionModel.contextSelect(node.getData());
 
+            // Display context menu
             if (getModel().externalEventDelegate != null) {
                 getModel().externalEventDelegate.onNodeContextMenu(mouseX, mouseY, node);
             }
@@ -669,6 +695,7 @@ public class Tree<D> extends UiComponent<Tree.View<D>> implements IsWidget {
 
         @Override
         public void onNodeSelected(TreeNodeElement<D> node, SignalEvent event) {
+            getSelectionModel().setTreeActive(true);
             selectNode(node.getData(), event, true);
         }
 
@@ -688,10 +715,64 @@ public class Tree<D> extends UiComponent<Tree.View<D>> implements IsWidget {
 
         @Override
         public void onKeyBoard(KeyboardEvent event) {
-            if (getModel().externalEventDelegate != null) {
+            if (event.getKeyCode() == KeyboardEvent.KeyCode.UP) {
+                event.stopPropagation();
+                event.preventDefault();
+                upArrowPressed();
+
+            } else if (event.getKeyCode() == KeyboardEvent.KeyCode.DOWN) {
+                event.stopPropagation();
+                event.preventDefault();
+                downArrowPressed();
+
+            } else if (event.getKeyCode() == KeyboardEvent.KeyCode.HOME) {
+                event.stopPropagation();
+                event.preventDefault();
+                homePressed();
+
+            } else if (event.getKeyCode() == KeyboardEvent.KeyCode.END) {
+                event.stopPropagation();
+                event.preventDefault();
+                endPressed();
+
+            } else if (event.getKeyCode() == KeyboardEvent.KeyCode.PAGE_UP) {
+                event.stopPropagation();
+                event.preventDefault();
+                pageUpPressed();
+
+            } else if (event.getKeyCode() == KeyboardEvent.KeyCode.PAGE_DOWN) {
+                event.stopPropagation();
+                event.preventDefault();
+                pageDownPressed();
+
+            } else if (event.getKeyCode() == KeyboardEvent.KeyCode.ENTER) {
+                enterPressed(event);
+
+            } else if (event.getKeyCode() == KeyboardEvent.KeyCode.RIGHT) {
+                event.stopPropagation();
+                event.preventDefault();
+                rightArrowPressed();
+
+            } else if (event.getKeyCode() == KeyboardEvent.KeyCode.LEFT) {
+                event.stopPropagation();
+                event.preventDefault();
+                leftArrowPressed();
+
+            } else if (getModel().externalEventDelegate != null) {
                 getModel().externalEventDelegate.onKeyboard(event);
             }
         }
+
+        @Override
+        public void onFocus(Event event) {
+            getSelectionModel().updateSelection(true);
+        }
+
+        @Override
+        public void onBlur(Event event) {
+            getSelectionModel().updateSelection(false);
+        }
+
     };
 
     private static final int HOVER_TO_EXPAND_DELAY_MS = 500;
@@ -730,13 +811,42 @@ public class Tree<D> extends UiComponent<Tree.View<D>> implements IsWidget {
         selectSingleNode(renderedNode, dispatchNodeAction);
     }
 
-    private void selectSingleNode(TreeNodeElement<D> renderedNode, boolean dispatchNodeAction) {
-        getModel().selectionModel.selectSingleNode(renderedNode.getData());
-        maybeNotifyNodeActionExternal(renderedNode, dispatchNodeAction);
+    /**
+     * Selects a node and dispatches event to perform actions on this node.
+     *
+     * @param node node to select
+     * @param dispatchNodeAction dispatch action or not
+     */
+    private void selectSingleNode(TreeNodeElement<D> node, boolean dispatchNodeAction) {
+        getModel().selectionModel.selectSingleNode(node.getData());
+        scrollToSelectedElement();
+        maybeNotifyNodeActionExternal(node, dispatchNodeAction);
     }
 
+    /**
+     * Selects single node and notifies about selecting the node.
+     *
+     * @param node node to select
+     */
+    private void selectSingleNode(TreeNodeElement<D> node) {
+        getModel().selectionModel.selectSingleNode(node.getData());
+        scrollToSelectedElement();
+        if (getModel().externalEventDelegate != null) {
+            SignalEvent event = SignalEventImpl.DEFAULT_FACTORY.create();
+            getModel().externalEventDelegate.onNodeSelected(node, event);
+        }
+    }
+
+    /**
+     * Selects single node and dispatches an event about selecting the node.
+     *
+     * @param node
+     * @param event
+     * @param dispatchNodeSelected
+     */
     private void selectNode(D node, SignalEvent event, boolean dispatchNodeSelected) {
         getModel().selectionModel.selectNode(node, event);
+        scrollToSelectedElement();
         if (dispatchNodeSelected && getModel().externalEventDelegate != null) {
             TreeNodeElement<D> renderedNode = getModel().dataAdapter.getRenderedTreeNode(node);
             getModel().externalEventDelegate.onNodeSelected(renderedNode, event);
@@ -744,12 +854,45 @@ public class Tree<D> extends UiComponent<Tree.View<D>> implements IsWidget {
     }
 
     /**
+     * Scrolls tree to selected element.
+     */
+    private void scrollToSelectedElement() {
+        if (!getSelectionModel().getSelectedNodes().isEmpty()) {
+            D selected = getSelectionModel().getSelectedNodes().get(0);
+            TreeNodeElement<D> selectedTreeNodeElement = getModel().dataAdapter.getRenderedTreeNode(selected);
+            scrollToElement(asWidget().getElement(), selectedTreeNodeElement.getFirstChild());
+        }
+    }
+
+    /**
+     * Scrolls tree to specified row.
+     *
+     * @param tree tree element
+     * @param element row element
+     */
+    private native void scrollToElement(JavaScriptObject tree, JavaScriptObject element) /*-{
+        var maxTop = tree.getBoundingClientRect().top + tree.clientHeight;
+        var elemTop = element.getBoundingClientRect().top;
+        var elemHeight = element.getBoundingClientRect().height;
+
+        if (elemTop + elemHeight > maxTop) {
+            var diffHeight = elemTop + elemHeight - maxTop;
+            tree.scrollTop += diffHeight;
+            return;
+        }
+
+        if (element.getBoundingClientRect().top < tree.getBoundingClientRect().top) {
+            tree.scrollTop -= tree.getBoundingClientRect().top - element.getBoundingClientRect().top;
+        }
+    }-*/;
+
+    /**
      * Creates a {@link TreeNodeElement}. This does NOT attach said node to the
      * tree. You have to do that manually with {@link TreeNodeElement#addChild}.
      */
     public TreeNodeElement<D> createNode(D nodeData) {
         return TreeNodeElement.create(nodeData, getModel().dataAdapter, getModel().nodeRenderer,
-                getModel().resources.treeCss());
+                                      getModel().resources.treeCss());
     }
 
     /** @see: {@link #expandNode(TreeNodeElement, boolean, boolean)}. */
@@ -1047,9 +1190,283 @@ public class Tree<D> extends UiComponent<Tree.View<D>> implements IsWidget {
         getModel().externalEventDelegate = externalEventDelegate;
     }
 
-    private boolean expandPathRecursive(D expandedParentNode, Array<String> pathToExpand,
-                                        boolean dispatchNodeExpanded) {
+    /**
+     * Gathers all visible nodes of subtree.
+     *
+     * @param node subtree parent
+     * @return array containing all visible nodes of subtree
+     */
+    private Array<TreeNodeElement<D>> getVisibleTreeNodes(TreeNodeElement<D> node) {
+        Array<TreeNodeElement<D>> nodes = Collections.createArray();
+        nodes.add(node);
 
+        if (node.isOpen() && node.hasChildNodes()) {
+            NodeList children = node.getChildrenContainer().getChildNodes();
+            for (int ci = 0; ci < children.getLength(); ci++) {
+                TreeNodeElement<D> child = (TreeNodeElement<D>)children.item(ci);
+                nodes.addAll(getVisibleTreeNodes(child));
+            }
+        }
+
+        return nodes;
+    }
+
+    /**
+     * Gathers all visible nodes of the tree.
+     *
+     * @return array containing all visible nodes of the tree
+     */
+    private Array<TreeNodeElement<D>> getVisibleTreeNodes() {
+        Array<TreeNodeElement<D>> nodes = Collections.createArray();
+        Array<D> rootItems = getModel().dataAdapter.getChildren(getModel().getRoot());
+        for (int i = 0; i < rootItems.size(); i++) {
+            TreeNodeElement<D> rootTreeNode = getModel().dataAdapter.getRenderedTreeNode(rootItems.get(i));
+            nodes.addAll(getVisibleTreeNodes(rootTreeNode));
+        }
+        return nodes;
+    }
+
+    /**
+     * Handles pressing Up arrow button.
+     */
+    public void upArrowPressed() {
+        if (getModel().getRoot() == null ||
+            getSelectionModel().getSelectedNodes().isEmpty() ||
+            getModel().dataAdapter.getChildren(getModel().getRoot()).isEmpty()) {
+            return;
+        }
+
+        D selected = getSelectionModel().getSelectedNodes().get(0);
+        TreeNodeElement<D> selectedTreeNodeElement = getModel().dataAdapter.getRenderedTreeNode(selected);
+
+        Array<TreeNodeElement<D>> visibleTreeNodes = getVisibleTreeNodes();
+        for (int i = 0; i < visibleTreeNodes.size(); i++) {
+            TreeNodeElement<D> treeNode = visibleTreeNodes.get(i);
+            if (treeNode == selectedTreeNodeElement) {
+                if (i > 0) {
+                    selectSingleNode(visibleTreeNodes.get(i - 1));
+                }
+                return;
+            }
+        }
+    }
+
+    /**
+     * Handles pressing Down arrow button.
+     */
+    public void downArrowPressed() {
+        if (getModel().getRoot() == null ||
+            getSelectionModel().getSelectedNodes().isEmpty() ||
+            getModel().dataAdapter.getChildren(getModel().getRoot()).isEmpty()) {
+            return;
+        }
+
+        D selected = getSelectionModel().getSelectedNodes().get(0);
+        TreeNodeElement<D> selectedTreeNodeElement = getModel().dataAdapter.getRenderedTreeNode(selected);
+
+        Array<TreeNodeElement<D>> visibleTreeNodes = getVisibleTreeNodes();
+        for (int i = 0; i < visibleTreeNodes.size(); i++) {
+            TreeNodeElement<D> treeNode = visibleTreeNodes.get(i);
+            if (treeNode == selectedTreeNodeElement) {
+                if (i < visibleTreeNodes.size() - 1) {
+                    selectSingleNode(visibleTreeNodes.get(i + 1));
+                }
+                return;
+            }
+        }
+    }
+
+    /**
+     * Selects the root element when pressing HOME button.
+     */
+    public void homePressed() {
+        if (getModel().getRoot() == null ||
+            getSelectionModel().getSelectedNodes().isEmpty() ||
+            getModel().dataAdapter.getChildren(getModel().getRoot()).isEmpty()) {
+            return;
+        }
+
+        D project = getModel().dataAdapter.getChildren(getModel().getRoot()).get(0);
+        TreeNodeElement<D> projectTreeNode = getModel().dataAdapter.getRenderedTreeNode(project);
+        selectSingleNode(projectTreeNode);
+    }
+
+    /**
+     * Selects last element when pressing END button.
+     */
+    public void endPressed() {
+        if (getModel().getRoot() == null ||
+            getSelectionModel().getSelectedNodes().isEmpty() ||
+            getModel().dataAdapter.getChildren(getModel().getRoot()).isEmpty()) {
+            return;
+        }
+
+        Array<TreeNodeElement<D>> visibleTreeNodes = getVisibleTreeNodes();
+        selectSingleNode(visibleTreeNodes.get(visibleTreeNodes.size() - 1));
+    }
+
+    /**
+     * Handles the pressing Page Up button.
+     */
+    public void pageUpPressed() {
+        if (getModel().getRoot() == null ||
+            getSelectionModel().getSelectedNodes().isEmpty() ||
+            getModel().dataAdapter.getChildren(getModel().getRoot()).isEmpty()) {
+            return;
+        }
+
+        D selected = getSelectionModel().getSelectedNodes().get(0);
+        TreeNodeElement<D> selectedTreeNodeElement = getModel().dataAdapter.getRenderedTreeNode(selected);
+        int rowHeight = selectedTreeNodeElement.getSelectionElement().getOffsetHeight();
+
+        int index = -1;
+        Array<TreeNodeElement<D>> visibleTreeNodes = getVisibleTreeNodes();
+        for (int i = 0; i < visibleTreeNodes.size(); i++) {
+            TreeNodeElement<D> treeNode = visibleTreeNodes.get(i);
+            if (treeNode == selectedTreeNodeElement) {
+                index = i;
+                break;
+            }
+        }
+
+        if (index <= 0) {
+            return;
+        }
+
+        int visibleAreaHeight = asWidget().getElement().getClientHeight();
+        int visibleRows = visibleAreaHeight / rowHeight;
+
+        if (index > visibleRows) {
+            selectSingleNode(visibleTreeNodes.get(index - visibleRows));
+        } else {
+            selectSingleNode(visibleTreeNodes.get(0));
+        }
+    }
+
+    /**
+     * Handles the pressing Page Up button.
+     */
+    public void pageDownPressed() {
+        if (getModel().getRoot() == null ||
+            getSelectionModel().getSelectedNodes().isEmpty() ||
+            getModel().dataAdapter.getChildren(getModel().getRoot()).isEmpty()) {
+            return;
+        }
+
+        D selected = getSelectionModel().getSelectedNodes().get(0);
+        TreeNodeElement<D> selectedTreeNodeElement = getModel().dataAdapter.getRenderedTreeNode(selected);
+        int rowHeight = selectedTreeNodeElement.getSelectionElement().getOffsetHeight();
+
+        int index = -1;
+        Array<TreeNodeElement<D>> visibleTreeNodes = getVisibleTreeNodes();
+        for (int i = 0; i < visibleTreeNodes.size(); i++) {
+            TreeNodeElement<D> treeNode = visibleTreeNodes.get(i);
+            if (treeNode == selectedTreeNodeElement) {
+                index = i;
+                break;
+            }
+        }
+
+        if (index < 0) {
+            return;
+        }
+
+        int visibleAreaHeight = asWidget().getElement().getClientHeight();
+        int visibleRows = visibleAreaHeight / rowHeight;
+
+        if (index + visibleRows < visibleTreeNodes.size()) {
+            selectSingleNode(visibleTreeNodes.get(index + visibleRows));
+        } else {
+            selectSingleNode(visibleTreeNodes.get(visibleTreeNodes.size() - 1));
+        }
+    }
+
+    /**
+     * Handles pressing the Enter button.
+     * Expands or collapses a folder or opens a file.
+     */
+    public void enterPressed(KeyboardEvent event) {
+        if (getModel().getRoot() == null ||
+            getSelectionModel().getSelectedNodes().isEmpty() ||
+            getModel().dataAdapter.getChildren(getModel().getRoot()).isEmpty()) {
+            return;
+        }
+
+        D selected = getSelectionModel().getSelectedNodes().get(0);
+        TreeNodeElement<D> selectedTreeNodeElement = getModel().dataAdapter.getRenderedTreeNode(selected);
+
+        if (selectedTreeNodeElement.hasChildrenContainer()) {
+            if (selectedTreeNodeElement.isOpen()) {
+                closeNode(selectedTreeNodeElement, true);
+            } else {
+                // Open the folder
+                expandNode(selectedTreeNodeElement, true, true);
+            }
+        } else {
+            if (getModel().externalEventDelegate != null) {
+                getModel().externalEventDelegate.onKeyboard(event);
+            }
+        }
+    }
+
+    /**
+     * Handles pressing the Right arrow button.
+     * Does nothing when user selected a file. Expands a folder if the user has selected one.
+     * Selects the first child if the folder is already selected and expanded.
+     */
+    public void rightArrowPressed() {
+        if (getModel().getRoot() == null ||
+            getSelectionModel().getSelectedNodes().isEmpty() ||
+            getModel().dataAdapter.getChildren(getModel().getRoot()).isEmpty()) {
+            return;
+        }
+
+        D selected = getSelectionModel().getSelectedNodes().get(0);
+        TreeNodeElement<D> selectedTreeNodeElement = getModel().dataAdapter.getRenderedTreeNode(selected);
+
+        if (selectedTreeNodeElement.hasChildrenContainer()) {
+            if (selectedTreeNodeElement.isOpen()) {
+                // Select the first child
+                NodeList children = selectedTreeNodeElement.getChildrenContainer().getChildNodes();
+                if (children.getLength() > 0) {
+                    TreeNodeElement<D> firstChild = (TreeNodeElement<D>)children.item(0);
+                    selectSingleNode(firstChild);
+                }
+            } else {
+                // Open the folder
+                expandNode(selectedTreeNodeElement, true, true);
+            }
+        }
+    }
+
+    /**
+     * Handles pressing the Left arrow button.
+     * Closes the folder if it's selected and opened, otherwise selects parent.
+     */
+    public void leftArrowPressed() {
+        if (getModel().getRoot() == null ||
+            getSelectionModel().getSelectedNodes().isEmpty() ||
+            getModel().dataAdapter.getChildren(getModel().getRoot()).isEmpty()) {
+            return;
+        }
+
+        D selected = getSelectionModel().getSelectedNodes().get(0);
+        TreeNodeElement<D> selectedTreeNodeElement = getModel().dataAdapter.getRenderedTreeNode(selected);
+
+        if (selectedTreeNodeElement.isOpen()) {
+            closeNode(selectedTreeNodeElement, true);
+        } else {
+            D project = getModel().dataAdapter.getChildren(getModel().getRoot()).get(0);
+            TreeNodeElement<D> projectTreeNode = getModel().dataAdapter.getRenderedTreeNode(project);
+
+            if (selectedTreeNodeElement != projectTreeNode) {
+                TreeNodeElement<D> parentTreeNode = (TreeNodeElement<D>)selectedTreeNodeElement.getParentElement().getParentElement();
+                selectSingleNode(parentTreeNode);
+            }
+        }
+    }
+
+    private boolean expandPathRecursive(D expandedParentNode, Array<String> pathToExpand, boolean dispatchNodeExpanded) {
         if (expandedParentNode == null) {
             return false;
         }
@@ -1148,7 +1565,6 @@ public class Tree<D> extends UiComponent<Tree.View<D>> implements IsWidget {
      *         iteration callback
      */
     public static <D> void iterateDfs(D rootData, NodeDataAdapter<D> dataAdapter, Visitor<D> callback) {
-
         Array<D> nodes = Collections.createArray();
         nodes.add(rootData);
 
@@ -1176,8 +1592,6 @@ public class Tree<D> extends UiComponent<Tree.View<D>> implements IsWidget {
             getModel().externalEventDelegate.onNodeAction(renderedNode);
         }
     }
-
-
 
     private void renderRecursive(Element parentContainer, D nodeData, int depth) {
         NodeDataAdapter<D> dataAdapter = getModel().dataAdapter;

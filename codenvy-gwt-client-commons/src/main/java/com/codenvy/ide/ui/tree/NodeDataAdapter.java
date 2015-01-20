@@ -107,4 +107,5 @@ public interface NodeDataAdapter<D> {
      * path.
      */
     D getNodeByPath(D root, Array<String> relativeNodePath);
+
 }
