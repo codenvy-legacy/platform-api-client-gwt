@@ -811,12 +811,39 @@ public class Tree<D> extends UiComponent<Tree.View<D>> implements IsWidget {
         selectSingleNode(renderedNode, dispatchNodeAction);
     }
 
-    private void selectSingleNode(TreeNodeElement<D> renderedNode, boolean dispatchNodeAction) {
-        getModel().selectionModel.selectSingleNode(renderedNode.getData());
+    /**
+     * Selects a node and dispatches event to perform actions on this node.
+     *
+     * @param node node to select
+     * @param dispatchNodeAction dispatch action or not
+     */
+    private void selectSingleNode(TreeNodeElement<D> node, boolean dispatchNodeAction) {
+        getModel().selectionModel.selectSingleNode(node.getData());
         scrollToSelectedElement();
-        maybeNotifyNodeActionExternal(renderedNode, dispatchNodeAction);
+        maybeNotifyNodeActionExternal(node, dispatchNodeAction);
     }
 
+    /**
+     * Selects single node and notifies about selecting the node.
+     *
+     * @param node node to select
+     */
+    private void selectSingleNode(TreeNodeElement<D> node) {
+        getModel().selectionModel.selectSingleNode(node.getData());
+        scrollToSelectedElement();
+        if (getModel().externalEventDelegate != null) {
+            SignalEvent event = SignalEventImpl.DEFAULT_FACTORY.create();
+            getModel().externalEventDelegate.onNodeSelected(node, event);
+        }
+    }
+
+    /**
+     * Selects single node and dispatches an event about selecting the node.
+     *
+     * @param node
+     * @param event
+     * @param dispatchNodeSelected
+     */
     private void selectNode(D node, SignalEvent event, boolean dispatchNodeSelected) {
         getModel().selectionModel.selectNode(node, event);
         scrollToSelectedElement();
@@ -1163,6 +1190,12 @@ public class Tree<D> extends UiComponent<Tree.View<D>> implements IsWidget {
         getModel().externalEventDelegate = externalEventDelegate;
     }
 
+    /**
+     * Gathers all visible nodes of subtree.
+     *
+     * @param node subtree parent
+     * @return array containing all visible nodes of subtree
+     */
     private Array<TreeNodeElement<D>> getVisibleTreeNodes(TreeNodeElement<D> node) {
         Array<TreeNodeElement<D>> nodes = Collections.createArray();
         nodes.add(node);
@@ -1179,7 +1212,7 @@ public class Tree<D> extends UiComponent<Tree.View<D>> implements IsWidget {
     }
 
     /**
-     * Gather all visible nodes of the tree.
+     * Gathers all visible nodes of the tree.
      *
      * @return array containing all visible nodes of the tree
      */
@@ -1211,7 +1244,7 @@ public class Tree<D> extends UiComponent<Tree.View<D>> implements IsWidget {
             TreeNodeElement<D> treeNode = visibleTreeNodes.get(i);
             if (treeNode == selectedTreeNodeElement) {
                 if (i > 0) {
-                    selectSingleNode(visibleTreeNodes.get(i - 1), false);
+                    selectSingleNode(visibleTreeNodes.get(i - 1));
                 }
                 return;
             }
@@ -1236,7 +1269,7 @@ public class Tree<D> extends UiComponent<Tree.View<D>> implements IsWidget {
             TreeNodeElement<D> treeNode = visibleTreeNodes.get(i);
             if (treeNode == selectedTreeNodeElement) {
                 if (i < visibleTreeNodes.size() - 1) {
-                    selectSingleNode(visibleTreeNodes.get(i + 1), false);
+                    selectSingleNode(visibleTreeNodes.get(i + 1));
                 }
                 return;
             }
@@ -1255,7 +1288,7 @@ public class Tree<D> extends UiComponent<Tree.View<D>> implements IsWidget {
 
         D project = getModel().dataAdapter.getChildren(getModel().getRoot()).get(0);
         TreeNodeElement<D> projectTreeNode = getModel().dataAdapter.getRenderedTreeNode(project);
-        selectSingleNode(projectTreeNode, false);
+        selectSingleNode(projectTreeNode);
     }
 
     /**
@@ -1269,7 +1302,7 @@ public class Tree<D> extends UiComponent<Tree.View<D>> implements IsWidget {
         }
 
         Array<TreeNodeElement<D>> visibleTreeNodes = getVisibleTreeNodes();
-        selectSingleNode(visibleTreeNodes.get(visibleTreeNodes.size() - 1), false);
+        selectSingleNode(visibleTreeNodes.get(visibleTreeNodes.size() - 1));
     }
 
     /**
@@ -1304,9 +1337,9 @@ public class Tree<D> extends UiComponent<Tree.View<D>> implements IsWidget {
         int visibleRows = visibleAreaHeight / rowHeight;
 
         if (index > visibleRows) {
-            selectSingleNode(visibleTreeNodes.get(index - visibleRows), false);
+            selectSingleNode(visibleTreeNodes.get(index - visibleRows));
         } else {
-            selectSingleNode(visibleTreeNodes.get(0), false);
+            selectSingleNode(visibleTreeNodes.get(0));
         }
     }
 
@@ -1342,9 +1375,9 @@ public class Tree<D> extends UiComponent<Tree.View<D>> implements IsWidget {
         int visibleRows = visibleAreaHeight / rowHeight;
 
         if (index + visibleRows < visibleTreeNodes.size()) {
-            selectSingleNode(visibleTreeNodes.get(index + visibleRows), false);
+            selectSingleNode(visibleTreeNodes.get(index + visibleRows));
         } else {
-            selectSingleNode(visibleTreeNodes.get(visibleTreeNodes.size() - 1), false);
+            selectSingleNode(visibleTreeNodes.get(visibleTreeNodes.size() - 1));
         }
     }
 
@@ -1397,7 +1430,7 @@ public class Tree<D> extends UiComponent<Tree.View<D>> implements IsWidget {
                 NodeList children = selectedTreeNodeElement.getChildrenContainer().getChildNodes();
                 if (children.getLength() > 0) {
                     TreeNodeElement<D> firstChild = (TreeNodeElement<D>)children.item(0);
-                    selectSingleNode(firstChild, false);
+                    selectSingleNode(firstChild);
                 }
             } else {
                 // Open the folder
@@ -1428,7 +1461,7 @@ public class Tree<D> extends UiComponent<Tree.View<D>> implements IsWidget {
 
             if (selectedTreeNodeElement != projectTreeNode) {
                 TreeNodeElement<D> parentTreeNode = (TreeNodeElement<D>)selectedTreeNodeElement.getParentElement().getParentElement();
-                selectSingleNode(parentTreeNode, true);
+                selectSingleNode(parentTreeNode);
             }
         }
     }
