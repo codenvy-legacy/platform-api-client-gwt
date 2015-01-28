@@ -20,7 +20,7 @@
     </parent>
     <groupId>com.codenvy.platform-api-gwt-client</groupId>
     <artifactId>codenvy-platform-api-gwt-client-parent</artifactId>
-    <version>0.19.0</version>
+    <version>0.20.0-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>Codenvy Platform API :: GWT Client :: Parent</name>
     <modules>
@@ -40,7 +40,7 @@
     <scm>
         <connection>scm:git:git@github.com:codenvy/platform-api-gwt-client.git</connection>
         <developerConnection>scm:git:git@github.com:codenvy/platform-api-gwt-client.git</developerConnection>
-        <tag>0.19.0</tag>
+        <tag>HEAD</tag>
         <url>https://fisheye.codenvycorp.com/browse/platform-api-gwt-client</url>
     </scm>
     <properties>
