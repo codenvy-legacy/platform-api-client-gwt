@@ -60,8 +60,7 @@ public class Log {
      *
      * @param msg message to print
      */
-    public static final native void trace(String msg) /*-{
-        console.log(msg);
-    }-*/;
+    public static final void trace(String msg) {}
+//    public static final native void trace(String msg) /*-{ console.log(msg); }-*/;
 
 }
