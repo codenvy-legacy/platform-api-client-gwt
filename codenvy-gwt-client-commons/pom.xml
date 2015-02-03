@@ -16,7 +16,7 @@
     <parent>
         <artifactId>codenvy-platform-api-gwt-client-parent</artifactId>
         <groupId>com.codenvy.platform-api-gwt-client</groupId>
-        <version>0.19.1-SNAPSHOT</version>
+        <version>0.19.1</version>
     </parent>
     <artifactId>codenvy-gwt-client-commons</artifactId>
     <packaging>jar</packaging>
