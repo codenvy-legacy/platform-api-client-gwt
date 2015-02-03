@@ -19,7 +19,9 @@
 
 package com.codenvy.ide;
 
-import java.lang.String; /**
+import java.lang.String;
+
+/**
  * An abstraction for a media type. Instances are immutable.
  *
  * @see <a href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec3.html#sec3.7">HTTP/1.1 section 3.7</a>
@@ -106,8 +108,14 @@ public interface MimeType {
     /** Chromattic Data Object */
     final static String CHROMATTIC_DATA_OBJECT = "application/x-chromattic+groovy";
 
-    /** "application/java" */
-    final static String APPLICATION_JAVA = "application/java";
+    /** "text/x-java" */
+    final static String TEXT_X_JAVA = "text/x-java";
+
+    /** "text/x-java-source" */
+    final static String TEXT_X_JAVA_SOURCE = "text/x-java-source";
+
+    /** "application/java-class" */
+    final static String APPLICATION_JAVA_CLASS = "application/java-class";
 
     /** "application/jsp" */
     final static String APPLICATION_JSP = "application/jsp";
