@@ -70,7 +70,7 @@ public class SelectionModel<D> {
      * Returns the list of selected nodes. Not a copy. So don't play fast and
      * loose mutating the list outside of this API!
      */
-    public JsoArray<D> getSelectedNodes() {
+    public Array<D> getSelectedNodes() {
         return selectedNodes;
     }
 
@@ -83,7 +83,7 @@ public class SelectionModel<D> {
      * SelectionModel.
      */
     public Array<Array<String>> computeSelectedPaths() {
-        JsoArray<Array<String>> selectedPaths = JsoArray.create();
+        Array<Array<String>> selectedPaths = JsoArray.create();
         for (int i = 0, n = selectedNodes.size(); i < n; i++) {
             D nodeData = selectedNodes.get(i);
             selectedPaths.add(dataAdapter.getNodePath(nodeData));
