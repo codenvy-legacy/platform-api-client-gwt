@@ -10,12 +10,15 @@
  *******************************************************************************/
 package com.codenvy.ide.json;
 
+import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.json.client.JSONString;
 import com.google.gwt.json.client.JSONValue;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -47,6 +50,27 @@ public class JsonHelper {
                 // if the json value is a string, set the unescaped value, else set the json representation of the value
                 String stringValue = (jsonString == null) ? jsonValue.toString() : jsonString.stringValue();
                 map.put(key, stringValue);
+            }
+        }
+
+        return map;
+    }
+
+    public static Map<String, List<String>> toMapOfLists(String jsonStr) {
+        Map<String, List<String>> map = new HashMap<>();
+
+        JSONValue parsed = JSONParser.parseStrict(jsonStr);
+        JSONObject jsonObj = parsed.isObject();
+        if (jsonObj != null) {
+            for (String key : jsonObj.keySet()) {
+                JSONValue jsonValue = jsonObj.get(key);
+                JSONArray jsonArray = jsonValue.isArray();
+
+                List<String> values = new ArrayList<>();
+                for (int i = 0; i < jsonArray.size(); i++) {
+                    values.add(jsonArray.get(i).isString().stringValue());
+                }
+                map.put(key, values);
             }
         }
 

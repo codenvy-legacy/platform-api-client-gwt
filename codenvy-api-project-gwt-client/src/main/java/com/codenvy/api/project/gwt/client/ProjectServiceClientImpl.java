@@ -26,6 +26,7 @@ import com.codenvy.ide.rest.AsyncRequestLoader;
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
 
+import java.util.List;
 import java.util.Map;
 
 import static com.codenvy.ide.rest.HTTPHeader.ACCEPT;
@@ -135,7 +136,7 @@ public class ProjectServiceClientImpl implements ProjectServiceClient {
     }
 
     @Override
-    public void estimateProject(String path, String projectType, AsyncRequestCallback<Map<String, String>> callback) {
+    public void estimateProject(String path, String projectType, AsyncRequestCallback<Map<String, List<String>>> callback) {
         final String requestUrl = ESTIMATE + normalizePath(path) + "?type=" + projectType;
         asyncRequestFactory.createGetRequest(requestUrl)
                            .header(ACCEPT, MimeType.APPLICATION_JSON)
