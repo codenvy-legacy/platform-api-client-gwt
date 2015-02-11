@@ -136,10 +136,10 @@ public class ProjectServiceClientImpl implements ProjectServiceClient {
 
     @Override
     public void estimateProject(String path, String projectType, AsyncRequestCallback<Map<String, String>> callback) {
-        final String requestUrl = ESTIMATE + "?path=" + path + "&type=" + projectType ;
+        final String requestUrl = ESTIMATE + normalizePath(path) + "?type=" + projectType;
         asyncRequestFactory.createGetRequest(requestUrl)
                            .header(ACCEPT, MimeType.APPLICATION_JSON)
-                           .loader(loader, "Creating project...")
+                           .loader(loader, "Estimating project...")
                            .send(callback);
     }
 
