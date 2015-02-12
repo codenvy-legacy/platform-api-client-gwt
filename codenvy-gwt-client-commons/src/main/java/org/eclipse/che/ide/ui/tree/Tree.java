@@ -86,11 +86,16 @@ public class Tree<D> extends UiComponent<Tree.View<D>> implements IsWidget {
     /** Static factory method for obtaining an instance of the Tree. */
     @SuppressWarnings({"rawtypes", "unchecked"})
     public static <NodeData> Tree<NodeData> create(Resources resources, NodeDataAdapter<NodeData> dataAdapter,
-                                                   NodeRenderer<NodeData> nodeRenderer) {
-        View view = new View(resources);
+                                                   NodeRenderer<NodeData> nodeRenderer, final boolean multilevelSelection) {
+        final View view = new View(resources);
 
-        Model<NodeData> model = new Model<NodeData>(dataAdapter, nodeRenderer, resources);
+        final Model<NodeData> model = new Model<NodeData>(dataAdapter, nodeRenderer, resources, multilevelSelection);
         return new Tree<NodeData>(view, model);
+    }
+
+    public static <NodeData> Tree<NodeData> create(Resources resources, NodeDataAdapter<NodeData> dataAdapter,
+                                                   NodeRenderer<NodeData> nodeRenderer) {
+        return create(resources, dataAdapter, nodeRenderer, false);
     }
 
     private static boolean thisIsTablet = false;
@@ -187,10 +192,15 @@ public class Tree<D> extends UiComponent<Tree.View<D>> implements IsWidget {
         private final AnimationController animator;
 
         public Model(NodeDataAdapter<D> dataAdapter, NodeRenderer<D> nodeRenderer, Tree.Resources resources) {
+            this(dataAdapter, nodeRenderer, resources, false);
+        }
+
+        public Model(final NodeDataAdapter<D> dataAdapter, final NodeRenderer<D> nodeRenderer,
+                     final Tree.Resources resources, final boolean multilevelSelection) {
             this.dataAdapter = dataAdapter;
             this.nodeRenderer = nodeRenderer;
             this.resources = resources;
-            this.selectionModel = new SelectionModel<D>(dataAdapter, resources.treeCss());
+            this.selectionModel = new SelectionModel<D>(dataAdapter, resources.treeCss(), multilevelSelection);
             this.animator = new AnimationController.Builder().setCollapse(true).setFade(true).build();
         }
 

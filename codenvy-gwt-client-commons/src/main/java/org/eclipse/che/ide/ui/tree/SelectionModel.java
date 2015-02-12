@@ -33,11 +33,17 @@ public class SelectionModel<D> {
     private       JsoArray<D>        selectedNodes;
     private final NodeDataAdapter<D> dataAdapter;
     private final Tree.Css           css;
+    private final boolean            multilevelSelection;
 
     public SelectionModel(NodeDataAdapter<D> dataAdapter, Tree.Css css) {
+        this(dataAdapter, css, false);
+    }
+
+    public SelectionModel(final NodeDataAdapter<D> dataAdapter, final Tree.Css css, final boolean multilevelSelection) {
         this.dataAdapter = dataAdapter;
         this.css = css;
         this.selectedNodes = JsoArray.create();
+        this.multilevelSelection = multilevelSelection;
     }
 
     /**
@@ -135,7 +141,9 @@ public class SelectionModel<D> {
         // Ensure that the node we are selecting is a child of the same
         // directory of the other nodes.
         if (!hasSameParent(selectedNodes.get(0), nodeData)) {
-            return selectSingleNode(nodeData);
+            if (!this.multilevelSelection || event.getShiftKey()) {
+                return selectSingleNode(nodeData);
+            }
         }
 
         // So we are guaranteed to have a node that is a peer of the current set of
