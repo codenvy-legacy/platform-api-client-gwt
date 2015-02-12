@@ -35,7 +35,7 @@ public interface RunnerServiceClient {
      * @param callback
      *         the callback to use for the response
      */
-    public void run(String projectName, RunOptions runOptions, AsyncRequestCallback<ApplicationProcessDescriptor> callback);
+    void run(String projectName, RunOptions runOptions, AsyncRequestCallback<ApplicationProcessDescriptor> callback);
 
     /**
      * Get status of app.
@@ -45,7 +45,7 @@ public interface RunnerServiceClient {
      * @param callback
      *         the callback to use for the response
      */
-    public void getStatus(Link link, AsyncRequestCallback<ApplicationProcessDescriptor> callback);
+    void getStatus(Link link, AsyncRequestCallback<ApplicationProcessDescriptor> callback);
 
     /**
      * Get runner processes by project name.
@@ -55,7 +55,7 @@ public interface RunnerServiceClient {
      * @param callback
      *         the callback to use for the response
      */
-    public void getRunningProcesses(String project, AsyncRequestCallback<Array<ApplicationProcessDescriptor>> callback);
+    void getRunningProcesses(String project, AsyncRequestCallback<Array<ApplicationProcessDescriptor>> callback);
 
     /**
      * Retrieve logs from application server where app is launched.
@@ -65,7 +65,7 @@ public interface RunnerServiceClient {
      * @param callback
      *         the callback to use for the response
      */
-    public void getLogs(Link link, AsyncRequestCallback<String> callback);
+    void getLogs(Link link, AsyncRequestCallback<String> callback);
 
     /**
      * Stop application server where app is launched.
@@ -75,7 +75,7 @@ public interface RunnerServiceClient {
      * @param callback
      *         the callback to use for the response
      */
-    public void stop(Link link, AsyncRequestCallback<ApplicationProcessDescriptor> callback);
+    void stop(Link link, AsyncRequestCallback<ApplicationProcessDescriptor> callback);
 
     /**
      * Get available runners.
@@ -83,7 +83,7 @@ public interface RunnerServiceClient {
      * @param callback
      *         the callback to use for the response
      */
-    public void getRunners(AsyncRequestCallback<RunnerEnvironmentTree> callback);
+    void getRunners(AsyncRequestCallback<RunnerEnvironmentTree> callback);
 
     /**
      * Get available runners.
@@ -93,7 +93,7 @@ public interface RunnerServiceClient {
      * @param callback
      *         the callback to use for the response
      */
-    public void getRunners(String projectName, AsyncRequestCallback<Array<RunnerDescriptor>> callback);
+    void getRunners(String projectName, AsyncRequestCallback<Array<RunnerDescriptor>> callback);
 
     /**
      * Get resources for user in current workspace.
@@ -101,5 +101,5 @@ public interface RunnerServiceClient {
      * @param callback
      *         the callback to use for the response
      */
-    public void getResources(AsyncRequestCallback<ResourcesDescriptor> callback);
+    void getResources(AsyncRequestCallback<ResourcesDescriptor> callback);
 }

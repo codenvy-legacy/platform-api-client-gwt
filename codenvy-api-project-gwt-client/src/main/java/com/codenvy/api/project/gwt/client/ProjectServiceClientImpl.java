@@ -26,6 +26,9 @@ import com.codenvy.ide.rest.AsyncRequestLoader;
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
 
+import java.util.List;
+import java.util.Map;
+
 import static com.codenvy.ide.rest.HTTPHeader.ACCEPT;
 import static com.codenvy.ide.rest.HTTPHeader.CONTENT_TYPE;
 import static com.google.gwt.http.client.RequestBuilder.DELETE;
@@ -53,6 +56,7 @@ public class ProjectServiceClientImpl implements ProjectServiceClient {
     private final String              SEARCH;
     private final String              SWITCH_VISIBILITY;
     private final String              ENVIRONMENTS;
+    private final String              ESTIMATE;
     private final AsyncRequestLoader  loader;
     private final AsyncRequestFactory asyncRequestFactory;
 
@@ -78,6 +82,7 @@ public class ProjectServiceClientImpl implements ProjectServiceClient {
         SEARCH = restContext + "/project/" + workspaceId + "/search";
         SWITCH_VISIBILITY = restContext + "/project/" + workspaceId + "/switch_visibility";
         ENVIRONMENTS = restContext + "/project/" + workspaceId + "/runner_environments";
+        ESTIMATE = restContext + "/project/" + workspaceId + "/estimate";
     }
 
     @Override
@@ -127,6 +132,15 @@ public class ProjectServiceClientImpl implements ProjectServiceClient {
         asyncRequestFactory.createPostRequest(requestUrl, newProject)
                            .header(ACCEPT, MimeType.APPLICATION_JSON)
                            .loader(loader, "Creating project...")
+                           .send(callback);
+    }
+
+    @Override
+    public void estimateProject(String path, String projectType, AsyncRequestCallback<Map<String, List<String>>> callback) {
+        final String requestUrl = ESTIMATE + normalizePath(path) + "?type=" + projectType;
+        asyncRequestFactory.createGetRequest(requestUrl)
+                           .header(ACCEPT, MimeType.APPLICATION_JSON)
+                           .loader(loader, "Estimating project...")
                            .send(callback);
     }
 

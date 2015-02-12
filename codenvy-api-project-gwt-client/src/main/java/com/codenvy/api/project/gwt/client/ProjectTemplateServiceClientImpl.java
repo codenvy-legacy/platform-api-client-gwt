@@ -10,7 +10,7 @@
  *******************************************************************************/
 package com.codenvy.api.project.gwt.client;
 
-import com.codenvy.api.project.shared.dto.ProjectTypeDefinition;
+import com.codenvy.api.project.shared.dto.ProjectTemplateDescriptor;
 import com.codenvy.ide.collections.Array;
 import com.codenvy.ide.rest.AsyncRequestCallback;
 import com.codenvy.ide.rest.AsyncRequestFactory;
@@ -18,30 +18,39 @@ import com.codenvy.ide.rest.AsyncRequestLoader;
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
 
+import javax.annotation.Nonnull;
+
 import static com.codenvy.ide.MimeType.APPLICATION_JSON;
 import static com.codenvy.ide.rest.HTTPHeader.ACCEPT;
 
 /**
- * The implementation of {@link ProjectTypeServiceClient}.
+ * The implementation for {@link ProjectTemplateServiceClient}.
  *
  * @author Artem Zatsarynnyy
  */
-public class ProjectTypeServiceClientImpl implements ProjectTypeServiceClient {
+public class ProjectTemplateServiceClientImpl implements ProjectTemplateServiceClient {
     private final String              baseUrl;
     private final AsyncRequestFactory asyncRequestFactory;
     private final AsyncRequestLoader  loader;
 
     @Inject
-    protected ProjectTypeServiceClientImpl(@Named("restContext") String restContext,
-                                           AsyncRequestLoader loader,
-                                           AsyncRequestFactory asyncRequestFactory) {
-        this.loader = loader;
+    protected ProjectTemplateServiceClientImpl(@Named("restContext") String restContext,
+                                               AsyncRequestFactory asyncRequestFactory,
+                                               AsyncRequestLoader loader) {
         this.asyncRequestFactory = asyncRequestFactory;
-        baseUrl = restContext + "/project-type";
+        this.loader = loader;
+        baseUrl = restContext + "/project-template";
     }
 
     @Override
-    public void getProjectTypes(AsyncRequestCallback<Array<ProjectTypeDefinition>> callback) {
+    public void getProjectTemplates(@Nonnull String projectTypeId,
+                                    @Nonnull AsyncRequestCallback<Array<ProjectTemplateDescriptor>> callback) {
+        final String requestUrl = baseUrl + projectTypeId;
+        asyncRequestFactory.createGetRequest(requestUrl).header(ACCEPT, APPLICATION_JSON).loader(loader).send(callback);
+    }
+
+    @Override
+    public void getProjectTemplates(@Nonnull AsyncRequestCallback<Array<ProjectTemplateDescriptor>> callback) {
         asyncRequestFactory.createGetRequest(baseUrl).header(ACCEPT, APPLICATION_JSON).loader(loader).send(callback);
     }
 }

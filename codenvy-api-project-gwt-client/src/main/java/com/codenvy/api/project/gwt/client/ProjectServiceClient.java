@@ -22,6 +22,8 @@ import com.codenvy.ide.collections.Array;
 import com.codenvy.ide.rest.AsyncRequestCallback;
 
 import javax.annotation.Nullable;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Client for Project service.
@@ -77,6 +79,19 @@ public interface ProjectServiceClient {
      *         the callback to use for the response
      */
     public void createProject(String name, NewProject newProject, AsyncRequestCallback<ProjectDescriptor> callback);
+
+
+    /**
+     * Estimates if the folder supposed to be project of certain type.
+     *
+     * @param path
+     *         path of the project to estimate
+     * @param projectType
+     *         Project Type ID to estimate against
+     * @param callback
+     *         the callback to use for the response
+     */
+    public void estimateProject(String path, String projectType, AsyncRequestCallback<Map<String, List<String>>> callback);
 
     /**
      * Get sub-project.
