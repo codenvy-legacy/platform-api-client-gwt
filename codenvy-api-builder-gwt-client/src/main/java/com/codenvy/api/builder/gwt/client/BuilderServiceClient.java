@@ -31,7 +31,7 @@ public interface BuilderServiceClient {
      * @param callback
      *         callback
      */
-    public void build(String projectName, AsyncRequestCallback<BuildTaskDescriptor> callback);
+    void build(String projectName, AsyncRequestCallback<BuildTaskDescriptor> callback);
 
     /**
      * Start new build.
@@ -43,7 +43,7 @@ public interface BuilderServiceClient {
      * @param callback
      *         callback
      */
-    public void build(String projectName, BuildOptions buildOptions, AsyncRequestCallback<BuildTaskDescriptor> callback);
+    void build(String projectName, BuildOptions buildOptions, AsyncRequestCallback<BuildTaskDescriptor> callback);
 
     /**
      * Cancel previously launched build.
@@ -53,7 +53,7 @@ public interface BuilderServiceClient {
      * @param callback
      *         callback
      */
-    public void cancel(String buildId, AsyncRequestCallback<StringBuilder> callback);
+    void cancel(String buildId, AsyncRequestCallback<StringBuilder> callback);
 
     /**
      * Check current status of previously launched build.
@@ -63,10 +63,10 @@ public interface BuilderServiceClient {
      * @param callback
      *         callback
      */
-    public void status(Link link, AsyncRequestCallback<String> callback);
+    void status(Link link, AsyncRequestCallback<String> callback);
 
     /** Get build log. */
-    public void log(Link link, AsyncRequestCallback<String> callback);
+    void log(Link link, AsyncRequestCallback<String> callback);
 
     /**
      * Get build result.
@@ -76,16 +76,13 @@ public interface BuilderServiceClient {
      * @param callback
      *         callback
      */
-    public void result(String buildId, AsyncRequestCallback<String> callback);
+    void result(String buildId, AsyncRequestCallback<String> callback);
 
     /**
      * Get build result.
      *
-     * @param workspaceId
-     *         workspace ID of build
      * @param callback
      *         callback
      */
-    public void getRegisteredServers(String workspaceId, AsyncRequestCallback<Array<BuilderDescriptor>> callback);
-
+    void getRegisteredServers(AsyncRequestCallback<Array<BuilderDescriptor>> callback);
 }
