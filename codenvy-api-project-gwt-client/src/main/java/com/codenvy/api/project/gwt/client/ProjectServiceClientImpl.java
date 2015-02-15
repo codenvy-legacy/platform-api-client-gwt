@@ -242,6 +242,14 @@ public class ProjectServiceClientImpl implements ProjectServiceClient {
     }
 
     @Override
+    public void deleteModule(String path, String modulePath, AsyncRequestCallback<Void> callback) {
+        final String requestUrl = PROJECT + normalizePath(path) + "?module=" + modulePath;
+        asyncRequestFactory.createRequest(DELETE, requestUrl, null, false)
+                           .loader(loader, "Deleting module...")
+                           .send(callback);
+    }
+
+    @Override
     public void copy(String path, String newParentPath, AsyncRequestCallback<Void> callback) {
         final String requestUrl = COPY + normalizePath(path) + "?to=" + newParentPath;
         asyncRequestFactory.createPostRequest(requestUrl, null)

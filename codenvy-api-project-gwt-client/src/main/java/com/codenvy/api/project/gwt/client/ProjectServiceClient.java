@@ -205,6 +205,18 @@ public interface ProjectServiceClient {
     public void delete(String path, AsyncRequestCallback<Void> callback);
 
     /**
+     * Delete module.
+     *
+     * @param path
+     *         path to module's parent
+     * @param modulePath
+     *         path to module to delete
+     * @param callback
+     *         the callback to use for the response
+     */
+    public void deleteModule(String path, String modulePath, AsyncRequestCallback<Void> callback);
+
+    /**
      * Copy an item to the specified target path.
      *
      * @param path
