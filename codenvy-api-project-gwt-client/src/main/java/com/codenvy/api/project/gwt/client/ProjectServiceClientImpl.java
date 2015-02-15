@@ -155,7 +155,7 @@ public class ProjectServiceClientImpl implements ProjectServiceClient {
     @Override
     public void createModule(String parentProjectPath, String name, NewProject newProject,
                              AsyncRequestCallback<ProjectDescriptor> callback) {
-        final String requestUrl = PROJECT + normalizePath(parentProjectPath) + "?name=" + name;
+        final String requestUrl = PROJECT + normalizePath(parentProjectPath) + "?path=" + name;
         asyncRequestFactory.createPostRequest(requestUrl, newProject)
                            .header(ACCEPT, MimeType.APPLICATION_JSON)
                            .loader(loader, "Creating module...")
