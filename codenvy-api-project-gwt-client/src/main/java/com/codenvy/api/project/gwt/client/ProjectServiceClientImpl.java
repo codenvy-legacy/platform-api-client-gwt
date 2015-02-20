@@ -155,7 +155,7 @@ public class ProjectServiceClientImpl implements ProjectServiceClient {
     @Override
     public void createModule(String parentProjectPath, String name, NewProject newProject,
                              AsyncRequestCallback<ProjectDescriptor> callback) {
-        final String requestUrl = PROJECT + normalizePath(parentProjectPath) + "?name=" + name;
+        final String requestUrl = PROJECT + normalizePath(parentProjectPath) + "?path=" + name;
         asyncRequestFactory.createPostRequest(requestUrl, newProject)
                            .header(ACCEPT, MimeType.APPLICATION_JSON)
                            .loader(loader, "Creating module...")
@@ -238,6 +238,14 @@ public class ProjectServiceClientImpl implements ProjectServiceClient {
         final String requestUrl = PROJECT + normalizePath(path);
         asyncRequestFactory.createRequest(DELETE, requestUrl, null, false)
                            .loader(loader, "Deleting project...")
+                           .send(callback);
+    }
+
+    @Override
+    public void deleteModule(String path, String modulePath, AsyncRequestCallback<Void> callback) {
+        final String requestUrl = PROJECT + normalizePath(path) + "?module=" + modulePath;
+        asyncRequestFactory.createRequest(DELETE, requestUrl, null, false)
+                           .loader(loader, "Deleting module...")
                            .send(callback);
     }
 
