@@ -20,7 +20,7 @@
     </parent>
     <artifactId>codenvy-gwt-client-commons</artifactId>
     <packaging>jar</packaging>
-    <name>Codenvy :: Commons</name>
+    <name>Codenvy API :: GWT Client :: Commons</name>
     <properties>
         <generated.test.sources.directory>${project.build.directory}/generated-test-sources/dto</generated.test.sources.directory>
     </properties>
