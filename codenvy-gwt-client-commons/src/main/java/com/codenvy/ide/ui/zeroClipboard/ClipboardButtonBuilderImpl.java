@@ -175,7 +175,7 @@ public class ClipboardButtonBuilderImpl implements ClipboardButtonBuilder {
             client.on('error', function (event) {
                 console.log('ZeroClipboard error of type "' + event.name + '": ' + event.message);
                 tooltip.innerHTML = copyErrorPrompt;
-                ZeroClipboard.destroy();
+                $wnd.ZeroClipboard.destroy();
                 setTimeout(function () {
                     tooltip.innerHTML = readyCopyPrompt;
                 }, 5000);
