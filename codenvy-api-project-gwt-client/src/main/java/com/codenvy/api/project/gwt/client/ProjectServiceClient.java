@@ -11,6 +11,7 @@
 package com.codenvy.api.project.gwt.client;
 
 import com.codenvy.api.project.shared.dto.ImportProject;
+import com.codenvy.api.project.shared.dto.ImportResponse;
 import com.codenvy.api.project.shared.dto.ItemReference;
 import com.codenvy.api.project.shared.dto.NewProject;
 import com.codenvy.api.project.shared.dto.ProjectDescriptor;
@@ -266,7 +267,7 @@ public interface ProjectServiceClient {
      * @param callback
      *         the callback to use for the response
      */
-    public void importProject(String path, boolean force, ImportProject importProject, AsyncRequestCallback<ProjectDescriptor> callback);
+    public void importProject(String path, boolean force, ImportProject importProject, AsyncRequestCallback<ImportResponse> callback);
 
     /**
      * Get children for the specified path.

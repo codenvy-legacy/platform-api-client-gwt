@@ -11,6 +11,7 @@
 package com.codenvy.api.project.gwt.client;
 
 import com.codenvy.api.project.shared.dto.ImportProject;
+import com.codenvy.api.project.shared.dto.ImportResponse;
 import com.codenvy.api.project.shared.dto.ItemReference;
 import com.codenvy.api.project.shared.dto.NewProject;
 import com.codenvy.api.project.shared.dto.ProjectDescriptor;
@@ -277,7 +278,7 @@ public class ProjectServiceClientImpl implements ProjectServiceClient {
     }
 
     @Override
-    public void importProject(String path, boolean force, ImportProject importProject, AsyncRequestCallback<ProjectDescriptor> callback) {
+    public void importProject(String path, boolean force, ImportProject importProject, AsyncRequestCallback<ImportResponse> callback) {
         final StringBuilder requestUrl = new StringBuilder(IMPORT_PROJECT);
         requestUrl.append(normalizePath(path));
         if (force) {
