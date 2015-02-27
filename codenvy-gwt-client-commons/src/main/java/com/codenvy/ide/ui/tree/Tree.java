@@ -263,7 +263,7 @@ public class Tree<D> extends UiComponent<Tree.View<D>> implements IsWidget {
                     Element treeNodeBody = CssUtils.getAncestorOrSelfWithClassName(eventTarget, css.treeNodeBody());
                     if (treeNodeBody != null) {
                         //this code emulate double click for tablets
-                        if (Event.CLICK.equals(evt.getType())) {
+                        if (Event.MOUSEDOWN.equals(evt.getType())) {
                             double currentClickMs = Duration.currentTimeMillis();
                             if (currentClickMs - previousClickMs < MouseGestureListener.MAX_CLICK_TIMEOUT_MS
                                     && treeNodeBody.equals(previousClickTreeNodeBody)) {
