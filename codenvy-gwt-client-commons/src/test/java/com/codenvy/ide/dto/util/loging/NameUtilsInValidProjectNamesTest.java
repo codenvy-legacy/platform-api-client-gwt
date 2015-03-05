@@ -11,13 +11,15 @@
 package com.codenvy.ide.dto.util.loging;
 
 import com.codenvy.ide.util.NameUtils;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
+
 import java.util.Arrays;
 import java.util.Collection;
 
-import static junit.framework.Assert.assertFalse;
+import static org.junit.Assert.assertFalse;
 
 /**
  * Tests check that NameUtils correct validate project name
