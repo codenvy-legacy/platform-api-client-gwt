@@ -10,8 +10,8 @@
  *******************************************************************************/
 package com.google.gwt.webworker.client.messages;
 
-import com.codenvy.ide.collections.Collections;
-import com.codenvy.ide.collections.IntegerMap;
+import org.eclipse.che.ide.collections.Collections;
+import org.eclipse.che.ide.collections.IntegerMap;
 
 /**
  * Class responsible for routing JsonMessages based on the message type that get

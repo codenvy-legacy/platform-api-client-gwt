@@ -101,10 +101,10 @@
                 </dependencies>
                 <configuration>
                     <dtoPackages>
-                        <package>com.codenvy.api.auth.shared.dto</package>
+                        <package>org.eclipse.che.api.auth.shared.dto</package>
                     </dtoPackages>
                     <outputDirectory>${dto-generator-out-directory}</outputDirectory>
-                    <genClassName>com.codenvy.api.auth.gwt.client.dto.DtoClientImpls</genClassName>
+                    <genClassName>org.eclipse.che.api.auth.gwt.client.dto.DtoClientImpls</genClassName>
                     <impl>client</impl>
                 </configuration>
             </plugin>
