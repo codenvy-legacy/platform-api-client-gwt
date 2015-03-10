@@ -16,7 +16,7 @@
     <parent>
         <artifactId>codenvy-platform-api-gwt-client-parent</artifactId>
         <groupId>com.codenvy.platform-api-gwt-client</groupId>
-        <version>0.20.0-SNAPSHOT</version>
+        <version>0.21.0-SNAPSHOT</version>
     </parent>
     <artifactId>codenvy-api-core-gwt-client</artifactId>
     <packaging>jar</packaging>
@@ -88,10 +88,10 @@
                 </dependencies>
                 <configuration>
                     <dtoPackages>
-                        <package>com.codenvy.api.core.rest.shared.dto</package>
+                        <package>org.eclipse.che.api.core.rest.shared.dto</package>
                     </dtoPackages>
                     <outputDirectory>${dto-generator-out-directory}</outputDirectory>
-                    <genClassName>com.codenvy.api.core.gwt.client.dto.DtoClientImpls</genClassName>
+                    <genClassName>org.eclipse.che.api.core.gwt.client.dto.DtoClientImpls</genClassName>
                     <impl>client</impl>
                 </configuration>
             </plugin>

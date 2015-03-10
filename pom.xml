@@ -16,11 +16,11 @@
     <parent>
         <artifactId>maven-depmgt-pom</artifactId>
         <groupId>com.codenvy</groupId>
-        <version>1.13.0-SNAPSHOT</version>
+        <version>1.16.0-SNAPSHOT</version>
     </parent>
     <groupId>com.codenvy.platform-api-gwt-client</groupId>
     <artifactId>codenvy-platform-api-gwt-client-parent</artifactId>
-    <version>0.20.0-SNAPSHOT</version>
+    <version>0.21.0-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>Codenvy Platform API :: GWT Client :: Parent</name>
     <modules>
