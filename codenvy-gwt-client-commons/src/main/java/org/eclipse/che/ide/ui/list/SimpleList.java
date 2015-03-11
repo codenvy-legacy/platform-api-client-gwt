@@ -311,7 +311,8 @@ public class SimpleList<M> extends UiComponent<SimpleList.View> implements IsWid
         public boolean setSelectedItem(M item) {
             int index = -1;
             for (int i = 0; i < listItems.size(); i++) {
-                if (listItems.get(i).getData().equals(item)) {
+                //in list we may have 2 equal dto, so to avoid wrong selection we shall perform search by real object, not by equals method
+                if (listItems.get(i).getData() == item) {
                     index = i;
                     break;
                 }
