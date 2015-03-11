@@ -27,7 +27,10 @@ import com.google.gwt.core.client.GWT;
 import javax.annotation.Nullable;
 import java.util.*;
 
-/** A set of static factory methods for lightweight collections. */
+/**
+ * Use java.util.collections
+ * */
+@Deprecated
 public final class Collections {
 
     public interface Implementation {
