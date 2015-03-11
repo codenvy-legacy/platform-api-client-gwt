@@ -33,11 +33,17 @@ public class SelectionModel<D> {
     private       JsoArray<D>        selectedNodes;
     private final NodeDataAdapter<D> dataAdapter;
     private final Tree.Css           css;
+    private final boolean            multilevelSelection;
 
     public SelectionModel(NodeDataAdapter<D> dataAdapter, Tree.Css css) {
+        this(dataAdapter, css, false);
+    }
+
+    public SelectionModel(final NodeDataAdapter<D> dataAdapter, final Tree.Css css, final boolean multilevelSelection) {
         this.dataAdapter = dataAdapter;
         this.css = css;
         this.selectedNodes = JsoArray.create();
+        this.multilevelSelection = multilevelSelection;
     }
 
     /**
@@ -70,7 +76,7 @@ public class SelectionModel<D> {
      * Returns the list of selected nodes. Not a copy. So don't play fast and
      * loose mutating the list outside of this API!
      */
-    public JsoArray<D> getSelectedNodes() {
+    public Array<D> getSelectedNodes() {
         return selectedNodes;
     }
 
@@ -83,7 +89,7 @@ public class SelectionModel<D> {
      * SelectionModel.
      */
     public Array<Array<String>> computeSelectedPaths() {
-        JsoArray<Array<String>> selectedPaths = JsoArray.create();
+        Array<Array<String>> selectedPaths = JsoArray.create();
         for (int i = 0, n = selectedNodes.size(); i < n; i++) {
             D nodeData = selectedNodes.get(i);
             selectedPaths.add(dataAdapter.getNodePath(nodeData));
@@ -135,7 +141,9 @@ public class SelectionModel<D> {
         // Ensure that the node we are selecting is a child of the same
         // directory of the other nodes.
         if (!hasSameParent(selectedNodes.get(0), nodeData)) {
-            return selectSingleNode(nodeData);
+            if (!this.multilevelSelection || event.getShiftKey()) {
+                return selectSingleNode(nodeData);
+            }
         }
 
         // So we are guaranteed to have a node that is a peer of the current set of
