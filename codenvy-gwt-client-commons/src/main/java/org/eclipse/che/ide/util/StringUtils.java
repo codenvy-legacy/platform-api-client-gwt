@@ -233,6 +233,19 @@ public class StringUtils {
     }
 
     /**
+     * Returns if the given {@link java.lang.String} named {@code first} contains the string {@code second} ignoring the case.
+     *
+     * @param first
+     *         the string to test.
+     * @param second
+     *         the sequence to search.
+     * @return {@code true} if string {@code first} contains the string {@code second} ignoring the case, {@code false} otherwise.
+     */
+    public static boolean containsIgnoreCase(String first, String second) {
+        return first.toLowerCase().contains(second.toLowerCase());
+    }
+
+    /**
      * @return the length of the starting whitespace for the line, or the string
      * length if it is all whitespace
      */
