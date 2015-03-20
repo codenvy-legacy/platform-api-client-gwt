@@ -80,7 +80,6 @@ public class RunnerServiceClientImpl implements RunnerServiceClient {
     @Override
     public void stop(Link link, AsyncRequestCallback<ApplicationProcessDescriptor> callback) {
         asyncRequestFactory.createPostRequest(link.getHref(), null)
-                           .loader(loader, "Shutting down runner…")
                            .send(callback);
     }
 
