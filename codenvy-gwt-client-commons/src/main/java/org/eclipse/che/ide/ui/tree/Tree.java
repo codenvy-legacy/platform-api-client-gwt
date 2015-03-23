@@ -1207,7 +1207,7 @@ public class Tree<D> extends UiComponent<Tree.View<D>> implements IsWidget {
      * @param node subtree parent
      * @return array containing all visible nodes of subtree
      */
-    private Array<TreeNodeElement<D>> getVisibleTreeNodes(TreeNodeElement<D> node) {
+    public Array<TreeNodeElement<D>> getVisibleTreeNodes(TreeNodeElement<D> node) {
         Array<TreeNodeElement<D>> nodes = Collections.createArray();
         nodes.add(node);
 
@@ -1227,7 +1227,7 @@ public class Tree<D> extends UiComponent<Tree.View<D>> implements IsWidget {
      *
      * @return array containing all visible nodes of the tree
      */
-    private Array<TreeNodeElement<D>> getVisibleTreeNodes() {
+    public Array<TreeNodeElement<D>> getVisibleTreeNodes() {
         Array<TreeNodeElement<D>> nodes = Collections.createArray();
         Array<D> rootItems = getModel().dataAdapter.getChildren(getModel().getRoot());
         for (int i = 0; i < rootItems.size(); i++) {
