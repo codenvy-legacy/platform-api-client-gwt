@@ -36,6 +36,7 @@
         <module>codenvy-api-factory-gwt-client</module>
         <module>codenvy-api-workspace-gwt-client</module>
         <module>codenvy-gwt-client-commons</module>
+        <module>codenvy-gwt-commons-promises</module>
     </modules>
     <scm>
         <connection>scm:git:git@github.com:codenvy/platform-api-gwt-client.git</connection>
